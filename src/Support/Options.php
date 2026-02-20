@@ -25,7 +25,7 @@ class Options {
 			'show_dedicated_field'     => '0',
 			'dedicated_field_placement' => 'auto',
 			'product_form_placement'    => 'auto',
-			'allow_points_for_gift_cards' => '0',
+			'allow_points_for_gift_cards' => '1',
 			'cleanup_on_uninstall'      => '0',
 		];
 	}

@@ -358,7 +358,7 @@ msgid "Session not available. Please refresh."
 msgstr "Sessão indisponível. Atualize a página."
 
 #: src/Cart/AjaxHandler.php:48
-#: src/Plugin.php:189
+#: src/Plugin.php:205
 msgid "Please enter a gift card code."
 msgstr "Introduza um código de cartão-presente."
 
@@ -404,7 +404,7 @@ msgid "Gift card code"
 msgstr "Código do cartão-presente"
 
 #: src/Cart/GiftCardField.php:91
-#: src/Plugin.php:190
+#: src/Plugin.php:206
 msgid "Apply"
 msgstr "Aplicar"
 
@@ -574,15 +574,15 @@ msgstr "Cartão-presente criado da encomenda #%s"
 msgid "Manually created by admin"
 msgstr "Criado manualmente pelo administrador"
 
-#: src/Plugin.php:191
+#: src/Plugin.php:207
 msgid "Applying..."
 msgstr "A aplicar..."
 
-#: src/Plugin.php:192
+#: src/Plugin.php:208
 msgid "Removing..."
 msgstr "A remover..."
 
-#: src/Plugin.php:193
+#: src/Plugin.php:209
 msgid "Request failed. Please try again."
 msgstr "O pedido falhou. Tente novamente."
 
@@ -684,7 +684,8 @@ msgstr "Permitir Pontos de Fidelidade para Cartões-presente"
 msgid "Allow customers to use loyalty points to pay for gift card purchases."
 msgstr "Permitir que os clientes utilizem pontos de fidelidade para pagar compras de cartões-presente."
 
-#: src/Plugin.php:126
+#: src/Blocks/StoreApiExtension.php:51
+#: src/Plugin.php:142
 msgid "Loyalty points cannot be used to purchase gift cards."
 msgstr "Não é possível utilizar pontos de fidelidade para comprar cartões-presente."
 

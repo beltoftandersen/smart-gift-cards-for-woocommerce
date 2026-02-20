@@ -16,6 +16,8 @@ use GiftCards\Cart\GiftCardField;
 use GiftCards\Cart\AjaxHandler;
 use GiftCards\Checkout\OrderProcessor;
 use GiftCards\Email\GiftCardDeliveryEmail;
+use GiftCards\Blocks\StoreApiExtension;
+use GiftCards\Blocks\BlockIntegration;
 use GiftCards\GiftCard\Repository as GiftCardRepository;
 
 defined( 'ABSPATH' ) || exit;
@@ -64,6 +66,11 @@ class Plugin {
 			add_action( 'wclr_redeem_form_after_earn', [ __CLASS__, 'loyalty_points_blocked_notice' ] );
 		}
 
+		// WooCommerce Blocks: Store API extension + blocks JS integration.
+		StoreApiExtension::init();
+		add_action( 'woocommerce_blocks_cart_block_registration', [ __CLASS__, 'register_block_integration' ] );
+		add_action( 'woocommerce_blocks_checkout_block_registration', [ __CLASS__, 'register_block_integration' ] );
+
 		// Assets.
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_admin_assets' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_frontend_assets' ] );
@@ -78,6 +85,15 @@ class Plugin {
 	public static function register_email_class( $email_classes ) {
 		$email_classes['WCGC_Gift_Card_Delivery'] = new GiftCardDeliveryEmail();
 		return $email_classes;
+	}
+
+	/**
+	 * Register WooCommerce Blocks integration.
+	 *
+	 * @param \Automattic\WooCommerce\Blocks\Integrations\IntegrationRegistry $registry Integration registry.
+	 */
+	public static function register_block_integration( $registry ) {
+		$registry->register( new BlockIntegration() );
 	}
 
 	/**

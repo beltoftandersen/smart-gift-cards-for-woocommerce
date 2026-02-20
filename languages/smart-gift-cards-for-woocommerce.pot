@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-20T12:50:06+00:00\n"
+"POT-Creation-Date: 2026-02-20T12:57:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: smart-gift-cards-for-woocommerce\n"
@@ -368,6 +368,11 @@ msgstr ""
 msgid "Failed to create gift card. Please check the amount."
 msgstr ""
 
+#: src/Blocks/StoreApiExtension.php:51
+#: src/Plugin.php:142
+msgid "Loyalty points cannot be used to purchase gift cards."
+msgstr ""
+
 #: src/Cart/AjaxHandler.php:21
 msgid "Security check failed. Please refresh and try again."
 msgstr ""
@@ -378,7 +383,7 @@ msgid "Session not available. Please refresh."
 msgstr ""
 
 #: src/Cart/AjaxHandler.php:48
-#: src/Plugin.php:189
+#: src/Plugin.php:205
 msgid "Please enter a gift card code."
 msgstr ""
 
@@ -434,7 +439,7 @@ msgid "Gift card code"
 msgstr ""
 
 #: src/Cart/GiftCardField.php:91
-#: src/Plugin.php:190
+#: src/Plugin.php:206
 msgid "Apply"
 msgstr ""
 
@@ -614,19 +619,15 @@ msgstr ""
 msgid "Manually created by admin"
 msgstr ""
 
-#: src/Plugin.php:126
-msgid "Loyalty points cannot be used to purchase gift cards."
-msgstr ""
-
-#: src/Plugin.php:191
+#: src/Plugin.php:207
 msgid "Applying..."
 msgstr ""
 
-#: src/Plugin.php:192
+#: src/Plugin.php:208
 msgid "Removing..."
 msgstr ""
 
-#: src/Plugin.php:193
+#: src/Plugin.php:209
 msgid "Request failed. Please try again."
 msgstr ""
 
