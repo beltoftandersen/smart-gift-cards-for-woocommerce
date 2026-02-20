@@ -138,7 +138,7 @@ class Plugin {
 		foreach ( WC()->cart->get_cart() as $item ) {
 			$product = $item['data'] ?? null;
 			if ( $product && $product->get_type() === 'gift-card' ) {
-				echo '<div class="wclr-redeem-notice" style="padding:12px 16px;margin:8px 0 12px;border:1px solid #d63638;border-radius:4px;color:#b32d2e;font-size:0.875em;background-color:#fcf0f1;">'
+				echo '<div class="wclr-redeem-notice" style="padding:12px 16px;margin:8px 0 12px;border:1px solid #c3c4c7;border-radius:4px;color:#50575e;font-size:0.875em;background-color:#f0f0f1;">'
 					. esc_html__( 'Loyalty points cannot be used to purchase gift cards.', 'smart-gift-cards-for-woocommerce' )
 					. '</div>';
 				return;

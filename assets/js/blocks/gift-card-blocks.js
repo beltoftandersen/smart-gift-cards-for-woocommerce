@@ -46,11 +46,11 @@
 				style: {
 					padding: '12px 16px',
 					margin: '0 0 12px',
-					border: '1px solid #d63638',
+					border: '1px solid #c3c4c7',
 					borderRadius: '4px',
-					color: '#b32d2e',
+					color: '#50575e',
 					fontSize: '0.875em',
-					backgroundColor: '#fcf0f1',
+					backgroundColor: '#f0f0f1',
 				},
 			}, gcData.points_blocked_message )
 		);
