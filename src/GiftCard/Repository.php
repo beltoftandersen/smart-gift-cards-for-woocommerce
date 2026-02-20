@@ -6,6 +6,9 @@ defined( 'ABSPATH' ) || exit;
 
 class Repository {
 
+	/** @var array Request-scoped cache for find_by_code lookups. */
+	private static $code_cache = [];
+
 	/**
 	 * Get the gift cards table name.
 	 */
@@ -48,21 +51,45 @@ class Repository {
 	}
 
 	/**
-	 * Find a gift card by code.
+	 * Find a gift card by code (request-scoped cache).
 	 *
-	 * @param string $code Gift card code.
+	 * @param string $code  Gift card code.
+	 * @param bool   $fresh Bypass cache and query directly.
 	 * @return object|null
 	 */
-	public static function find_by_code( $code ) {
+	public static function find_by_code( $code, $fresh = false ) {
 		global $wpdb;
 
+		$key = strtoupper( trim( $code ) );
+
+		if ( ! $fresh && array_key_exists( $key, self::$code_cache ) ) {
+			return self::$code_cache[ $key ];
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-		return $wpdb->get_row(
+		$result = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}wcgc_gift_cards WHERE code = %s",
 				$code
 			)
 		);
+
+		self::$code_cache[ $key ] = $result;
+
+		return $result;
+	}
+
+	/**
+	 * Invalidate the request-scoped code cache.
+	 *
+	 * @param string|null $code Specific code to invalidate, or null for all.
+	 */
+	public static function invalidate_code_cache( $code = null ) {
+		if ( $code ) {
+			unset( self::$code_cache[ strtoupper( trim( $code ) ) ] );
+		} else {
+			self::$code_cache = [];
+		}
 	}
 
 	/**
@@ -148,13 +175,19 @@ class Repository {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-		return (bool) $wpdb->update(
+		$result = (bool) $wpdb->update(
 			self::table(),
 			[ 'balance' => $balance ],
 			[ 'id' => $id ],
 			[ '%f' ],
 			[ '%d' ]
 		);
+
+		if ( $result ) {
+			self::$code_cache = [];
+		}
+
+		return $result;
 	}
 
 	/**
@@ -185,7 +218,12 @@ class Repository {
 				)
 			);
 
-		return false !== $rows && $rows > 0;
+		$success = false !== $rows && $rows > 0;
+		if ( $success ) {
+			self::$code_cache = [];
+		}
+
+		return $success;
 	}
 
 	/**
@@ -230,13 +268,19 @@ class Repository {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
-		return (bool) $wpdb->update(
+		$result = (bool) $wpdb->update(
 			self::table(),
 			[ 'status' => $status ],
 			[ 'id' => $id ],
 			[ '%s' ],
 			[ '%d' ]
 		);
+
+		if ( $result ) {
+			self::$code_cache = [];
+		}
+
+		return $result;
 	}
 
 	/**
@@ -360,6 +404,28 @@ class Repository {
 			'total_redeemed'      => (int) ( $row->total_redeemed ?? 0 ),
 			'total_expired'       => (int) ( $row->total_expired ?? 0 ),
 		];
+	}
+
+	/**
+	 * Get counts grouped by status in a single query.
+	 *
+	 * @return array [ '' => total, 'active' => N, 'redeemed' => N, ... ]
+	 */
+	public static function get_status_counts() {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom table, no user input.
+		$rows = $wpdb->get_results(
+			"SELECT status, COUNT(*) as cnt FROM {$wpdb->prefix}wcgc_gift_cards GROUP BY status"
+		);
+
+		$counts = [ '' => 0 ];
+		foreach ( $rows as $row ) {
+			$counts[ $row->status ] = (int) $row->cnt;
+			$counts['']            += (int) $row->cnt;
+		}
+
+		return $counts;
 	}
 
 	/**

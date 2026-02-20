@@ -90,6 +90,10 @@ class MyAccount {
 		usort( $all_cards, function ( $a, $b ) {
 			return strtotime( $b->created_at ) - strtotime( $a->created_at );
 		} );
+
+		// Batch-load all transactions in a single query.
+		$card_ids    = array_map( function ( $gc ) { return $gc->id; }, $all_cards );
+		$all_tx      = ! empty( $card_ids ) ? TransactionRepository::get_by_gift_card_ids( $card_ids ) : [];
 		?>
 
 		<div class="wcgc-myaccount">
@@ -131,7 +135,7 @@ class MyAccount {
 							<tr class="wcgc-transactions-row" style="display: none;" data-card-id="<?php echo esc_attr( $gc->id ); ?>">
 								<td colspan="5">
 									<?php
-									$transactions = TransactionRepository::get_by_gift_card( $gc->id );
+									$transactions = $all_tx[ $gc->id ] ?? [];
 									if ( ! empty( $transactions ) ) :
 									?>
 										<table class="wcgc-transactions-table">

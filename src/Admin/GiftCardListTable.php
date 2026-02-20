@@ -246,11 +246,14 @@ class GiftCardListTable extends \WP_List_Table {
 			'expired'  => __( 'Expired', 'smart-gift-cards-for-woocommerce' ),
 		];
 
+		// Single GROUP BY query instead of 5 separate COUNT queries.
+		$counts = Repository::get_status_counts();
+
 		$views = [];
 		foreach ( $statuses as $slug => $label ) {
 			$url     = $slug ? add_query_arg( 'status', $slug, $base_url ) : $base_url;
 			$class   = $current === $slug ? 'current' : '';
-			$count   = Repository::count_all( $slug ? [ 'status' => $slug ] : [] );
+			$count   = $counts[ $slug ] ?? 0;
 			$views[ $slug ?: 'all' ] = sprintf(
 				'<a href="%s" class="%s">%s <span class="count">(%s)</span></a>',
 				esc_url( $url ),
