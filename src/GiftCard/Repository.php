@@ -47,6 +47,10 @@ class Repository {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
 		$result = $wpdb->insert( self::table(), $data );
 
+		if ( $result && ! empty( $data['code'] ) ) {
+			self::invalidate_code_cache( $data['code'] );
+		}
+
 		return $result ? $wpdb->insert_id : false;
 	}
 
