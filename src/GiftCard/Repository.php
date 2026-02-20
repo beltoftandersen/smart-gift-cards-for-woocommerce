@@ -171,15 +171,19 @@ class Repository {
 		global $wpdb;
 
 		$amount = abs( (float) $amount );
+		if ( $amount <= 0 ) {
+			return false;
+		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic balance deduction on custom table.
 		$rows = $wpdb->query(
-			$wpdb->prepare(
-				"UPDATE {$wpdb->prefix}wcgc_gift_cards SET balance = GREATEST(0, balance - %f) WHERE id = %d AND balance > 0",
-				$amount,
-				$id
-			)
-		);
+				$wpdb->prepare(
+					"UPDATE {$wpdb->prefix}wcgc_gift_cards SET balance = balance - %f WHERE id = %d AND balance >= %f",
+					$amount,
+					$id,
+					$amount
+				)
+			);
 
 		return false !== $rows && $rows > 0;
 	}
@@ -188,6 +192,28 @@ class Repository {
 	 * Valid gift card statuses.
 	 */
 	const VALID_STATUSES = [ 'active', 'disabled', 'expired', 'redeemed' ];
+
+	/**
+	 * Mark active cards as expired when their expiry date has passed.
+	 */
+	public static function sync_expired_statuses() {
+		global $wpdb;
+
+		$now_gmt = gmdate( 'Y-m-d H:i:s' );
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table status sync.
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->prefix}wcgc_gift_cards
+				SET status = 'expired'
+				WHERE status = 'active'
+				AND expires_at IS NOT NULL
+				AND expires_at <> '0000-00-00 00:00:00'
+				AND expires_at < %s",
+				$now_gmt
+			)
+		);
+	}
 
 	/**
 	 * Update gift card status.

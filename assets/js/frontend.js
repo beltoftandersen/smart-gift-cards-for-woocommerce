@@ -30,9 +30,22 @@
 				}
 			});
 
-			// Sync custom amount input → hidden field.
-			$('#wcgc_custom_amount').on('input', function() {
-				$('#wcgc_amount').val($(this).val());
+			// Sync custom amount input to hidden field as whole numbers only.
+			$('#wcgc_custom_amount').on('input change', function() {
+				var raw = $.trim($(this).val());
+				if (raw === '') {
+					$('#wcgc_amount').val('');
+					return;
+				}
+
+				var amount = Math.round(parseFloat(raw));
+				if (isNaN(amount) || amount <= 0) {
+					$('#wcgc_amount').val('');
+					return;
+				}
+
+				$(this).val(amount);
+				$('#wcgc_amount').val(amount);
 			});
 		}
 
@@ -60,7 +73,7 @@
 					url: wcgc_params.ajax_url.replace('%%endpoint%%', 'wcgc_apply_card'),
 					type: 'POST',
 					data: {
-						security: wcgc_params.nonce,
+						nonce: wcgc_params.nonce,
 						code: code
 					},
 					success: function(res) {
@@ -77,7 +90,7 @@
 						$notice.text(wcgc_params.i18n.request_error).removeClass('success').addClass('error').show();
 					},
 					complete: function() {
-						$btn.prop('disabled', false).text(wcgc_params.i18n.apply || 'Apply');
+						$btn.prop('disabled', false).text(wcgc_params.i18n.apply);
 					}
 				});
 			});
@@ -102,7 +115,7 @@
 					url: wcgc_params.ajax_url.replace('%%endpoint%%', 'wcgc_remove_card'),
 					type: 'POST',
 					data: {
-						security: wcgc_params.nonce,
+						nonce: wcgc_params.nonce,
 						index: index
 					},
 					success: function(res) {

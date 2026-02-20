@@ -17,10 +17,10 @@ class Options {
 	public static function defaults() {
 		return [
 			'code_prefix'              => 'GIFT',
-			'predefined_amounts'       => '25,50,75,100',
 			'allow_custom_amount'      => '1',
 			'min_custom_amount'        => '5',
 			'max_custom_amount'        => '500',
+			'amount_button_focus_color' => '#7f54b3',
 			'default_expiry_days'      => '365',
 			'show_dedicated_field'     => '0',
 			'dedicated_field_placement' => 'auto',
@@ -64,10 +64,10 @@ class Options {
 
 		$fields = [
 			'code_prefix'              => 'text',
-			'predefined_amounts'       => 'text',
 			'allow_custom_amount'      => 'bool',
 			'min_custom_amount'        => 'int',
 			'max_custom_amount'        => 'int',
+			'amount_button_focus_color' => 'color',
 			'default_expiry_days'      => 'int',
 			'show_dedicated_field'     => 'bool',
 			'dedicated_field_placement' => 'select',
@@ -96,6 +96,11 @@ class Options {
 				case 'select':
 					$allowed       = $selects[ $field ] ?? [];
 					$out[ $field ] = ( $has && in_array( $val, $allowed, true ) ) ? $val : $prev[ $field ];
+					break;
+
+				case 'color':
+					$color = $has ? sanitize_hex_color( $val ) : '';
+					$out[ $field ] = $color ? $color : ( $prev[ $field ] ?? self::defaults()[ $field ] );
 					break;
 
 				default:

@@ -65,3 +65,23 @@
 	font-size: 13px;
 	margin-bottom: 8px;
 }
+
+/* Settings: color field */
+.wcgc-color-setting {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.wcgc-color-picker {
+	width: 44px;
+	min-height: 30px;
+	padding: 0;
+	border: 1px solid #8c8f94;
+	background: none;
+}
+
+.wcgc-color-hex {
+	width: 120px;
+	font-family: monospace;
+}

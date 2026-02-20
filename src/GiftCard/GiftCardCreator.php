@@ -32,7 +32,8 @@ class GiftCardCreator {
 			return;
 		}
 
-		$created = false;
+		$has_gift_card_items = false;
+		$all_items_created   = true;
 
 		foreach ( $order->get_items() as $item ) {
 			$product = $item->get_product();
@@ -45,14 +46,34 @@ class GiftCardCreator {
 				continue;
 			}
 
-			$qty = $item->get_quantity();
-			for ( $i = 0; $i < $qty; $i++ ) {
-				self::create_single( $order, $item, $amount );
-				$created = true;
+			$qty = max( 0, (int) $item->get_quantity() );
+			if ( $qty <= 0 ) {
+				continue;
+			}
+
+			$has_gift_card_items = true;
+			$created_qty         = absint( $item->get_meta( '_wcgc_created_qty', true ) );
+
+			if ( $created_qty < $qty ) {
+				for ( $i = $created_qty; $i < $qty; $i++ ) {
+					if ( self::create_single( $order, $item, $amount ) ) {
+						$created_qty++;
+					} else {
+						$all_items_created = false;
+						break;
+					}
+				}
+
+				$item->update_meta_data( '_wcgc_created_qty', $created_qty );
+				$item->save();
+			}
+
+			if ( $created_qty < $qty ) {
+				$all_items_created = false;
 			}
 		}
 
-		if ( $created ) {
+		if ( $has_gift_card_items && $all_items_created ) {
 			$order->update_meta_data( '_wcgc_cards_created', '1' );
 			$order->save();
 		}
@@ -74,6 +95,7 @@ class GiftCardCreator {
 	 * @param \WC_Order      $order  Order object.
 	 * @param \WC_Order_Item $item   Line item.
 	 * @param float          $amount Gift card amount.
+	 * @return bool True when the gift card row is created.
 	 */
 	private static function create_single( $order, $item, $amount ) {
 		$code       = CodeGenerator::generate();
@@ -96,7 +118,7 @@ class GiftCardCreator {
 		] );
 
 		if ( ! $gc_id ) {
-			return;
+			return false;
 		}
 
 		// Record initial credit transaction.
@@ -120,6 +142,8 @@ class GiftCardCreator {
 		 * @param \WC_Order $order Order object.
 		 */
 		do_action( 'wcgc_gift_card_created', $gc_id, $order );
+
+		return true;
 	}
 
 	/**

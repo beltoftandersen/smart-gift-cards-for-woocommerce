@@ -27,6 +27,8 @@
 	cursor: pointer;
 	border-radius: 4px;
 	font-size: 14px;
+	line-height: 1.2;
+	font-weight: 600;
 	transition: border-color 0.2s, background-color 0.2s;
 }
 
@@ -34,11 +36,26 @@
 	border-color: #999;
 }
 
+.wcgc-amount-btn:focus,
+.wcgc-amount-btn:focus-visible,
+.wcgc-amount-btn:active {
+	border-style: solid;
+	border-width: 2px;
+	padding: 8px 16px;
+	box-sizing: border-box;
+	transform: none;
+}
+
+.wcgc-amount-btn:focus,
+.wcgc-amount-btn:focus-visible {
+	outline: none;
+	box-shadow: none;
+}
+
 .wcgc-amount-btn.active {
-	border-color: #7f54b3;
-	background: #f7f0ff;
-	color: #7f54b3;
-	font-weight: 600;
+	border-color: var(--wcgc-amount-focus-color, #7f54b3);
+	background: var(--wcgc-amount-active-bg, #f7f0ff);
+	color: var(--wcgc-amount-focus-color, #7f54b3);
 }
 
 .wcgc-custom-amount {
@@ -46,7 +63,7 @@
 }
 
 .wcgc-custom-amount input {
-	width: 120px;
+	width: 96px;
 }
 
 /* Recipient fields */

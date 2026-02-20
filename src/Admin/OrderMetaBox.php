@@ -27,6 +27,12 @@ class OrderMetaBox {
 
 		// Gift cards used on this order.
 		$deductions = $order->get_meta( '_wcgc_pending_deductions' );
+		$status_labels = [
+			'active'   => __( 'Active', 'smart-gift-cards-for-woocommerce' ),
+			'disabled' => __( 'Disabled', 'smart-gift-cards-for-woocommerce' ),
+			'expired'  => __( 'Expired', 'smart-gift-cards-for-woocommerce' ),
+			'redeemed' => __( 'Redeemed', 'smart-gift-cards-for-woocommerce' ),
+		];
 
 		if ( empty( $created_cards ) && empty( $deductions ) ) {
 			return;
@@ -51,7 +57,8 @@ class OrderMetaBox {
 				echo '<td>' . wp_kses_post( wc_price( $gc->initial_amount ) ) . '</td>';
 				echo '<td>' . wp_kses_post( wc_price( $gc->balance ) ) . '</td>';
 				echo '<td>' . esc_html( $gc->recipient_email ) . '</td>';
-				echo '<td><span class="wcgc-status wcgc-status--' . esc_attr( $gc->status ) . '">' . esc_html( ucfirst( $gc->status ) ) . '</span></td>';
+				$status = $status_labels[ $gc->status ] ?? $gc->status;
+				echo '<td><span class="wcgc-status wcgc-status--' . esc_attr( $gc->status ) . '">' . esc_html( $status ) . '</span></td>';
 				echo '</tr>';
 			}
 			echo '</tbody></table>';

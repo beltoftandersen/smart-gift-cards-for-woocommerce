@@ -1,0 +1,666 @@
+# Copyright (C) 2026 Chimkins IT
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart Gift Cards for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/smart-gift-cards-for-woocommerce\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-02-20T11:03:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: smart-gift-cards-for-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: smart-gift-cards-for-woocommerce.php
+msgid "Smart Gift Cards for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: smart-gift-cards-for-woocommerce.php
+msgid "https://developer.wordpress.org/plugins/smart-gift-cards-for-woocommerce/"
+msgstr ""
+
+#. Description of the plugin
+#: smart-gift-cards-for-woocommerce.php
+msgid "Sell digital gift cards, deliver them by email, and let customers redeem them at checkout."
+msgstr ""
+
+#. Author of the plugin
+#: smart-gift-cards-for-woocommerce.php
+msgid "Chimkins IT"
+msgstr ""
+
+#. Author URI of the plugin
+#: smart-gift-cards-for-woocommerce.php
+msgid "https://chimkins.com/"
+msgstr ""
+
+#. translators: %s: WooCommerce plugin name
+#: smart-gift-cards-for-woocommerce.php:55
+msgid "Smart Gift Cards for WooCommerce requires WooCommerce to be installed and active."
+msgstr ""
+
+#: smart-gift-cards-for-woocommerce.php:85
+#: src/Admin/SettingsPage.php:126
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:29
+#: src/Admin/OrderMetaBox.php:48
+#: src/Admin/OrderMetaBox.php:71
+#: src/Frontend/MyAccount.php:100
+msgid "Code"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:30
+#: src/Admin/OrderMetaBox.php:49
+#: src/Admin/SettingsPage.php:202
+#: src/Frontend/MyAccount.php:142
+#: src/Frontend/ProductPage.php:76
+msgid "Amount"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:31
+#: src/Admin/OrderMetaBox.php:50
+#: src/Frontend/MyAccount.php:102
+#: src/Frontend/MyAccount.php:143
+msgid "Balance"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:32
+#: src/Admin/OrderMetaBox.php:52
+#: src/Frontend/MyAccount.php:103
+msgid "Status"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:33
+#: src/Admin/OrderMetaBox.php:51
+#: src/Frontend/ProductPage.php:246
+msgid "Recipient"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:34
+msgid "Order"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:35
+msgid "Created"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:36
+#: src/Frontend/MyAccount.php:104
+msgid "Expires"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:101
+#: src/Admin/GiftCardListTable.php:243
+#: src/Admin/OrderMetaBox.php:31
+msgid "Active"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:102
+#: src/Admin/GiftCardListTable.php:245
+#: src/Admin/OrderMetaBox.php:32
+msgid "Disabled"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:103
+#: src/Admin/GiftCardListTable.php:246
+#: src/Admin/OrderMetaBox.php:33
+#: src/Admin/SettingsPage.php:170
+msgid "Expired"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:104
+#: src/Admin/GiftCardListTable.php:244
+#: src/Admin/OrderMetaBox.php:34
+msgid "Redeemed"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:135
+msgid "Manual"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:162
+#: src/Frontend/MyAccount.php:124
+msgid "Never"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:174
+msgid "Disable"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:175
+msgid "Delete"
+msgstr ""
+
+#. translators: %d: number of gift cards disabled
+#: src/Admin/GiftCardListTable.php:221
+#, php-format
+msgid "%d gift card disabled."
+msgid_plural "%d gift cards disabled."
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of gift cards deleted
+#: src/Admin/GiftCardListTable.php:226
+#, php-format
+msgid "%d gift card deleted."
+msgid_plural "%d gift cards deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Admin/GiftCardListTable.php:242
+msgid "All"
+msgstr ""
+
+#: src/Admin/GiftCardListTable.php:314
+msgid "No gift cards found."
+msgstr ""
+
+#: src/Admin/OrderMetaBox.php:42
+#: src/Admin/SettingsPage.php:28
+#: src/Admin/SettingsPage.php:29
+#: src/Admin/SettingsPage.php:125
+#: src/Admin/SettingsPage.php:130
+#: src/Frontend/MyAccount.php:43
+#: src/Frontend/MyAccount.php:66
+msgid "Gift Cards"
+msgstr ""
+
+#: src/Admin/OrderMetaBox.php:45
+msgid "Created by this order:"
+msgstr ""
+
+#: src/Admin/OrderMetaBox.php:68
+msgid "Used on this order:"
+msgstr ""
+
+#: src/Admin/OrderMetaBox.php:72
+msgid "Amount Used"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:50
+msgid "Gift Card Codes"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:51
+msgid "Code Prefix"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:52
+msgid "Prefix for generated codes (e.g., GIFT → GIFT-XXXX-XXXX-XXXX)."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:55
+msgid "Amounts"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:56
+msgid "Allow Custom Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:57
+msgid "Minimum Custom Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:58
+msgid "Maximum Custom Amount"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:61
+msgid "Expiry"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:62
+msgid "Default Expiry (days)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:63
+msgid "Set to 0 for no expiry."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:66
+msgid "Dedicated Gift Card Field"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:67
+msgid "Gift cards always work in the standard WooCommerce coupon field. Optionally show a separate \"Apply Gift Card\" field."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:69
+msgid "Show Dedicated Field"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:70
+msgid "Field Placement"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:71
+msgid "Automatic (cart & checkout)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:72
+msgid "Shortcode only"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:73
+msgid "Both automatic & shortcode"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:76
+#: src/Admin/SettingsPage.php:96
+msgid "Shortcode"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:78
+msgid "Apply Gift Card field (cart, checkout, or any page)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:82
+msgid "Product Page"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:83
+msgid "Controls how the gift card amount selector and recipient fields appear on the product page."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:85
+msgid "Product Form Placement"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:86
+msgid "Automatic (WooCommerce hook)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:87
+msgid "Shortcode only — [wcgc_product_form]"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:91
+msgid "Amount Button Focus Color"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:93
+msgid "Color used for the amount button focus indicator on the product page."
+msgstr ""
+
+#: src/Admin/SettingsPage.php:98
+msgid "Gift card product form for page builders (Bricks, Elementor)"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:102
+msgid "Advanced"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:103
+msgid "Delete All Data on Uninstall"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:124
+msgid "Dashboard"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:167
+msgid "Total Issued"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:168
+msgid "Total Redeemed"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:169
+msgid "Outstanding Balance"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:193
+msgid "Add Gift Card"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:197
+msgid "Create Gift Card Manually"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:206
+#: src/Frontend/ProductPage.php:113
+#: src/Frontend/ProductPage.php:253
+msgid "Recipient Name"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:210
+#: src/Frontend/ProductPage.php:117
+msgid "Recipient Email"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:214
+msgid "Message"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:218
+msgid "Create Gift Card"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:226
+msgid "Search"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:274
+msgid "Gift card created successfully!"
+msgstr ""
+
+#: src/Admin/SettingsPage.php:276
+msgid "Failed to create gift card. Please check the amount."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:21
+msgid "Security check failed. Please refresh and try again."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:42
+#: src/Cart/AjaxHandler.php:80
+msgid "Session not available. Please refresh."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:48
+#: src/Plugin.php:128
+msgid "Please enter a gift card code."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:55
+msgid "Too many attempts. Please wait a moment."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:69
+#: src/Cart/CouponInterceptor.php:60
+#: src/Cart/CouponInterceptor.php:95
+msgid "Gift card applied successfully!"
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:88
+msgid "Invalid gift card."
+msgstr ""
+
+#: src/Cart/AjaxHandler.php:94
+#: src/Cart/CartHandler.php:238
+msgid "Gift card removed."
+msgstr ""
+
+#: src/Cart/CartHandler.php:34
+msgid "This gift card code is invalid or cannot be applied."
+msgstr ""
+
+#: src/Cart/CartHandler.php:62
+msgid "This gift card is already applied."
+msgstr ""
+
+#. translators: %s: gift card code (masked)
+#: src/Cart/CartHandler.php:158
+#, php-format
+msgid "Gift Card (%s)"
+msgstr ""
+
+#. translators: %s: masked gift card code
+#: src/Cart/CartHandler.php:204
+#, php-format
+msgid "Gift Card %s"
+msgstr ""
+
+#: src/Cart/CartHandler.php:211
+msgid "Remove"
+msgstr ""
+
+#: src/Cart/GiftCardField.php:59
+msgid "Have a gift card?"
+msgstr ""
+
+#: src/Cart/GiftCardField.php:77
+msgid "Gift card code"
+msgstr ""
+
+#: src/Cart/GiftCardField.php:78
+#: src/Plugin.php:129
+msgid "Apply"
+msgstr ""
+
+#. translators: %s: order number
+#: src/Checkout/OrderProcessor.php:129
+#, php-format
+msgid "Used on order #%s"
+msgstr ""
+
+#. translators: %s: order number
+#: src/Checkout/OrderProcessor.php:227
+#, php-format
+msgid "Refunded from order #%s"
+msgstr ""
+
+#. translators: %s: order number
+#: src/Checkout/OrderProcessor.php:322
+#, php-format
+msgid "Partial refund from order #%s"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:31
+msgid "Gift Card Delivery"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:32
+msgid "Sent to the recipient when a gift card is purchased and created."
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:56
+msgid "You received a {amount} gift card from {sender_name}!"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:65
+msgid "You've received a gift card!"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:88
+msgid "Someone special"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:169
+msgid "John Doe"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:171
+msgid "Jane Doe"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:173
+msgid "Happy Birthday! Enjoy this gift card."
+msgstr ""
+
+#. translators: %s: list of available placeholders
+#: src/Email/GiftCardDeliveryEmail.php:187
+#, php-format
+msgid "Available placeholders: %s"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:193
+msgid "Enable/Disable"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:195
+msgid "Enable this email notification"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:199
+msgid "Subject"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:207
+msgid "Email heading"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:215
+msgid "Email type"
+msgstr ""
+
+#: src/Email/GiftCardDeliveryEmail.php:217
+msgid "Choose which format of email to send."
+msgstr ""
+
+#: src/Frontend/MyAccount.php:101
+msgid "Initial Amount"
+msgstr ""
+
+#: src/Frontend/MyAccount.php:112
+msgid "Show transactions"
+msgstr ""
+
+#: src/Frontend/MyAccount.php:140
+msgid "Date"
+msgstr ""
+
+#: src/Frontend/MyAccount.php:141
+msgid "Type"
+msgstr ""
+
+#: src/Frontend/MyAccount.php:144
+msgid "Note"
+msgstr ""
+
+#: src/Frontend/MyAccount.php:165
+msgid "No transactions yet."
+msgstr ""
+
+#: src/Frontend/MyAccount.php:173
+msgid "You don't have any gift cards yet."
+msgstr ""
+
+#: src/Frontend/ProductPage.php:70
+msgid "This gift card is not currently available for purchase."
+msgstr ""
+
+#: src/Frontend/ProductPage.php:85
+msgid "Custom"
+msgstr ""
+
+#. translators: 1: minimum amount, 2: maximum amount
+#: src/Frontend/ProductPage.php:96
+#, php-format
+msgid "Enter amount (%1$s – %2$s)"
+msgstr ""
+
+#: src/Frontend/ProductPage.php:111
+msgid "Recipient Details"
+msgstr ""
+
+#: src/Frontend/ProductPage.php:117
+msgid "required"
+msgstr ""
+
+#: src/Frontend/ProductPage.php:121
+msgid "Personal Message (optional)"
+msgstr ""
+
+#: src/Frontend/ProductPage.php:157
+msgid "Please select a gift card amount."
+msgstr ""
+
+#: src/Frontend/ProductPage.php:169
+msgid "Please select a valid gift card amount."
+msgstr ""
+
+#. translators: 1: minimum amount, 2: maximum amount
+#: src/Frontend/ProductPage.php:179
+#, php-format
+msgid "Gift card amount must be between %1$s and %2$s."
+msgstr ""
+
+#: src/Frontend/ProductPage.php:192
+msgid "Please enter a valid recipient email address."
+msgstr ""
+
+#: src/Frontend/ProductPage.php:240
+msgid "Gift Card Amount"
+msgstr ""
+
+#. translators: %s: order number
+#: src/GiftCard/GiftCardCreator.php:133
+#, php-format
+msgid "Gift card created from order #%s"
+msgstr ""
+
+#: src/GiftCard/GiftCardCreator.php:188
+msgid "Manually created by admin"
+msgstr ""
+
+#: src/Plugin.php:130
+msgid "Applying..."
+msgstr ""
+
+#: src/Plugin.php:131
+msgid "Removing..."
+msgstr ""
+
+#: src/Plugin.php:132
+msgid "Request failed. Please try again."
+msgstr ""
+
+#: src/Product/GiftCardProductType.php:55
+msgid "Gift card"
+msgstr ""
+
+#: src/Product/GiftCardProductType.php:82
+msgid "Gift Card"
+msgstr ""
+
+#: src/Product/GiftCardProductType.php:118
+msgid "Predefined Amounts"
+msgstr ""
+
+#: src/Product/GiftCardProductType.php:119
+msgid "Comma-separated amounts (e.g., 25,50,75,100)."
+msgstr ""
+
+#: src/Product/GiftCardProductType.php:126
+msgid "Gift cards are always virtual and non-taxable. Custom amount and expiry settings are controlled from the Gift Cards settings page."
+msgstr ""
+
+#. translators: %s: sender name
+#: templates/emails/gift-card-delivery.php:26
+#: templates/emails/plain/gift-card-delivery.php:24
+#, php-format
+msgid "From: %s"
+msgstr ""
+
+#. translators: %s: expiry date
+#: templates/emails/gift-card-delivery.php:52
+#: templates/emails/plain/gift-card-delivery.php:52
+#, php-format
+msgid "Expires: %s"
+msgstr ""
+
+#: templates/emails/gift-card-delivery.php:67
+msgid "Shop Now"
+msgstr ""
+
+#: templates/emails/gift-card-delivery.php:72
+#: templates/emails/plain/gift-card-delivery.php:66
+msgid "To redeem, enter the code above at checkout in the coupon/gift card field."
+msgstr ""
+
+#. translators: %s: gift card amount
+#: templates/emails/plain/gift-card-delivery.php:37
+#, php-format
+msgid "Amount: %s"
+msgstr ""
+
+#. translators: %s: gift card code
+#: templates/emails/plain/gift-card-delivery.php:44
+#, php-format
+msgid "Code: %s"
+msgstr ""
+
+#. translators: %s: shop URL
+#: templates/emails/plain/gift-card-delivery.php:61
+#, php-format
+msgid "Shop now: %s"
+msgstr ""

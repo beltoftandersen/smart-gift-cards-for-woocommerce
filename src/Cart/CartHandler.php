@@ -122,11 +122,13 @@ class CartHandler {
 			return;
 		}
 
-		// Get subtotal + shipping - coupons as the base.
+		// Get subtotal + shipping + fees - coupons as the base.
 		$remaining = (float) $cart->get_subtotal()
 			+ (float) $cart->get_subtotal_tax()
 			+ (float) $cart->get_shipping_total()
 			+ (float) $cart->get_shipping_tax()
+			+ (float) $cart->get_fee_total()
+			+ (float) $cart->get_fee_tax()
 			- (float) $cart->get_discount_total()
 			- (float) $cart->get_discount_tax();
 
@@ -199,10 +201,13 @@ class CartHandler {
 			<tr class="wcgc-applied-card">
 				<th>
 					<?php
-					printf(
-						/* translators: %s: masked gift card code */
-						esc_html__( 'Gift Card %s', 'smart-gift-cards-for-woocommerce' ),
-						'<small>(' . esc_html( self::mask_code( $code ) ) . ')</small>'
+					echo wp_kses(
+						sprintf(
+							/* translators: %s: masked gift card code */
+							__( 'Gift Card %s', 'smart-gift-cards-for-woocommerce' ),
+							'<small>(' . esc_html( self::mask_code( $code ) ) . ')</small>'
+						),
+						[ 'small' => [] ]
 					);
 					?>
 				</th>

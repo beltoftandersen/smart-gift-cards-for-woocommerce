@@ -27,7 +27,7 @@ class GiftCardProductType {
 		// Hide irrelevant tabs for gift card products.
 		add_filter( 'woocommerce_product_data_tabs', [ __CLASS__, 'hide_tabs' ] );
 
-		// Show/hide price fields: gift cards use amounts from options, not regular price.
+		// Show/hide price fields: gift cards use per-product predefined amounts, not regular price.
 		add_action( 'admin_footer', [ __CLASS__, 'admin_js' ] );
 	}
 
@@ -108,9 +108,6 @@ class GiftCardProductType {
 
 		$product_id = $post ? $post->ID : 0;
 		$amounts    = get_post_meta( $product_id, '_wcgc_amounts', true );
-		if ( empty( $amounts ) ) {
-			$amounts = \GiftCards\Support\Options::get( 'predefined_amounts' );
-		}
 		?>
 		<div id="gift_card_product_data" class="panel woocommerce_options_panel">
 			<div class="options_group">

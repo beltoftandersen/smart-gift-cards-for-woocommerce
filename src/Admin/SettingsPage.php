@@ -53,8 +53,6 @@ class SettingsPage {
 
 		// ── Amounts Section ──
 		add_settings_section( 'wcgc_amounts', __( 'Amounts', 'smart-gift-cards-for-woocommerce' ), '__return_null', $settings_slug );
-		self::add_text( 'predefined_amounts', __( 'Predefined Amounts', 'smart-gift-cards-for-woocommerce' ), 'wcgc_amounts', $settings_slug,
-			__( 'Comma-separated list of amounts (e.g., 25,50,75,100).', 'smart-gift-cards-for-woocommerce' ) );
 		self::add_checkbox( 'allow_custom_amount', __( 'Allow Custom Amount', 'smart-gift-cards-for-woocommerce' ), 'wcgc_amounts', $settings_slug );
 		self::add_number( 'min_custom_amount', __( 'Minimum Custom Amount', 'smart-gift-cards-for-woocommerce' ), 'wcgc_amounts', '0.01', '0', '', $settings_slug );
 		self::add_number( 'max_custom_amount', __( 'Maximum Custom Amount', 'smart-gift-cards-for-woocommerce' ), 'wcgc_amounts', '0.01', '0', '', $settings_slug );
@@ -88,6 +86,13 @@ class SettingsPage {
 			'auto'      => __( 'Automatic (WooCommerce hook)', 'smart-gift-cards-for-woocommerce' ),
 			'shortcode' => __( 'Shortcode only — [wcgc_product_form]', 'smart-gift-cards-for-woocommerce' ),
 		], $settings_slug );
+		self::add_color(
+			'amount_button_focus_color',
+			__( 'Amount Button Focus Color', 'smart-gift-cards-for-woocommerce' ),
+			'wcgc_product_page',
+			__( 'Color used for the amount button focus indicator on the product page.', 'smart-gift-cards-for-woocommerce' ),
+			$settings_slug
+		);
 		add_settings_field( 'wcgc_product_form_shortcode', __( 'Shortcode', 'smart-gift-cards-for-woocommerce' ), function () {
 			echo '<p><code style="cursor:pointer;user-select:all;">[wcgc_product_form]</code> &mdash; '
 				. esc_html__( 'Gift card product form for page builders (Bricks, Elementor)', 'smart-gift-cards-for-woocommerce' ) . '</p>';
@@ -315,6 +320,36 @@ class SettingsPage {
 				esc_attr( $key ),
 				esc_attr( $val )
 			);
+			if ( $desc ) {
+				printf( '<p class="description">%s</p>', esc_html( $desc ) );
+			}
+		}, $page, $section );
+	}
+
+	private static function add_color( $key, $label, $section, $desc, $page ) {
+		add_settings_field( "wcgc_{$key}", $label, function () use ( $key, $desc ) {
+			$val = sanitize_hex_color( Options::get( $key ) );
+			if ( ! $val ) {
+				$val = '#7f54b3';
+			}
+
+			$base_id = 'wcgc_' . sanitize_key( $key );
+			echo '<div class="wcgc-color-setting">';
+			printf(
+				'<input type="color" id="%1$s_picker" value="%2$s" class="wcgc-color-picker" data-target="%1$s_hex" />',
+				esc_attr( $base_id ),
+				esc_attr( $val )
+			);
+
+			printf(
+				'<input type="text" id="%1$s_hex" name="%2$s[%3$s]" value="%4$s" class="regular-text wcgc-color-hex" placeholder="#7f54b3" maxlength="7" />',
+				esc_attr( $base_id ),
+				esc_attr( Options::OPTION ),
+				esc_attr( $key ),
+				esc_attr( $val )
+			);
+			echo '</div>';
+
 			if ( $desc ) {
 				printf( '<p class="description">%s</p>', esc_html( $desc ) );
 			}

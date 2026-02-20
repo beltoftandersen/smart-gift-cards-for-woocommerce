@@ -9,6 +9,31 @@ defined( 'ABSPATH' ) || exit;
 class ProductPage {
 
 	/**
+	 * Convert a hex color to rgba().
+	 *
+	 * @param string $hex   Hex color (3 or 6 chars, with or without #).
+	 * @param float  $alpha Alpha channel from 0 to 1.
+	 * @return string Empty string when input is invalid.
+	 */
+	private static function hex_to_rgba( $hex, $alpha = 1.0 ) {
+		$hex = ltrim( (string) $hex, '#' );
+		if ( 3 === strlen( $hex ) ) {
+			$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+		}
+
+		if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+			return '';
+		}
+
+		$alpha = max( 0, min( 1, (float) $alpha ) );
+		$r     = hexdec( substr( $hex, 0, 2 ) );
+		$g     = hexdec( substr( $hex, 2, 2 ) );
+		$b     = hexdec( substr( $hex, 4, 2 ) );
+
+		return sprintf( 'rgba(%d, %d, %d, %.2f)', $r, $g, $b, $alpha );
+	}
+
+	/**
 	 * Initialize hooks.
 	 */
 	public static function init() {
@@ -55,14 +80,19 @@ class ProductPage {
 		}
 
 		$amounts_str = get_post_meta( $product->get_id(), '_wcgc_amounts', true );
-		if ( empty( $amounts_str ) ) {
-			$amounts_str = Options::get( 'predefined_amounts' );
-		}
 
 		$amounts       = array_filter( array_map( 'floatval', explode( ',', $amounts_str ) ) );
 		$allow_custom  = Options::get( 'allow_custom_amount' ) === '1';
 		$min_custom    = (float) Options::get( 'min_custom_amount' );
 		$max_custom    = (float) Options::get( 'max_custom_amount' );
+		$focus_color   = sanitize_hex_color( Options::get( 'amount_button_focus_color' ) );
+		if ( ! $focus_color ) {
+			$focus_color = '#7f54b3';
+		}
+		$active_bg = self::hex_to_rgba( $focus_color, 0.12 );
+		if ( '' === $active_bg ) {
+			$active_bg = 'rgba(127, 84, 179, 0.12)';
+		}
 
 		// Guard: no amounts and no custom amount means nothing to sell.
 		if ( empty( $amounts ) && ! $allow_custom ) {
@@ -70,7 +100,7 @@ class ProductPage {
 			return;
 		}
 		?>
-		<div class="wcgc-product-fields">
+		<div class="wcgc-product-fields" style="<?php echo esc_attr( '--wcgc-amount-focus-color: ' . $focus_color . '; --wcgc-amount-active-bg: ' . $active_bg . ';' ); ?>">
 			<div class="wcgc-amount-selector">
 				<label><?php esc_html_e( 'Amount', 'smart-gift-cards-for-woocommerce' ); ?></label>
 				<div class="wcgc-amounts">
@@ -101,7 +131,7 @@ class ProductPage {
 						<input type="number" name="wcgc_custom_amount" id="wcgc_custom_amount"
 							min="<?php echo esc_attr( $min_custom ); ?>"
 							max="<?php echo esc_attr( $max_custom ); ?>"
-							step="0.01" />
+							step="1" />
 					</div>
 				<?php endif; ?>
 			</div>
@@ -113,7 +143,7 @@ class ProductPage {
 					<input type="text" name="wcgc_recipient_name" id="wcgc_recipient_name" class="input-text" />
 				</p>
 				<p class="form-row form-row-last">
-					<label for="wcgc_recipient_email"><?php esc_html_e( 'Recipient Email', 'smart-gift-cards-for-woocommerce' ); ?> <abbr class="required" title="required">*</abbr></label>
+					<label for="wcgc_recipient_email"><?php esc_html_e( 'Recipient Email', 'smart-gift-cards-for-woocommerce' ); ?> <abbr class="required" title="<?php esc_attr_e( 'required', 'smart-gift-cards-for-woocommerce' ); ?>">*</abbr></label>
 					<input type="email" name="wcgc_recipient_email" id="wcgc_recipient_email" class="input-text" required />
 				</p>
 				<p class="form-row form-row-wide">
@@ -149,7 +179,7 @@ class ProductPage {
 
 		// Determine which amount to use.
 		if ( $custom_amount > 0 && $allow_custom ) {
-			$amount = $custom_amount;
+			$amount = round( $custom_amount );
 		}
 
 		if ( $amount <= 0 ) {
@@ -159,11 +189,14 @@ class ProductPage {
 
 		// Validate: amount must be a predefined amount OR a valid custom amount.
 		$amounts_str = get_post_meta( $product_id, '_wcgc_amounts', true );
-		if ( empty( $amounts_str ) ) {
-			$amounts_str = Options::get( 'predefined_amounts' );
+		$predefined    = array_filter( array_map( 'floatval', explode( ',', $amounts_str ) ) );
+		$is_predefined = false;
+		foreach ( $predefined as $p ) {
+			if ( abs( $amount - $p ) < 0.01 ) {
+				$is_predefined = true;
+				break;
+			}
 		}
-		$predefined = array_filter( array_map( 'floatval', explode( ',', $amounts_str ) ) );
-		$is_predefined = in_array( $amount, $predefined, true );
 
 		if ( ! $is_predefined ) {
 			// Must be a valid custom amount.
@@ -214,7 +247,7 @@ class ProductPage {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		$amount = isset( $_POST['wcgc_amount'] ) ? (float) $_POST['wcgc_amount'] : 0;
 		if ( ! empty( $_POST['wcgc_custom_amount'] ) && Options::get( 'allow_custom_amount' ) === '1' ) {
-			$amount = (float) $_POST['wcgc_custom_amount'];
+			$amount = round( (float) $_POST['wcgc_custom_amount'] );
 		}
 
 		$cart_data['wcgc_amount']          = $amount;
