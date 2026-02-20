@@ -49,6 +49,45 @@
 			});
 		}
 
+		/* ── Product Page: Amount Dropdown ────────────────────── */
+
+		var $dropdown = $('#wcgc_amount_dropdown');
+		if ($dropdown.length) {
+			// Set initial value from first option.
+			$('#wcgc_amount').val($dropdown.val());
+
+			$dropdown.on('change', function() {
+				var val = $(this).val();
+
+				if (val === 'custom') {
+					$('.wcgc-custom-amount').slideDown(150);
+					$('#wcgc_amount').val('');
+				} else {
+					$('.wcgc-custom-amount').slideUp(150);
+					$('#wcgc_amount').val(val);
+					$('#wcgc_custom_amount').val('');
+				}
+			});
+
+			// Sync custom amount input to hidden field as whole numbers only.
+			$('#wcgc_custom_amount').on('input change', function() {
+				var raw = $.trim($(this).val());
+				if (raw === '') {
+					$('#wcgc_amount').val('');
+					return;
+				}
+
+				var amount = Math.round(parseFloat(raw));
+				if (isNaN(amount) || amount <= 0) {
+					$('#wcgc_amount').val('');
+					return;
+				}
+
+				$(this).val(amount);
+				$('#wcgc_amount').val(amount);
+			});
+		}
+
 		/* ── Dedicated Field: AJAX Apply / Remove ────────────── */
 
 		var $field = $('.wcgc-apply-field');

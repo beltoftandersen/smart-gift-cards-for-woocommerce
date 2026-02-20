@@ -84,6 +84,7 @@ class ProductPage {
 		$allow_custom  = Options::get( 'allow_custom_amount' ) === '1';
 		$min_custom    = (float) Options::get( 'min_custom_amount' );
 		$max_custom    = (float) Options::get( 'max_custom_amount' );
+		$display_style = Options::get( 'amount_display_style' );
 		$focus_color   = sanitize_hex_color( Options::get( 'amount_button_focus_color' ) );
 		if ( ! $focus_color ) {
 			$focus_color = '#7f54b3';
@@ -102,18 +103,33 @@ class ProductPage {
 		<div class="wcgc-product-fields" style="<?php echo esc_attr( '--wcgc-amount-focus-color: ' . $focus_color . '; --wcgc-amount-active-bg: ' . $active_bg . ';' ); ?>">
 			<div class="wcgc-amount-selector">
 				<label><?php esc_html_e( 'Amount', 'smart-gift-cards-for-woocommerce' ); ?></label>
-				<div class="wcgc-amounts">
-					<?php foreach ( $amounts as $amount ) : ?>
-						<button type="button" class="wcgc-amount-btn" data-amount="<?php echo esc_attr( $amount ); ?>">
-							<?php echo wp_kses_post( wc_price( $amount ) ); ?>
-						</button>
-					<?php endforeach; ?>
-					<?php if ( $allow_custom ) : ?>
-						<button type="button" class="wcgc-amount-btn wcgc-custom-btn">
-							<?php esc_html_e( 'Custom', 'smart-gift-cards-for-woocommerce' ); ?>
-						</button>
-					<?php endif; ?>
-				</div>
+
+				<?php if ( 'dropdown' === $display_style ) : ?>
+					<select id="wcgc_amount_dropdown" class="input-text wcgc-amount-dropdown">
+						<?php foreach ( $amounts as $amount ) : ?>
+							<option value="<?php echo esc_attr( $amount ); ?>">
+								<?php echo esc_html( wp_strip_all_tags( wc_price( $amount ) ) ); ?>
+							</option>
+						<?php endforeach; ?>
+						<?php if ( $allow_custom ) : ?>
+							<option value="custom"><?php esc_html_e( 'Custom', 'smart-gift-cards-for-woocommerce' ); ?></option>
+						<?php endif; ?>
+					</select>
+				<?php else : ?>
+					<div class="wcgc-amounts">
+						<?php foreach ( $amounts as $amount ) : ?>
+							<button type="button" class="wcgc-amount-btn" data-amount="<?php echo esc_attr( $amount ); ?>">
+								<?php echo wp_kses_post( wc_price( $amount ) ); ?>
+							</button>
+						<?php endforeach; ?>
+						<?php if ( $allow_custom ) : ?>
+							<button type="button" class="wcgc-amount-btn wcgc-custom-btn">
+								<?php esc_html_e( 'Custom', 'smart-gift-cards-for-woocommerce' ); ?>
+							</button>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+
 				<input type="hidden" name="wcgc_amount" id="wcgc_amount" value="<?php echo esc_attr( ! empty( $amounts ) ? $amounts[0] : '' ); ?>" />
 				<?php if ( $allow_custom ) : ?>
 					<div class="wcgc-custom-amount" style="display:none;">

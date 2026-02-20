@@ -85,6 +85,10 @@ class SettingsPage {
 			'auto'      => __( 'Automatic (WooCommerce hook)', 'smart-gift-cards-for-woocommerce' ),
 			'shortcode' => __( 'Shortcode only — [wcgc_product_form]', 'smart-gift-cards-for-woocommerce' ),
 		], $settings_slug );
+		self::add_select( 'amount_display_style', __( 'Amount Display Style', 'smart-gift-cards-for-woocommerce' ), 'wcgc_product_page', [
+			'buttons'  => __( 'Buttons', 'smart-gift-cards-for-woocommerce' ),
+			'dropdown' => __( 'Dropdown', 'smart-gift-cards-for-woocommerce' ),
+		], $settings_slug );
 		self::add_color(
 			'amount_button_focus_color',
 			__( 'Amount Button Focus Color', 'smart-gift-cards-for-woocommerce' ),

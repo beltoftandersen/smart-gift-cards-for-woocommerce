@@ -20,6 +20,7 @@ class Options {
 			'allow_custom_amount'      => '1',
 			'min_custom_amount'        => '5',
 			'max_custom_amount'        => '500',
+			'amount_display_style'     => 'buttons',
 			'amount_button_focus_color' => '#7f54b3',
 			'default_expiry_days'      => '365',
 			'show_dedicated_field'     => '0',
@@ -68,6 +69,7 @@ class Options {
 			'allow_custom_amount'      => 'bool',
 			'min_custom_amount'        => 'int',
 			'max_custom_amount'        => 'int',
+			'amount_display_style'     => 'select',
 			'amount_button_focus_color' => 'color',
 			'default_expiry_days'      => 'int',
 			'show_dedicated_field'     => 'bool',
@@ -80,6 +82,7 @@ class Options {
 		$selects = [
 			'dedicated_field_placement' => [ 'auto', 'shortcode' ],
 			'product_form_placement'   => [ 'auto', 'shortcode' ],
+			'amount_display_style'     => [ 'buttons', 'dropdown' ],
 		];
 
 		foreach ( $fields as $field => $type ) {

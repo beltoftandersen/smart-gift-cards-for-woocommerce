@@ -646,7 +646,19 @@ msgstr "Código: %s"
 msgid "Shop now: %s"
 msgstr "Comprar agora: %s"
 
+#: src/Admin/SettingsPage.php:88
+msgid "Amount Display Style"
+msgstr "Estilo de Exibição do Valor"
+
+#: src/Admin/SettingsPage.php:89
+msgid "Buttons"
+msgstr "Botões"
+
 #: src/Admin/SettingsPage.php:90
+msgid "Dropdown"
+msgstr "Menu suspenso"
+
+#: src/Admin/SettingsPage.php:93
 msgid "Amount Button Focus Color"
 msgstr "Cor de Foco do Botão de Valor"
 

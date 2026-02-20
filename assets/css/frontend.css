@@ -2,6 +2,33 @@
  * Smart Gift Cards for WooCommerce - Frontend Styles
  */
 
+/* Normalize all form fields inside gift card product form */
+.wcgc-product-fields input[type="text"],
+.wcgc-product-fields input[type="email"],
+.wcgc-product-fields input[type="number"],
+.wcgc-product-fields input[type="date"],
+.wcgc-product-fields select,
+.wcgc-product-fields textarea {
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+.wcgc-product-fields input[type="text"],
+.wcgc-product-fields input[type="email"],
+.wcgc-product-fields input[type="number"],
+.wcgc-product-fields input[type="date"],
+.wcgc-product-fields select {
+	height: 40px;
+	padding: 0 10px;
+	line-height: 40px;
+}
+
+.wcgc-product-fields textarea {
+	padding: 8px 10px;
+}
+
 /* Amount selector */
 .wcgc-product-fields {
 	margin: 20px 0;
@@ -56,6 +83,27 @@
 	border-color: var(--wcgc-amount-focus-color, #7f54b3);
 	background: var(--wcgc-amount-active-bg, #f7f0ff);
 	color: var(--wcgc-amount-focus-color, #7f54b3);
+}
+
+/* Amount dropdown */
+.wcgc-amount-dropdown {
+	width: 100%;
+	max-width: 280px;
+	font-weight: 600;
+	cursor: pointer;
+	margin-bottom: 12px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10'%3E%3Cpath d='M1 1l7 7 7-7' stroke='%23555' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	padding-right: 36px !important;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.wcgc-amount-dropdown:focus {
+	border-color: var(--wcgc-amount-focus-color, #7f54b3);
+	outline: none;
+	box-shadow: none;
 }
 
 .wcgc-custom-amount {
