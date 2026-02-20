@@ -1,0 +1,67 @@
+/**
+ * Gift Cards for WooCommerce - Admin Styles
+ */
+
+/* Stats cards */
+.wcgc-stat-card {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	padding: 12px 20px;
+	min-width: 140px;
+}
+
+.wcgc-stat-label {
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #646970;
+}
+
+.wcgc-stat-value {
+	font-size: 22px;
+	font-weight: 600;
+	margin-top: 4px;
+}
+
+/* Status badges */
+.wcgc-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.wcgc-status--active {
+	background: #d4edda;
+	color: #155724;
+}
+
+.wcgc-status--disabled {
+	background: #e2e3e5;
+	color: #383d41;
+}
+
+.wcgc-status--expired {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+.wcgc-status--redeemed {
+	background: #cce5ff;
+	color: #004085;
+}
+
+/* Add form toggle */
+.wcgc-add-form h3 {
+	margin-top: 0;
+}
+
+/* Order meta box */
+.wcgc-order-meta h3 {
+	font-size: 14px;
+}
+
+.wcgc-order-meta h4 {
+	font-size: 13px;
+	margin-bottom: 8px;
+}

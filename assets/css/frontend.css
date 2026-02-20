@@ -1,0 +1,236 @@
+/**
+ * Gift Cards for WooCommerce - Frontend Styles
+ */
+
+/* Amount selector */
+.wcgc-product-fields {
+	margin: 20px 0;
+}
+
+.wcgc-amount-selector label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.wcgc-amounts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.wcgc-amount-btn {
+	padding: 8px 16px;
+	border: 2px solid #ddd;
+	background: #fff;
+	cursor: pointer;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: border-color 0.2s, background-color 0.2s;
+}
+
+.wcgc-amount-btn:hover {
+	border-color: #999;
+}
+
+.wcgc-amount-btn.active {
+	border-color: #7f54b3;
+	background: #f7f0ff;
+	color: #7f54b3;
+	font-weight: 600;
+}
+
+.wcgc-custom-amount {
+	margin-top: 8px;
+}
+
+.wcgc-custom-amount input {
+	width: 120px;
+}
+
+/* Recipient fields */
+.wcgc-recipient-fields {
+	margin-top: 20px;
+	padding-top: 16px;
+	border-top: 1px solid #eee;
+}
+
+.wcgc-recipient-fields h4 {
+	margin-bottom: 12px;
+}
+
+.wcgc-recipient-fields textarea {
+	width: 100%;
+}
+
+/* Applied gift cards in cart totals */
+.wcgc-applied-card th {
+	font-weight: normal;
+}
+
+.wcgc-remove-card {
+	color: #d63638;
+	text-decoration: none;
+	margin-left: 4px;
+}
+
+.wcgc-remove-card:hover {
+	color: #a00;
+}
+
+/* Dedicated apply field */
+.wcgc-apply-field {
+	margin: 16px 0;
+	padding: 16px;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.wcgc-apply-field h3 {
+	margin: 0 0 12px;
+	font-size: 16px;
+}
+
+.wcgc-apply-form {
+	display: flex;
+	gap: 8px;
+}
+
+.wcgc-code-input {
+	flex: 1;
+	padding: 6px 10px;
+}
+
+.wcgc-apply-btn {
+	white-space: nowrap;
+}
+
+.wcgc-field-notice {
+	margin-top: 8px;
+	padding: 6px 10px;
+	border-radius: 3px;
+	font-size: 13px;
+}
+
+.wcgc-field-notice.success {
+	background: #d4edda;
+	color: #155724;
+}
+
+.wcgc-field-notice.error {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+.wcgc-applied-list {
+	margin-bottom: 12px;
+}
+
+.wcgc-applied-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 0;
+}
+
+.wcgc-applied-code {
+	font-family: monospace;
+	font-size: 13px;
+}
+
+.wcgc-applied-item .wcgc-ajax-remove {
+	background: none;
+	border: none;
+	color: #d63638;
+	cursor: pointer;
+	font-size: 16px;
+	padding: 0 4px;
+}
+
+/* My Account */
+.wcgc-myaccount .wcgc-cards-table {
+	width: 100%;
+}
+
+.wcgc-toggle-transactions {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 10px;
+	color: #666;
+	padding: 2px 6px;
+	vertical-align: middle;
+}
+
+.wcgc-transactions-table {
+	width: 100%;
+	margin: 8px 0;
+	font-size: 13px;
+	border-collapse: collapse;
+}
+
+.wcgc-transactions-table th,
+.wcgc-transactions-table td {
+	padding: 6px 8px;
+	border-bottom: 1px solid #eee;
+	text-align: left;
+}
+
+.wcgc-transactions-table th {
+	font-weight: 600;
+	font-size: 12px;
+}
+
+/* Transaction type badges */
+.wcgc-tx-type {
+	display: inline-block;
+	padding: 1px 6px;
+	border-radius: 3px;
+	font-size: 11px;
+}
+
+.wcgc-tx-type--credit {
+	background: #d4edda;
+	color: #155724;
+}
+
+.wcgc-tx-type--debit {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.wcgc-tx-type--refund {
+	background: #cce5ff;
+	color: #004085;
+}
+
+/* Status badges (shared) */
+.wcgc-status {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.wcgc-status--active {
+	background: #d4edda;
+	color: #155724;
+}
+
+.wcgc-status--disabled {
+	background: #e2e3e5;
+	color: #383d41;
+}
+
+.wcgc-status--expired {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+.wcgc-status--redeemed {
+	background: #cce5ff;
+	color: #004085;
+}
