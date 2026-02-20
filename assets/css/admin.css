@@ -3,6 +3,13 @@
  */
 
 /* Stats cards */
+.wcgc-stats-cards {
+	display: flex;
+	gap: 16px;
+	margin: 16px 0;
+	flex-wrap: wrap;
+}
+
 .wcgc-stat-card {
 	background: #fff;
 	border: 1px solid #c3c4c7;

@@ -189,7 +189,7 @@ class SettingsPage {
 		$stats = Repository::get_summary_stats();
 		?>
 		<div class="wcgc-dashboard" style="margin-top: 16px;">
-			<div class="wcgc-stats-cards" style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
+			<div class="wcgc-stats-cards">
 				<?php
 				$cards = [
 					__( 'Total Issued', 'smart-gift-cards-for-woocommerce' )        => number_format_i18n( $stats['total_issued'] ),
