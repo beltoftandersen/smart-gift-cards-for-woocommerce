@@ -14,7 +14,6 @@
 
 	var el             = wp.element.createElement;
 	var useSelect      = wp.data.useSelect;
-	var useEffect      = wp.element.useEffect;
 	var registerPlugin = wp.plugins.registerPlugin;
 
 	var ExperimentalOrderMeta = wc.blocksCheckout.ExperimentalOrderMeta;
@@ -30,23 +29,18 @@
 			return ( cart.extensions || {} )[ NS ] || {};
 		} );
 
-		var blocked = !! gcData.points_blocked;
-
-		// Hide the loyalty rewards panel when points are blocked.
-		useEffect( function () {
-			var panels = document.querySelectorAll( '.wclr-blocks-panel' );
-			panels.forEach( function ( panel ) {
-				panel.style.display = blocked ? 'none' : '';
-			} );
-		}, [ blocked ] );
-
-		if ( ! blocked ) {
+		if ( ! gcData.points_blocked ) {
 			return null;
 		}
 
 		var Wrapper = TotalsWrapper || 'div';
 
+		// Render a <style> tag to hide the loyalty panel — no DOM
+		// manipulation needed, React manages the lifecycle automatically.
 		return el( Wrapper, null,
+			el( 'style', null,
+				'.wclr-blocks-panel { display: none !important; }'
+			),
 			el( 'div', {
 				className: 'wcgc-blocks-points-notice',
 				style: {
