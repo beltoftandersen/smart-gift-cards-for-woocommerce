@@ -37,8 +37,10 @@ class ProductPage {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		// Only auto-render fields when placement is 'auto' (not shortcode-only).
-		if ( Options::get( 'product_form_placement' ) !== 'shortcode' ) {
+		// Mutually exclusive: automatic OR shortcode, not both.
+		if ( Options::get( 'product_form_placement' ) === 'shortcode' ) {
+			add_shortcode( 'wcgc_product_form', [ __CLASS__, 'shortcode_output' ] );
+		} else {
 			add_action( 'woocommerce_before_add_to_cart_button', [ __CLASS__, 'render_fields' ] );
 		}
 		add_filter( 'woocommerce_add_to_cart_validation', [ __CLASS__, 'validate' ], 10, 3 );
@@ -46,9 +48,6 @@ class ProductPage {
 		add_filter( 'woocommerce_get_item_data', [ __CLASS__, 'display_cart_data' ], 10, 2 );
 		add_action( 'woocommerce_before_calculate_totals', [ __CLASS__, 'set_cart_price' ] );
 		add_action( 'woocommerce_checkout_create_order_line_item', [ __CLASS__, 'save_order_item_meta' ], 10, 4 );
-
-		// Shortcode for page builders (Bricks, Elementor, etc.).
-		add_shortcode( 'wcgc_product_form', [ __CLASS__, 'shortcode_output' ] );
 	}
 
 	/**
@@ -287,6 +286,13 @@ class ProductPage {
 			$item_data[] = [
 				'key'   => __( 'Recipient Name', 'smart-gift-cards-for-woocommerce' ),
 				'value' => esc_html( $cart_item['wcgc_recipient_name'] ),
+			];
+		}
+
+		if ( ! empty( $cart_item['wcgc_message'] ) ) {
+			$item_data[] = [
+				'key'   => __( 'Personal Message', 'smart-gift-cards-for-woocommerce' ),
+				'value' => esc_html( $cart_item['wcgc_message'] ),
 			];
 		}
 

@@ -74,7 +74,7 @@ class Repository {
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
 				"SELECT * FROM {$wpdb->prefix}wcgc_gift_cards WHERE code = %s",
-				$code
+				$key
 			)
 		);
 

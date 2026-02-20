@@ -17,19 +17,25 @@ This plugin adds a gift card product type to your WooCommerce store. Customers p
 - Email delivery using WooCommerce email templates — same look as your order emails
 - Coupon field redemption — codes work in the standard WooCommerce coupon field, no setup required
 - Optional dedicated "Apply Gift Card" field on cart/checkout via settings or shortcode
+- Auto-apply from email — the "Shop Now" button in the delivery email automatically applies the gift card to the recipient's cart
+- Virtual coupon integration — gift card discounts display natively between subtotal and total with WooCommerce [Remove] link
 - Balance tracking with partial redemption — remaining balance carries over
+- Personal message displayed in cart and order details
+- Price range display in shop catalog (e.g., "$25 – $100")
 - My Account tab for customers to view gift cards, balances, and transaction history
 - Admin dashboard with stats: total issued, outstanding balance, redeemed, expired
 - Gift card management list with search, status filters, pagination, and bulk actions
 - Manual gift card creation from the admin panel — no order required
 - Order meta box showing gift cards created by and used on each order
 - Automatic balance restore on cancel/refund, including proportional partial refunds
+- Loyalty Rewards integration — optionally block or allow customers from using loyalty points to purchase gift cards
 - Shortcode `[wcgc_product_form]` for page builders (Bricks, Elementor, etc.)
 - Email settings (subject, heading, on/off) under WooCommerce > Settings > Emails
 - Atomic balance deduction to prevent race conditions on concurrent redemptions
 - Rate limiting on gift card code lookups
 - HPOS compatible — works with WooCommerce High-Performance Order Storage
 - Clean uninstall with opt-in data removal
+- Portuguese (pt_PT) translation included
 - PSR-4 codebase, no Composer dependency
 
 ## How It Works
@@ -56,7 +62,7 @@ Create a product, select "Gift card" as the product type. Set predefined amounts
 
 ### Redemption
 
-Gift card codes always work in the standard WooCommerce coupon field — this is automatic. To also show a dedicated "Apply Gift Card" field, enable it in settings. You can choose automatic placement, shortcode-only, or both:
+Gift card codes always work in the standard WooCommerce coupon field — this is automatic. To also show a dedicated "Apply Gift Card" field, enable it in settings. You can choose automatic placement or shortcode-only:
 
 ```
 [wcgc_apply_field]
@@ -94,17 +100,22 @@ Developers can extend the plugin:
 - Initial release.
 - Gift card product type with predefined and custom amounts.
 - Email delivery to recipients using WooCommerce email templates.
-- Coupon field interception for seamless redemption.
-- Optional dedicated "Apply Gift Card" field with shortcode support.
+- Auto-apply gift card from email "Shop Now" link.
+- Virtual coupon integration — gift card discounts display natively between subtotal and total with WooCommerce [Remove] link.
+- Optional dedicated "Apply Gift Card" field with automatic or shortcode-only placement.
+- Personal message displayed in cart and order details.
+- Price range display in shop catalog (e.g., "$25 – $100").
 - Balance tracking with partial redemption.
 - My Account tab for viewing gift cards and transactions.
 - Admin dashboard, gift card list with bulk actions, and manual creation.
 - Order meta box showing created and used gift cards.
 - Automatic balance restore on cancel/refund with partial refund support.
+- Loyalty Rewards for WooCommerce integration — block or allow loyalty points for gift card purchases.
 - Atomic balance deduction to prevent race conditions.
 - Rate limiting on gift card code lookups.
 - HPOS compatibility.
 - Block checkout incompatibility declared (classic checkout required).
+- Portuguese (pt_PT) translation included.
 
 ## About the Author
 

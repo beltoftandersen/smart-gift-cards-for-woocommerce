@@ -62,14 +62,14 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 $base_color = get_option( 'woocommerce_email_base_color', '#7f54b3' );
 ?>
 <p style="text-align: center; margin: 25px 0;">
-	<a href="<?php echo esc_url( wc_get_page_permalink( 'shop' ) ); ?>"
+	<a href="<?php echo esc_url( add_query_arg( 'wcgc_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) ); ?>"
 	   style="display: inline-block; background: <?php echo esc_attr( $base_color ); ?>; color: #fff; padding: 12px 30px; text-decoration: none; border-radius: 4px; font-weight: bold;">
 		<?php esc_html_e( 'Shop Now', 'smart-gift-cards-for-woocommerce' ); ?>
 	</a>
 </p>
 
 <p style="font-size: 13px; color: #888; text-align: center;">
-	<?php esc_html_e( 'To redeem, enter the code above at checkout in the coupon/gift card field.', 'smart-gift-cards-for-woocommerce' ); ?>
+	<?php esc_html_e( 'Click "Shop Now" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field.', 'smart-gift-cards-for-woocommerce' ); ?>
 </p>
 
 <?php

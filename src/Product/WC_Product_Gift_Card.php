@@ -41,6 +41,47 @@ class WC_Product_Gift_Card extends \WC_Product {
 	}
 
 	/**
+	 * Return the lowest predefined amount for catalog price display.
+	 *
+	 * @param string $context Context.
+	 * @return string
+	 */
+	public function get_price( $context = 'view' ) {
+		$amounts_str = get_post_meta( $this->get_id(), '_wcgc_amounts', true );
+		$amounts     = array_filter( array_map( 'floatval', explode( ',', (string) $amounts_str ) ) );
+		if ( ! empty( $amounts ) ) {
+			return (string) min( $amounts );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Show price range in catalog (e.g. "25,00 kr. – 100,00 kr.").
+	 *
+	 * @param string $price  Price HTML.
+	 * @param object $product Product object.
+	 * @return string
+	 */
+	public function get_price_html( $price = '' ) {
+		$amounts_str = get_post_meta( $this->get_id(), '_wcgc_amounts', true );
+		$amounts     = array_filter( array_map( 'floatval', explode( ',', (string) $amounts_str ) ) );
+
+		if ( empty( $amounts ) ) {
+			return '';
+		}
+
+		$min = min( $amounts );
+		$max = max( $amounts );
+
+		if ( $min === $max ) {
+			return wc_price( $min );
+		}
+
+		return wc_format_price_range( $min, $max );
+	}
+
+	/**
 	 * Gift cards are always purchasable.
 	 *
 	 * @return bool

@@ -86,7 +86,7 @@ class GiftCardCreator {
 	 */
 	private static function calculate_expiry() {
 		$days = (int) Options::get( 'default_expiry_days' );
-		return $days > 0 ? gmdate( 'Y-m-d H:i:s', strtotime( "+{$days} days" ) ) : null;
+		return $days > 0 ? gmdate( 'Y-m-d H:i:s', time() + ( $days * DAY_IN_SECONDS ) ) : null;
 	}
 
 	/**

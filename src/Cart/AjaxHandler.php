@@ -63,6 +63,7 @@ class AjaxHandler {
 			wp_send_json_error( [ 'message' => $valid->get_error_message() ] );
 		}
 
+		// Apply via WC coupon system.
 		CartHandler::add_gift_card_to_session( $code );
 
 		wp_send_json_success( [
@@ -88,6 +89,7 @@ class AjaxHandler {
 			wp_send_json_error( [ 'message' => __( 'Invalid gift card.', 'smart-gift-cards-for-woocommerce' ) ] );
 		}
 
+		// Remove via WC coupon system.
 		CartHandler::remove_gift_card_from_session( $applied[ $index ] );
 
 		wp_send_json_success( [

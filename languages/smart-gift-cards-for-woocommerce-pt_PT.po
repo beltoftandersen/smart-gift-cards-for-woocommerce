@@ -45,41 +45,41 @@ msgid "Smart Gift Cards for WooCommerce requires WooCommerce to be installed and
 msgstr "Smart Gift Cards for WooCommerce requer que o WooCommerce esteja instalado e ativo."
 
 #: smart-gift-cards-for-woocommerce.php:85
-#: src/Admin/SettingsPage.php:126
+#: src/Admin/SettingsPage.php:139
 msgid "Settings"
 msgstr "Definições"
 
 #: src/Admin/GiftCardListTable.php:29
 #: src/Admin/OrderMetaBox.php:48
 #: src/Admin/OrderMetaBox.php:71
-#: src/Frontend/MyAccount.php:100
+#: src/Frontend/MyAccount.php:104
 msgid "Code"
 msgstr "Código"
 
 #: src/Admin/GiftCardListTable.php:30
 #: src/Admin/OrderMetaBox.php:49
-#: src/Admin/SettingsPage.php:202
-#: src/Frontend/MyAccount.php:142
-#: src/Frontend/ProductPage.php:76
+#: src/Admin/SettingsPage.php:215
+#: src/Frontend/MyAccount.php:146
+#: src/Frontend/ProductPage.php:104
 msgid "Amount"
 msgstr "Valor"
 
 #: src/Admin/GiftCardListTable.php:31
 #: src/Admin/OrderMetaBox.php:50
-#: src/Frontend/MyAccount.php:102
-#: src/Frontend/MyAccount.php:143
+#: src/Frontend/MyAccount.php:106
+#: src/Frontend/MyAccount.php:147
 msgid "Balance"
 msgstr "Saldo"
 
 #: src/Admin/GiftCardListTable.php:32
 #: src/Admin/OrderMetaBox.php:52
-#: src/Frontend/MyAccount.php:103
+#: src/Frontend/MyAccount.php:107
 msgid "Status"
 msgstr "Estado"
 
 #: src/Admin/GiftCardListTable.php:33
 #: src/Admin/OrderMetaBox.php:51
-#: src/Frontend/ProductPage.php:246
+#: src/Frontend/ProductPage.php:280
 msgid "Recipient"
 msgstr "Destinatário"
 
@@ -92,7 +92,7 @@ msgid "Created"
 msgstr "Criado"
 
 #: src/Admin/GiftCardListTable.php:36
-#: src/Frontend/MyAccount.php:104
+#: src/Frontend/MyAccount.php:108
 msgid "Expires"
 msgstr "Expira"
 
@@ -111,7 +111,7 @@ msgstr "Desativado"
 #: src/Admin/GiftCardListTable.php:103
 #: src/Admin/GiftCardListTable.php:246
 #: src/Admin/OrderMetaBox.php:33
-#: src/Admin/SettingsPage.php:170
+#: src/Admin/SettingsPage.php:183
 msgid "Expired"
 msgstr "Expirado"
 
@@ -126,7 +126,7 @@ msgid "Manual"
 msgstr "Manual"
 
 #: src/Admin/GiftCardListTable.php:162
-#: src/Frontend/MyAccount.php:124
+#: src/Frontend/MyAccount.php:128
 msgid "Never"
 msgstr "Nunca"
 
@@ -158,15 +158,15 @@ msgstr[1] "%d cartões-presente eliminados."
 msgid "All"
 msgstr "Todos"
 
-#: src/Admin/GiftCardListTable.php:314
+#: src/Admin/GiftCardListTable.php:317
 msgid "No gift cards found."
 msgstr "Não foram encontrados cartões-presente."
 
 #: src/Admin/OrderMetaBox.php:42
 #: src/Admin/SettingsPage.php:28
 #: src/Admin/SettingsPage.php:29
-#: src/Admin/SettingsPage.php:125
-#: src/Admin/SettingsPage.php:130
+#: src/Admin/SettingsPage.php:138
+#: src/Admin/SettingsPage.php:143
 #: src/Frontend/MyAccount.php:43
 #: src/Frontend/MyAccount.php:66
 msgid "Gift Cards"
@@ -252,103 +252,99 @@ msgstr "Automático (carrinho e checkout)"
 msgid "Shortcode only"
 msgstr "Apenas shortcode"
 
-#: src/Admin/SettingsPage.php:73
-msgid "Both automatic & shortcode"
-msgstr "Automático e shortcode"
-
-#: src/Admin/SettingsPage.php:76
-#: src/Admin/SettingsPage.php:96
+#: src/Admin/SettingsPage.php:75
+#: src/Admin/SettingsPage.php:95
 msgid "Shortcode"
 msgstr "Shortcode"
 
-#: src/Admin/SettingsPage.php:78
-msgid "Apply Gift Card field (cart, checkout, or any page)"
-msgstr "Campo Aplicar Cartão-presente (carrinho, checkout ou qualquer página)"
+#: src/Admin/SettingsPage.php:77
+msgid "Apply Gift Card field (cart & checkout)"
+msgstr "Campo Aplicar Cartão-presente (carrinho e checkout)"
 
-#: src/Admin/SettingsPage.php:82
+#: src/Admin/SettingsPage.php:81
 msgid "Product Page"
 msgstr "Página de Produto"
 
-#: src/Admin/SettingsPage.php:83
+#: src/Admin/SettingsPage.php:82
 msgid "Controls how the gift card amount selector and recipient fields appear on the product page."
 msgstr "Controla como o seletor de valor do cartão-presente e os campos do destinatário aparecem na página do produto."
 
-#: src/Admin/SettingsPage.php:85
+#: src/Admin/SettingsPage.php:84
 msgid "Product Form Placement"
 msgstr "Posição do Formulário do Produto"
 
-#: src/Admin/SettingsPage.php:86
+#: src/Admin/SettingsPage.php:85
 msgid "Automatic (WooCommerce hook)"
 msgstr "Automático (gancho do WooCommerce)"
 
-#: src/Admin/SettingsPage.php:87
+#: src/Admin/SettingsPage.php:86
 msgid "Shortcode only — [wcgc_product_form]"
 msgstr "Apenas shortcode — [wcgc_product_form]"
 
-#: src/Admin/SettingsPage.php:98
+#: src/Admin/SettingsPage.php:97
 msgid "Gift card product form for page builders (Bricks, Elementor)"
 msgstr "Formulário de produto de cartão-presente para construtores de páginas (Bricks, Elementor)"
 
-#: src/Admin/SettingsPage.php:102
+#: src/Admin/SettingsPage.php:115
 msgid "Advanced"
 msgstr "Avançado"
 
-#: src/Admin/SettingsPage.php:103
+#: src/Admin/SettingsPage.php:116
 msgid "Delete All Data on Uninstall"
 msgstr "Eliminar Todos os Dados ao Desinstalar"
 
-#: src/Admin/SettingsPage.php:124
+#: src/Admin/SettingsPage.php:137
 msgid "Dashboard"
 msgstr "Painel"
 
-#: src/Admin/SettingsPage.php:167
+#: src/Admin/SettingsPage.php:180
 msgid "Total Issued"
 msgstr "Total Emitido"
 
-#: src/Admin/SettingsPage.php:168
+#: src/Admin/SettingsPage.php:181
 msgid "Total Redeemed"
 msgstr "Total Resgatado"
 
-#: src/Admin/SettingsPage.php:169
+#: src/Admin/SettingsPage.php:182
 msgid "Outstanding Balance"
 msgstr "Saldo em Aberto"
 
-#: src/Admin/SettingsPage.php:193
+#: src/Admin/SettingsPage.php:206
 msgid "Add Gift Card"
 msgstr "Adicionar Cartão-presente"
 
-#: src/Admin/SettingsPage.php:197
+#: src/Admin/SettingsPage.php:210
 msgid "Create Gift Card Manually"
 msgstr "Criar Cartão-presente Manualmente"
 
-#: src/Admin/SettingsPage.php:206
-#: src/Frontend/ProductPage.php:113
-#: src/Frontend/ProductPage.php:253
+#: src/Admin/SettingsPage.php:219
+#: src/Frontend/ProductPage.php:141
+#: src/Frontend/ProductPage.php:287
 msgid "Recipient Name"
 msgstr "Nome do Destinatário"
 
-#: src/Admin/SettingsPage.php:210
-#: src/Frontend/ProductPage.php:117
+#: src/Admin/SettingsPage.php:223
+#: src/Frontend/ProductPage.php:145
 msgid "Recipient Email"
 msgstr "E-mail do Destinatário"
 
-#: src/Admin/SettingsPage.php:214
+#: src/Admin/SettingsPage.php:227
 msgid "Message"
 msgstr "Mensagem"
 
-#: src/Admin/SettingsPage.php:218
+#: src/Admin/SettingsPage.php:231
 msgid "Create Gift Card"
 msgstr "Criar Cartão-presente"
 
-#: src/Admin/SettingsPage.php:226
+#: src/Admin/SettingsPage.php:239
 msgid "Search"
 msgstr "Pesquisar"
 
-#: src/Admin/SettingsPage.php:274
+#: src/Admin/SettingsPage.php:287
 msgid "Gift card created successfully!"
 msgstr "Cartão-presente criado com sucesso!"
 
-#: src/Admin/SettingsPage.php:276
+#: src/Admin/SettingsPage.php:289
 msgid "Failed to create gift card. Please check the amount."
 msgstr "Falha ao criar o cartão-presente. Verifique o valor."
 
@@ -357,12 +353,12 @@ msgid "Security check failed. Please refresh and try again."
 msgstr "Falha na verificação de segurança. Atualize a página e tente novamente."
 
 #: src/Cart/AjaxHandler.php:42
-#: src/Cart/AjaxHandler.php:80
+#: src/Cart/AjaxHandler.php:81
 msgid "Session not available. Please refresh."
 msgstr "Sessão indisponível. Atualize a página."
 
 #: src/Cart/AjaxHandler.php:48
-#: src/Plugin.php:128
+#: src/Plugin.php:189
 msgid "Please enter a gift card code."
 msgstr "Introduza um código de cartão-presente."
 
@@ -370,72 +366,62 @@ msgstr "Introduza um código de cartão-presente."
 msgid "Too many attempts. Please wait a moment."
 msgstr "Demasiadas tentativas. Aguarde um momento."
 
-#: src/Cart/AjaxHandler.php:69
-#: src/Cart/CouponInterceptor.php:60
-#: src/Cart/CouponInterceptor.php:95
+#: src/Cart/AjaxHandler.php:70
+#: src/Cart/CartHandler.php:140
 msgid "Gift card applied successfully!"
 msgstr "Cartão-presente aplicado com sucesso!"
 
-#: src/Cart/AjaxHandler.php:88
+#: src/Cart/AjaxHandler.php:89
 msgid "Invalid gift card."
 msgstr "Cartão-presente inválido."
 
-#: src/Cart/AjaxHandler.php:94
-#: src/Cart/CartHandler.php:238
+#: src/Cart/AjaxHandler.php:96
+#: src/Cart/CartHandler.php:300
 msgid "Gift card removed."
 msgstr "Cartão-presente removido."
 
-#: src/Cart/CartHandler.php:34
+#: src/Cart/CartHandler.php:190
+#: src/Cart/CartHandler.php:336
 msgid "This gift card code is invalid or cannot be applied."
 msgstr "Este código de cartão-presente é inválido ou não pode ser aplicado."
 
-#: src/Cart/CartHandler.php:62
+#: src/Cart/CartHandler.php:217
 msgid "This gift card is already applied."
 msgstr "Este cartão-presente já está aplicado."
 
-#. translators: %s: gift card code (masked)
-#: src/Cart/CartHandler.php:158
+#. translators: %s: masked gift card code
+#: src/Cart/CartHandler.php:94
 #, php-format
 msgid "Gift Card (%s)"
 msgstr "Cartão-presente (%s)"
 
-#. translators: %s: masked gift card code
-#: src/Cart/CartHandler.php:204
-#, php-format
-msgid "Gift Card %s"
-msgstr "Cartão-presente %s"
-
-#: src/Cart/CartHandler.php:211
-msgid "Remove"
-msgstr "Remover"
-
-#: src/Cart/GiftCardField.php:59
+#: src/Cart/GiftCardField.php:72
 msgid "Have a gift card?"
 msgstr "Tem um cartão-presente?"
 
-#: src/Cart/GiftCardField.php:77
+#: src/Cart/GiftCardField.php:90
 msgid "Gift card code"
 msgstr "Código do cartão-presente"
 
-#: src/Cart/GiftCardField.php:78
-#: src/Plugin.php:129
+#: src/Cart/GiftCardField.php:91
+#: src/Plugin.php:190
 msgid "Apply"
 msgstr "Aplicar"
 
 #. translators: %s: order number
-#: src/Checkout/OrderProcessor.php:129
+#: src/Checkout/OrderProcessor.php:135
 #, php-format
 msgid "Used on order #%s"
 msgstr "Utilizado na encomenda #%s"
 
 #. translators: %s: order number
-#: src/Checkout/OrderProcessor.php:227
+#: src/Checkout/OrderProcessor.php:240
 #, php-format
 msgid "Refunded from order #%s"
 msgstr "Reembolsado da encomenda #%s"
 
 #. translators: %s: order number
-#: src/Checkout/OrderProcessor.php:322
+#: src/Checkout/OrderProcessor.php:335
 #, php-format
 msgid "Partial refund from order #%s"
 msgstr "Reembolso parcial da encomenda #%s"
@@ -502,79 +488,79 @@ msgstr "Tipo de e-mail"
 msgid "Choose which format of email to send."
 msgstr "Escolha o formato de e-mail a enviar."
 
-#: src/Frontend/MyAccount.php:101
+#: src/Frontend/MyAccount.php:105
 msgid "Initial Amount"
 msgstr "Valor Inicial"
 
-#: src/Frontend/MyAccount.php:112
+#: src/Frontend/MyAccount.php:116
 msgid "Show transactions"
 msgstr "Mostrar transações"
 
-#: src/Frontend/MyAccount.php:140
+#: src/Frontend/MyAccount.php:144
 msgid "Date"
 msgstr "Data"
 
-#: src/Frontend/MyAccount.php:141
+#: src/Frontend/MyAccount.php:145
 msgid "Type"
 msgstr "Tipo"
 
-#: src/Frontend/MyAccount.php:144
+#: src/Frontend/MyAccount.php:148
 msgid "Note"
 msgstr "Nota"
 
-#: src/Frontend/MyAccount.php:165
+#: src/Frontend/MyAccount.php:169
 msgid "No transactions yet."
 msgstr "Ainda não há transações."
 
-#: src/Frontend/MyAccount.php:173
+#: src/Frontend/MyAccount.php:177
 msgid "You don't have any gift cards yet."
 msgstr "Ainda não tem cartões-presente."
 
-#: src/Frontend/ProductPage.php:70
+#: src/Frontend/ProductPage.php:98
 msgid "This gift card is not currently available for purchase."
 msgstr "Este cartão-presente não está atualmente disponível para compra."
 
-#: src/Frontend/ProductPage.php:85
+#: src/Frontend/ProductPage.php:113
 msgid "Custom"
 msgstr "Personalizado"
 
 #. translators: 1: minimum amount, 2: maximum amount
-#: src/Frontend/ProductPage.php:96
+#: src/Frontend/ProductPage.php:124
 #, php-format
 msgid "Enter amount (%1$s – %2$s)"
 msgstr "Introduza o valor (%1$s – %2$s)"
 
-#: src/Frontend/ProductPage.php:111
+#: src/Frontend/ProductPage.php:139
 msgid "Recipient Details"
 msgstr "Dados do Destinatário"
 
-#: src/Frontend/ProductPage.php:117
+#: src/Frontend/ProductPage.php:145
 msgid "required"
 msgstr "obrigatório"
 
-#: src/Frontend/ProductPage.php:121
+#: src/Frontend/ProductPage.php:149
 msgid "Personal Message (optional)"
 msgstr "Mensagem Pessoal (opcional)"
 
-#: src/Frontend/ProductPage.php:157
+#: src/Frontend/ProductPage.php:185
 msgid "Please select a gift card amount."
 msgstr "Selecione um valor de cartão-presente."
 
-#: src/Frontend/ProductPage.php:169
+#: src/Frontend/ProductPage.php:203
 msgid "Please select a valid gift card amount."
 msgstr "Selecione um valor de cartão-presente válido."
 
 #. translators: 1: minimum amount, 2: maximum amount
-#: src/Frontend/ProductPage.php:179
+#: src/Frontend/ProductPage.php:213
 #, php-format
 msgid "Gift card amount must be between %1$s and %2$s."
 msgstr "O valor do cartão-presente tem de estar entre %1$s e %2$s."
 
-#: src/Frontend/ProductPage.php:192
+#: src/Frontend/ProductPage.php:226
 msgid "Please enter a valid recipient email address."
 msgstr "Introduza um endereço de e-mail válido do destinatário."
 
-#: src/Frontend/ProductPage.php:240
+#: src/Frontend/ProductPage.php:274
 msgid "Gift Card Amount"
 msgstr "Valor do Cartão-presente"
 
@@ -588,15 +574,15 @@ msgstr "Cartão-presente criado da encomenda #%s"
 msgid "Manually created by admin"
 msgstr "Criado manualmente pelo administrador"
 
-#: src/Plugin.php:130
+#: src/Plugin.php:191
 msgid "Applying..."
 msgstr "A aplicar..."
 
-#: src/Plugin.php:131
+#: src/Plugin.php:192
 msgid "Removing..."
 msgstr "A remover..."
 
-#: src/Plugin.php:132
+#: src/Plugin.php:193
 msgid "Request failed. Please try again."
 msgstr "O pedido falhou. Tente novamente."
 
@@ -635,9 +621,12 @@ msgid "Shop Now"
 msgstr "Comprar Agora"
 
 #: templates/emails/gift-card-delivery.php:72
+msgid "Click \"Shop Now\" to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field."
+msgstr "Clique em \"Comprar Agora\" para aplicar o seu cartão-presente automaticamente, ou introduza o código no checkout, no campo de cupão/cartão-presente."
+
 #: templates/emails/plain/gift-card-delivery.php:66
-msgid "To redeem, enter the code above at checkout in the coupon/gift card field."
-msgstr "Para resgatar, introduza o código acima no checkout, no campo de cupão/cartão-presente."
+msgid "Click the link above to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field."
+msgstr "Clique no link acima para aplicar o seu cartão-presente automaticamente, ou introduza o código no checkout, no campo de cupão/cartão-presente."
 
 #. translators: %s: gift card amount
 #: templates/emails/plain/gift-card-delivery.php:37
@@ -657,10 +646,50 @@ msgstr "Código: %s"
 msgid "Shop now: %s"
 msgstr "Comprar agora: %s"
 
-#: src/Admin/SettingsPage.php:91
+#: src/Admin/SettingsPage.php:90
 msgid "Amount Button Focus Color"
 msgstr "Cor de Foco do Botão de Valor"
 
-#: src/Admin/SettingsPage.php:93
+#: src/Admin/SettingsPage.php:92
 msgid "Color used for the amount button focus indicator on the product page."
 msgstr "Cor usada para o indicador de foco dos botões de valor na página do produto."
+
+#: src/Cart/CartHandler.php:334
+msgid "This gift card is already applied to your cart."
+msgstr "Este cartão-presente já está aplicado no seu carrinho."
+
+#. translators: %s: formatted gift card balance
+#: src/Cart/CartHandler.php:343
+#, php-format
+msgid "Gift card applied! Balance: %s"
+msgstr "Cartão-presente aplicado! Saldo: %s"
+
+#: src/Frontend/ProductPage.php:294
+msgid "Personal Message"
+msgstr "Mensagem Pessoal"
+
+#: src/Admin/SettingsPage.php:102
+msgid "Integrations"
+msgstr "Integrações"
+
+#: src/Admin/SettingsPage.php:103
+msgid "Settings for third-party plugin compatibility."
+msgstr "Definições de compatibilidade com plugins de terceiros."
+
+#: src/Admin/SettingsPage.php:107
+msgid "Allow Loyalty Points for Gift Cards"
+msgstr "Permitir Pontos de Fidelidade para Cartões-presente"
+
+#: src/Admin/SettingsPage.php:110
+msgid "Allow customers to use loyalty points to pay for gift card purchases."
+msgstr "Permitir que os clientes utilizem pontos de fidelidade para pagar compras de cartões-presente."
+
+#: src/Plugin.php:126
+msgid "Loyalty points cannot be used to purchase gift cards."
+msgstr "Não é possível utilizar pontos de fidelidade para comprar cartões-presente."
+
+#. translators: %s: comma-separated list of gift card codes
+#: src/Checkout/OrderProcessor.php:172
+#, php-format
+msgid "Gift card deduction failed for: %s. Manual review required."
+msgstr "Falha na dedução do cartão-presente para: %s. Revisão manual necessária."

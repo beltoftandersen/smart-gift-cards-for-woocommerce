@@ -58,6 +58,12 @@ class Plugin {
 			AjaxHandler::init();
 		}
 
+		// Loyalty Rewards integration — block points for gift card purchases when disabled.
+		if ( class_exists( 'LoyaltyRewards\\Plugin' ) ) {
+			add_filter( 'wclr_max_redeemable_points', [ __CLASS__, 'maybe_block_points_for_gift_cards' ], 10, 3 );
+			add_action( 'wclr_redeem_form_after_earn', [ __CLASS__, 'loyalty_points_blocked_notice' ] );
+		}
+
 		// Assets.
 		add_action( 'admin_enqueue_scripts', [ __CLASS__, 'enqueue_admin_assets' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_frontend_assets' ] );
@@ -72,6 +78,56 @@ class Plugin {
 	public static function register_email_class( $email_classes ) {
 		$email_classes['WCGC_Gift_Card_Delivery'] = new GiftCardDeliveryEmail();
 		return $email_classes;
+	}
+
+	/**
+	 * Block loyalty point redemption when cart contains gift card products.
+	 *
+	 * @param int   $redeemable Max redeemable points.
+	 * @param float $cart_total Cart total.
+	 * @param int   $balance    User point balance.
+	 * @return int
+	 */
+	public static function maybe_block_points_for_gift_cards( $redeemable, $cart_total, $balance ) {
+		if ( Options::get( 'allow_points_for_gift_cards' ) === '1' ) {
+			return $redeemable;
+		}
+
+		if ( ! WC()->cart ) {
+			return $redeemable;
+		}
+
+		foreach ( WC()->cart->get_cart() as $item ) {
+			$product = $item['data'] ?? null;
+			if ( $product && $product->get_type() === 'gift-card' ) {
+				return 0;
+			}
+		}
+
+		return $redeemable;
+	}
+
+	/**
+	 * Show notice inside the loyalty redeem form when points are blocked for gift cards.
+	 */
+	public static function loyalty_points_blocked_notice() {
+		if ( Options::get( 'allow_points_for_gift_cards' ) === '1' ) {
+			return;
+		}
+
+		if ( ! WC()->cart ) {
+			return;
+		}
+
+		foreach ( WC()->cart->get_cart() as $item ) {
+			$product = $item['data'] ?? null;
+			if ( $product && $product->get_type() === 'gift-card' ) {
+				echo '<p class="wclr-redeem-notice" style="color:#b32d2e;font-size:0.9em;margin:4px 0 0;">'
+					. esc_html__( 'Loyalty points cannot be used to purchase gift cards.', 'smart-gift-cards-for-woocommerce' )
+					. '</p>';
+				return;
+			}
+		}
 	}
 
 	/**

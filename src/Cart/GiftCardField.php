@@ -3,6 +3,7 @@
 namespace GiftCards\Cart;
 
 use GiftCards\Support\Options;
+use GiftCards\GiftCard\Repository;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -15,9 +16,6 @@ class GiftCardField {
 	 * Initialize hooks based on settings.
 	 */
 	public static function init() {
-		// Always register the shortcode (so it works if someone types it).
-		add_shortcode( 'wcgc_apply_field', [ __CLASS__, 'shortcode_output' ] );
-
 		$show = Options::get( 'show_dedicated_field' );
 		if ( $show !== '1' ) {
 			return;
@@ -25,7 +23,13 @@ class GiftCardField {
 
 		$placement = Options::get( 'dedicated_field_placement' );
 
-		if ( $placement === 'auto' || $placement === 'both' ) {
+		// Mutually exclusive: automatic OR shortcode, not both.
+		if ( $placement === 'shortcode' ) {
+			add_shortcode( 'wcgc_apply_field', [ __CLASS__, 'shortcode_output' ] );
+		} else {
+			// Multiple hooks for compatibility with page builders (Bricks, Elementor, etc.)
+			// that replace WooCommerce templates. The $rendered guard prevents duplicates.
+			add_action( 'woocommerce_before_cart', [ __CLASS__, 'render_form' ] );
 			add_action( 'woocommerce_before_cart_totals', [ __CLASS__, 'render_form' ] );
 			add_action( 'woocommerce_before_checkout_form', [ __CLASS__, 'render_form' ], 15 );
 		}
@@ -48,12 +52,21 @@ class GiftCardField {
 	 * @param bool $force Force rendering (bypass hook guard).
 	 */
 	public static function render_form( $force = false ) {
+		$force = ( true === $force );
 		if ( ! $force && self::$rendered ) {
 			return;
 		}
 		self::$rendered = true;
 
-		$applied = CartHandler::get_applied_codes();
+		// Get applied gift card codes from WC cart coupons.
+		$applied = [];
+		if ( WC()->cart ) {
+			foreach ( WC()->cart->get_applied_coupons() as $code ) {
+				if ( CartHandler::is_gift_card_coupon( $code ) ) {
+					$applied[] = $code;
+				}
+			}
+		}
 		?>
 		<div class="wcgc-apply-field">
 			<h3><?php esc_html_e( 'Have a gift card?', 'smart-gift-cards-for-woocommerce' ); ?></h3>
@@ -61,7 +74,7 @@ class GiftCardField {
 			<?php if ( ! empty( $applied ) ) : ?>
 				<div class="wcgc-applied-list">
 					<?php foreach ( $applied as $index => $code ) : ?>
-						<?php $gc = \GiftCards\GiftCard\Repository::find_by_code( $code ); ?>
+						<?php $gc = Repository::find_by_code( $code ); ?>
 						<?php if ( $gc ) : ?>
 							<div class="wcgc-applied-item">
 								<span class="wcgc-applied-code"><?php echo esc_html( CartHandler::mask_code( $code ) ); ?></span>

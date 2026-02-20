@@ -36,15 +36,20 @@ class OrderProcessor {
 	/**
 	 * Save pending deductions to order meta.
 	 *
+	 * Reads gift card coupon discount amounts from the WC order's coupon items.
+	 *
 	 * @param \WC_Order $order Order object.
 	 */
 	public static function save_pending_deductions( $order ) {
-		$raw        = CartHandler::get_deduction_amounts();
 		$deductions = [];
-		foreach ( (array) $raw as $code => $amount ) {
-			$amount = round( (float) $amount, 2 );
-			if ( $amount > 0 ) {
-				$deductions[ (string) $code ] = $amount;
+
+		foreach ( $order->get_items( 'coupon' ) as $coupon_item ) {
+			$code = strtoupper( $coupon_item->get_code() );
+			if ( CartHandler::is_gift_card_coupon( $code ) ) {
+				$discount = round( (float) $coupon_item->get_discount(), 2 );
+				if ( $discount > 0 ) {
+					$deductions[ $code ] = $discount;
+				}
 			}
 		}
 
@@ -161,6 +166,13 @@ class OrderProcessor {
 			$order->delete_meta_data( '_wcgc_deducted' );
 			if ( ! empty( $failures ) ) {
 				$order->update_meta_data( '_wcgc_deduction_failures', array_values( array_unique( $failures ) ) );
+				$order->add_order_note(
+					sprintf(
+						/* translators: %s: comma-separated list of gift card codes */
+						__( 'Gift card deduction failed for: %s. Manual review required.', 'smart-gift-cards-for-woocommerce' ),
+						implode( ', ', array_unique( $failures ) )
+					)
+				);
 			} else {
 				$order->delete_meta_data( '_wcgc_deduction_failures' );
 			}
@@ -342,7 +354,6 @@ class OrderProcessor {
 	public static function clear_session( $order ) {
 		if ( WC()->session ) {
 			WC()->session->set( 'wcgc_applied_codes', [] );
-			WC()->session->set( 'wcgc_deduction_amounts', [] );
 		}
 	}
 

@@ -12,15 +12,171 @@ class CartHandler {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_action( 'woocommerce_cart_calculate_fees', [ __CLASS__, 'apply_gift_card_fees' ] );
-		add_action( 'woocommerce_cart_totals_after_order_total', [ __CLASS__, 'display_applied_cards' ] );
-		add_action( 'woocommerce_review_order_after_order_total', [ __CLASS__, 'display_applied_cards' ] );
+		// Virtual coupon hooks — makes gift card codes work as WC coupons.
+		add_filter( 'woocommerce_get_shop_coupon_data', [ __CLASS__, 'virtual_coupon_data' ], 10, 2 );
+		add_filter( 'woocommerce_cart_totals_coupon_label', [ __CLASS__, 'coupon_label' ], 10, 2 );
+		add_filter( 'woocommerce_coupon_is_valid', [ __CLASS__, 'validate_coupon' ], 10, 2 );
+		add_filter( 'woocommerce_coupon_message', [ __CLASS__, 'coupon_message' ], 10, 3 );
+
+		// Sync session tracking when coupons are added/removed.
+		add_action( 'woocommerce_applied_coupon', [ __CLASS__, 'on_coupon_applied' ] );
+		add_action( 'woocommerce_removed_coupon', [ __CLASS__, 'on_coupon_removed' ] );
+
+		// URL-based actions.
 		add_action( 'wp_loaded', [ __CLASS__, 'handle_remove_gift_card' ], 15 );
+		add_action( 'wp_loaded', [ __CLASS__, 'handle_auto_apply' ], 16 );
+
+		// Clear on cart empty.
 		add_action( 'woocommerce_cart_emptied', [ __CLASS__, 'clear_applied_codes' ] );
 	}
 
 	/**
-	 * Validate a gift card for redemption.
+	 * Supply virtual coupon data so WooCommerce treats gift card codes as valid coupons.
+	 *
+	 * @param mixed  $data Existing coupon data.
+	 * @param string $code Coupon code.
+	 * @return mixed
+	 */
+	public static function virtual_coupon_data( $data, $code ) {
+		if ( $data ) {
+			return $data;
+		}
+
+		$gc = Repository::find_by_code( $code );
+		if ( ! $gc || $gc->status !== 'active' || (float) $gc->balance <= 0 ) {
+			return $data;
+		}
+
+		// Check expiry.
+		if ( ! empty( $gc->expires_at ) && strtotime( $gc->expires_at ) < time() ) {
+			return $data;
+		}
+
+		// Currency mismatch.
+		if ( function_exists( 'get_woocommerce_currency' ) && $gc->currency !== get_woocommerce_currency() ) {
+			return $data;
+		}
+
+		return [
+			'id'                          => 0,
+			'amount'                      => (float) $gc->balance,
+			'discount_type'               => 'fixed_cart',
+			'individual_use'              => false,
+			'usage_limit'                 => 0,
+			'usage_count'                 => 0,
+			'date_created'                => '',
+			'date_modified'               => '',
+			'date_expires'                => null,
+			'free_shipping'               => false,
+			'product_ids'                 => [],
+			'excluded_product_ids'        => [],
+			'product_categories'          => [],
+			'excluded_product_categories' => [],
+			'exclude_sale_items'          => false,
+			'minimum_amount'              => '',
+			'maximum_amount'              => '',
+			'email_restrictions'          => [],
+			'virtual'                     => true,
+		];
+	}
+
+	/**
+	 * Show friendly label instead of the raw coupon code.
+	 *
+	 * @param string     $label  Default coupon label.
+	 * @param \WC_Coupon $coupon Coupon object.
+	 * @return string
+	 */
+	public static function coupon_label( $label, $coupon ) {
+		if ( self::is_gift_card_coupon( $coupon->get_code() ) ) {
+			return sprintf(
+				/* translators: %s: masked gift card code */
+				__( 'Gift Card (%s)', 'smart-gift-cards-for-woocommerce' ),
+				self::mask_code( $coupon->get_code() )
+			);
+		}
+		return $label;
+	}
+
+	/**
+	 * Validate the virtual coupon (prevent "coupon doesn't exist" errors).
+	 *
+	 * @param bool       $valid  Current validity.
+	 * @param \WC_Coupon $coupon Coupon object.
+	 * @return bool
+	 */
+	public static function validate_coupon( $valid, $coupon ) {
+		$code = $coupon->get_code();
+		$gc   = Repository::find_by_code( $code );
+		if ( ! $gc ) {
+			return $valid; // Not a gift card — pass through.
+		}
+
+		if ( $gc->status !== 'active' || (float) $gc->balance <= 0 ) {
+			return false;
+		}
+
+		if ( ! empty( $gc->expires_at ) && strtotime( $gc->expires_at ) < time() ) {
+			return false;
+		}
+
+		if ( function_exists( 'get_woocommerce_currency' ) && $gc->currency !== get_woocommerce_currency() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Customize the "Coupon applied" message for gift cards.
+	 *
+	 * @param string $msg     Message.
+	 * @param int    $msg_code Message code.
+	 * @param \WC_Coupon $coupon Coupon object.
+	 * @return string
+	 */
+	public static function coupon_message( $msg, $msg_code, $coupon ) {
+		if ( \WC_Coupon::WC_COUPON_SUCCESS === $msg_code && self::is_gift_card_coupon( $coupon->get_code() ) ) {
+			return __( 'Gift card applied successfully!', 'smart-gift-cards-for-woocommerce' );
+		}
+		return $msg;
+	}
+
+	/**
+	 * When WC applies a coupon, track gift card codes in our session.
+	 *
+	 * @param string $code Coupon code.
+	 */
+	public static function on_coupon_applied( $code ) {
+		if ( self::is_gift_card_coupon( $code ) ) {
+			self::add_code_to_session( $code );
+		}
+	}
+
+	/**
+	 * When WC removes a coupon, remove from our session tracking.
+	 *
+	 * @param string $code Coupon code.
+	 */
+	public static function on_coupon_removed( $code ) {
+		if ( self::is_gift_card_coupon( $code ) ) {
+			self::remove_code_from_session( $code );
+		}
+	}
+
+	/**
+	 * Check if a coupon code corresponds to a gift card.
+	 *
+	 * @param string $code Coupon code.
+	 * @return bool
+	 */
+	public static function is_gift_card_coupon( $code ) {
+		$gc = Repository::find_by_code( $code );
+		return $gc !== null;
+	}
+
+	/**
+	 * Validate a gift card for redemption (used by AjaxHandler and auto-apply).
 	 *
 	 * @param object $gc Gift card row.
 	 * @return true|\WP_Error
@@ -56,9 +212,8 @@ class CartHandler {
 			return new \WP_Error( 'invalid', self::invalid_code_message() );
 		}
 
-		// Check if already applied.
-		$applied = self::get_applied_codes();
-		if ( in_array( $gc->code, $applied, true ) ) {
+		// Check if already applied in WC cart.
+		if ( WC()->cart && WC()->cart->has_discount( $gc->code ) ) {
 			return new \WP_Error( 'already_applied', __( 'This gift card is already applied.', 'smart-gift-cards-for-woocommerce' ) );
 		}
 
@@ -66,33 +221,28 @@ class CartHandler {
 	}
 
 	/**
-	 * Add a gift card code to the session.
+	 * Add a gift card code to WC cart as a coupon.
 	 *
 	 * @param string $code Gift card code.
 	 */
 	public static function add_gift_card_to_session( $code ) {
-		if ( ! WC()->session ) {
-			return;
+		$code = strtoupper( trim( $code ) );
+		if ( WC()->cart ) {
+			WC()->cart->apply_coupon( $code );
 		}
-		$applied   = self::get_applied_codes();
-		$applied[] = strtoupper( trim( $code ) );
-		WC()->session->set( 'wcgc_applied_codes', array_unique( $applied ) );
 	}
 
 	/**
-	 * Remove a gift card code from the session.
+	 * Remove a gift card code from WC cart.
 	 *
 	 * @param string $code Gift card code.
 	 */
 	public static function remove_gift_card_from_session( $code ) {
-		if ( ! WC()->session ) {
-			return;
+		$code = strtolower( trim( $code ) );
+		if ( WC()->cart ) {
+			WC()->cart->remove_coupon( $code );
+			WC()->cart->calculate_totals();
 		}
-		$applied = self::get_applied_codes();
-		$applied = array_filter( $applied, function ( $c ) use ( $code ) {
-			return strtoupper( $c ) !== strtoupper( $code );
-		} );
-		WC()->session->set( 'wcgc_applied_codes', array_values( $applied ) );
 	}
 
 	/**
@@ -108,116 +258,23 @@ class CartHandler {
 	}
 
 	/**
-	 * Apply gift cards as negative fees.
+	 * Get deduction amounts from WC cart coupon discount data.
 	 *
-	 * @param \WC_Cart $cart Cart object.
+	 * @return array [ code => amount ]
 	 */
-	public static function apply_gift_card_fees( $cart ) {
-		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
-			return;
+	public static function get_deduction_amounts() {
+		if ( ! WC()->cart ) {
+			return [];
 		}
-
-		$codes = self::get_applied_codes();
-		if ( empty( $codes ) ) {
-			return;
-		}
-
-		// Get subtotal + shipping + fees - coupons as the base.
-		$remaining = (float) $cart->get_subtotal()
-			+ (float) $cart->get_subtotal_tax()
-			+ (float) $cart->get_shipping_total()
-			+ (float) $cart->get_shipping_tax()
-			+ (float) $cart->get_fee_total()
-			+ (float) $cart->get_fee_tax()
-			- (float) $cart->get_discount_total()
-			- (float) $cart->get_discount_tax();
 
 		$deductions = [];
-
-		foreach ( $codes as $code ) {
-			if ( $remaining <= 0 ) {
-				break;
+		foreach ( WC()->cart->get_coupon_discount_totals() as $code => $discount ) {
+			if ( self::is_gift_card_coupon( $code ) ) {
+				$deductions[ strtoupper( $code ) ] = (float) $discount;
 			}
-
-			$gc = Repository::find_by_code( $code );
-			if ( ! $gc || $gc->status !== 'active' || (float) $gc->balance <= 0 ) {
-				continue;
-			}
-
-			// Check expiry.
-			if ( ! empty( $gc->expires_at ) && strtotime( $gc->expires_at ) < time() ) {
-				continue;
-			}
-
-			$discount   = min( (float) $gc->balance, $remaining );
-			$remaining -= $discount;
-
-			$deductions[ $code ] = $discount;
-
-			$cart->add_fee(
-				sprintf(
-					/* translators: %s: gift card code (masked) */
-					__( 'Gift Card (%s)', 'smart-gift-cards-for-woocommerce' ),
-					self::mask_code( $code )
-				),
-				-$discount,
-				false // Non-taxable.
-			);
 		}
 
-		// Store deduction amounts in session for OrderProcessor.
-		if ( WC()->session ) {
-			WC()->session->set( 'wcgc_deduction_amounts', $deductions );
-		}
-	}
-
-	/**
-	 * Display applied gift cards in cart/checkout totals.
-	 */
-	public static function display_applied_cards() {
-		$codes = self::get_applied_codes();
-		if ( empty( $codes ) ) {
-			return;
-		}
-
-		$deductions = self::get_deduction_amounts();
-
-		foreach ( $codes as $code ) {
-			$gc = Repository::find_by_code( $code );
-			if ( ! $gc ) {
-				continue;
-			}
-
-			// Show actual discount applied, not full balance.
-			$discount = isset( $deductions[ $code ] ) ? (float) $deductions[ $code ] : (float) $gc->balance;
-
-			$remove_url = wp_nonce_url(
-				add_query_arg( 'remove_gift_card', rawurlencode( $code ) ),
-				'wcgc_remove_' . $code,
-				'wcgc_nonce'
-			);
-
-			?>
-			<tr class="wcgc-applied-card">
-				<th>
-					<?php
-					echo wp_kses(
-						sprintf(
-							/* translators: %s: masked gift card code */
-							__( 'Gift Card %s', 'smart-gift-cards-for-woocommerce' ),
-							'<small>(' . esc_html( self::mask_code( $code ) ) . ')</small>'
-						),
-						[ 'small' => [] ]
-					);
-					?>
-				</th>
-				<td>
-					<?php echo wp_kses_post( wc_price( $discount, [ 'currency' => $gc->currency ] ) ); ?>
-					<a href="<?php echo esc_url( $remove_url ); ?>" class="wcgc-remove-card" title="<?php esc_attr_e( 'Remove', 'smart-gift-cards-for-woocommerce' ); ?>">[&times;]</a>
-				</td>
-			</tr>
-			<?php
-		}
+		return $deductions;
 	}
 
 	/**
@@ -247,6 +304,55 @@ class CartHandler {
 	}
 
 	/**
+	 * Handle auto-apply via URL parameter (e.g., from email "Shop Now" link).
+	 *
+	 * Detects ?wcgc_apply=CODE, validates, adds to cart as coupon, and redirects to
+	 * the shop page with the code stripped from the URL.
+	 */
+	public static function handle_auto_apply() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public link from email; code is validated against DB.
+		if ( ! isset( $_GET['wcgc_apply'] ) ) {
+			return;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$code = sanitize_text_field( wp_unslash( $_GET['wcgc_apply'] ) );
+		if ( empty( $code ) ) {
+			return;
+		}
+
+		// Ensure WC session is available.
+		if ( ! WC()->session ) {
+			return;
+		}
+
+		$gc = Repository::find_by_code( $code );
+
+		$validation = self::validate_gift_card( $gc );
+		if ( is_wp_error( $validation ) ) {
+			if ( $validation->get_error_code() === 'already_applied' ) {
+				wc_add_notice( __( 'This gift card is already applied to your cart.', 'smart-gift-cards-for-woocommerce' ), 'notice' );
+			} else {
+				wc_add_notice( __( 'This gift card code is invalid or cannot be applied.', 'smart-gift-cards-for-woocommerce' ), 'error' );
+			}
+		} else {
+			self::add_gift_card_to_session( $code );
+			wc_add_notice(
+				sprintf(
+					/* translators: %s: formatted gift card balance */
+					__( 'Gift card applied! Balance: %s', 'smart-gift-cards-for-woocommerce' ),
+					wp_strip_all_tags( wc_price( $gc->balance, [ 'currency' => $gc->currency ] ) )
+				),
+				'success'
+			);
+		}
+
+		// Redirect to shop page (strip the code from URL).
+		wp_safe_redirect( wc_get_page_permalink( 'shop' ) );
+		exit;
+	}
+
+	/**
 	 * Mask a gift card code for display.
 	 *
 	 * Shows only last 4 characters. E.g., GIFT-XXXX-XXXX-AB3D → ····AB3D
@@ -255,23 +361,9 @@ class CartHandler {
 	 * @return string Masked code.
 	 */
 	public static function mask_code( $code ) {
-		$clean = str_replace( '-', '', $code );
+		$clean = str_replace( '-', '', strtoupper( $code ) );
 		$last4 = substr( $clean, -4 );
 		return str_repeat( "\u{00B7}", strlen( $clean ) - 4 ) . $last4;
-	}
-
-	/**
-	 * Get the amounts that will be deducted from each applied gift card.
-	 *
-	 * Reads from the session map populated by apply_gift_card_fees().
-	 *
-	 * @return array [ code => amount ]
-	 */
-	public static function get_deduction_amounts() {
-		if ( ! WC()->session ) {
-			return [];
-		}
-		return WC()->session->get( 'wcgc_deduction_amounts', [] );
 	}
 
 	/**
@@ -284,6 +376,35 @@ class CartHandler {
 			return;
 		}
 		WC()->session->set( 'wcgc_applied_codes', [] );
-		WC()->session->set( 'wcgc_deduction_amounts', [] );
+	}
+
+	/**
+	 * Add a code to session tracking (for OrderProcessor).
+	 *
+	 * @param string $code Gift card code.
+	 */
+	private static function add_code_to_session( $code ) {
+		if ( ! WC()->session ) {
+			return;
+		}
+		$applied   = WC()->session->get( 'wcgc_applied_codes', [] );
+		$applied[] = strtoupper( trim( $code ) );
+		WC()->session->set( 'wcgc_applied_codes', array_values( array_unique( $applied ) ) );
+	}
+
+	/**
+	 * Remove a code from session tracking.
+	 *
+	 * @param string $code Gift card code.
+	 */
+	private static function remove_code_from_session( $code ) {
+		if ( ! WC()->session ) {
+			return;
+		}
+		$applied = WC()->session->get( 'wcgc_applied_codes', [] );
+		$applied = array_filter( $applied, function ( $c ) use ( $code ) {
+			return strtoupper( $c ) !== strtoupper( $code );
+		} );
+		WC()->session->set( 'wcgc_applied_codes', array_values( $applied ) );
 	}
 }

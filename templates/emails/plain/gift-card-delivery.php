@@ -59,11 +59,11 @@ echo "----------------------------------------\n\n";
 printf(
 	/* translators: %s: shop URL */
 	esc_html__( 'Shop now: %s', 'smart-gift-cards-for-woocommerce' ),
-	esc_url( wc_get_page_permalink( 'shop' ) )
+	esc_url( add_query_arg( 'wcgc_apply', rawurlencode( $gift_card->code ), wc_get_page_permalink( 'shop' ) ) )
 );
 echo "\n\n";
 
-esc_html_e( 'To redeem, enter the code above at checkout in the coupon/gift card field.', 'smart-gift-cards-for-woocommerce' );
+esc_html_e( 'Click the link above to apply your gift card automatically, or enter the code at checkout in the coupon/gift card field.', 'smart-gift-cards-for-woocommerce' );
 echo "\n\n";
 
 // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WooCommerce standard hook.

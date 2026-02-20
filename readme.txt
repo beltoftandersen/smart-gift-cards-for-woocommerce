@@ -19,16 +19,20 @@ Smart Gift Cards for WooCommerce adds a gift card product type to your store. Cu
 2. Email delivery using WooCommerce email templates — same look as your order emails.
 3. Coupon field redemption — gift card codes work in the standard WooCommerce coupon field, no setup required.
 4. Optional dedicated "Apply Gift Card" field on cart/checkout via settings or `[wcgc_apply_field]` shortcode.
-5. Balance tracking with partial redemption — remaining balance carries over to the next purchase.
-6. My Account tab — customers view their gift cards, balances, and full transaction history.
-7. Admin dashboard with stats: total issued, outstanding balance, redeemed, and expired counts.
-8. Gift card management list with search, status filters, pagination, and bulk actions (disable/delete).
-9. Manual gift card creation from the admin panel — no order required.
-10. Order meta box showing gift cards created by and used on each order.
-11. Automatic balance restore on order cancel/refund, including proportional partial refund support.
-12. Shortcode `[wcgc_product_form]` for page builders (Bricks, Elementor, etc.).
-13. HPOS compatible — works with WooCommerce High-Performance Order Storage.
-14. Email settings (subject, heading, on/off) under WooCommerce > Settings > Emails.
+5. Auto-apply from email — the "Shop Now" button in the delivery email automatically applies the gift card to the recipient's cart.
+6. Balance tracking with partial redemption — remaining balance carries over to the next purchase.
+7. My Account tab — customers view their gift cards, balances, and full transaction history.
+8. Personal message displayed in cart and order details.
+9. Price range display — gift card products show "From $25" or "$25 – $100" in your shop catalog.
+10. Admin dashboard with stats: total issued, outstanding balance, redeemed, and expired counts.
+11. Gift card management list with search, status filters, pagination, and bulk actions (disable/delete).
+12. Manual gift card creation from the admin panel — no order required.
+13. Order meta box showing gift cards created by and used on each order.
+14. Automatic balance restore on order cancel/refund, including proportional partial refund support.
+15. Loyalty Rewards integration — optionally block or allow customers from using loyalty points to purchase gift cards (requires Loyalty Rewards for WooCommerce).
+16. Shortcode `[wcgc_product_form]` for page builders (Bricks, Elementor, etc.).
+17. HPOS compatible — works with WooCommerce High-Performance Order Storage.
+18. Email settings (subject, heading, on/off) under WooCommerce > Settings > Emails.
 
 === How It Works ===
 1. Create a "Gift Card" product in WooCommerce and set the predefined amounts.
@@ -53,8 +57,9 @@ Smart Gift Cards for WooCommerce adds a gift card product type to your store. Cu
 
 === Redemption ===
 - Gift card codes always work in the standard WooCommerce coupon field — this is automatic.
-- To also show a dedicated "Apply Gift Card" field, enable it in settings with automatic placement, shortcode-only, or both.
-- Shortcode: `[wcgc_apply_field]` — place it anywhere on your site.
+- To also show a dedicated "Apply Gift Card" field, enable it in settings with automatic placement or shortcode-only.
+- Shortcode: `[wcgc_apply_field]` — place it on cart or checkout pages.
+- Recipients can click "Shop Now" in the delivery email to auto-apply the gift card to their cart.
 
 === Email Template ===
 - Uses WooCommerce's email system — same header, footer, and colours as your other store emails.
@@ -98,6 +103,9 @@ Yes. They use WooCommerce's email template — same header, footer, and styling 
 = Can customers see their gift card balances? =
 Yes. A "Gift Cards" tab is added to My Account where customers can view all their gift cards (purchased and received), balances, and transaction history.
 
+= Can customers use loyalty points to buy gift cards? =
+By default, no. If you have the Loyalty Rewards for WooCommerce plugin active, an "Integrations" section appears in the gift card settings where you can allow or block loyalty point redemption on gift card purchases.
+
 == Screenshots ==
 1. Gift card product page with amount selector and recipient fields.
 2. Gift card delivery email sent to the recipient.
@@ -114,17 +122,22 @@ Yes. A "Gift Cards" tab is added to My Account where customers can view all thei
 * Initial release.
 * Gift card product type with predefined and custom amounts.
 * Email delivery to recipients using WooCommerce email templates.
-* Coupon field interception for seamless redemption.
-* Optional dedicated "Apply Gift Card" field with shortcode support.
+* Auto-apply gift card from email "Shop Now" link.
+* Virtual coupon integration — gift card discounts display natively between subtotal and total with WooCommerce [Remove] link.
+* Optional dedicated "Apply Gift Card" field with automatic or shortcode-only placement.
+* Personal message displayed in cart and order details.
+* Price range display in shop catalog (e.g., "$25 – $100").
 * Balance tracking with partial redemption.
 * My Account tab for viewing gift cards and transactions.
 * Admin dashboard, gift card list with bulk actions, and manual creation.
 * Order meta box showing created and used gift cards.
 * Automatic balance restore on cancel/refund with partial refund support.
+* Loyalty Rewards for WooCommerce integration — block or allow loyalty points for gift card purchases.
 * Atomic balance deduction to prevent race conditions.
 * Rate limiting on gift card code lookups.
 * HPOS compatibility.
 * Block checkout incompatibility declared (classic checkout required).
+* Portuguese (pt_PT) translation included.
 
 == Upgrade Notice ==
 

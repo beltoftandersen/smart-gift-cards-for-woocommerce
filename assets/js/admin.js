@@ -1,5 +1,5 @@
 /**
- * Gift Cards for WooCommerce - Admin JS
+ * Smart Gift Cards for WooCommerce - Admin JS
  */
 (function($) {
 	'use strict';

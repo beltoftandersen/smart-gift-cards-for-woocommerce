@@ -86,7 +86,7 @@ class GiftCardDeliveryEmail extends \WC_Email {
 		$this->recipient = $gc->recipient_email;
 
 		$this->placeholders['{sender_name}'] = $gc->sender_name ?: __( 'Someone special', 'smart-gift-cards-for-woocommerce' );
-		$this->placeholders['{amount}']      = wp_strip_all_tags( wc_price( $gc->initial_amount, [ 'currency' => $gc->currency ] ) );
+		$this->placeholders['{amount}']      = html_entity_decode( wp_strip_all_tags( wc_price( $gc->initial_amount, [ 'currency' => $gc->currency ] ) ), ENT_QUOTES, 'UTF-8' );
 
 		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
 			$this->restore_locale();
