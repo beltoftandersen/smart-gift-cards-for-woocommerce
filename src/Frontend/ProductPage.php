@@ -12,7 +12,10 @@ class ProductPage {
 	 * Initialize hooks.
 	 */
 	public static function init() {
-		add_action( 'woocommerce_before_add_to_cart_button', [ __CLASS__, 'render_fields' ] );
+		// Only auto-render fields when placement is 'auto' (not shortcode-only).
+		if ( Options::get( 'product_form_placement' ) !== 'shortcode' ) {
+			add_action( 'woocommerce_before_add_to_cart_button', [ __CLASS__, 'render_fields' ] );
+		}
 		add_filter( 'woocommerce_add_to_cart_validation', [ __CLASS__, 'validate' ], 10, 3 );
 		add_filter( 'woocommerce_add_cart_item_data', [ __CLASS__, 'add_cart_data' ], 10, 2 );
 		add_filter( 'woocommerce_get_item_data', [ __CLASS__, 'display_cart_data' ], 10, 2 );

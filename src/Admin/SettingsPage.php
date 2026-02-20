@@ -71,8 +71,24 @@ class SettingsPage {
 		self::add_checkbox( 'show_dedicated_field', __( 'Show Dedicated Field', 'smart-gift-cards-for-woocommerce' ), 'wcgc_field', $settings_slug );
 		self::add_select( 'dedicated_field_placement', __( 'Field Placement', 'smart-gift-cards-for-woocommerce' ), 'wcgc_field', [
 			'auto'      => __( 'Automatic (cart & checkout)', 'smart-gift-cards-for-woocommerce' ),
-			'shortcode' => __( 'Shortcode only [wcgc_apply_field]', 'smart-gift-cards-for-woocommerce' ),
+			'shortcode' => __( 'Shortcode only', 'smart-gift-cards-for-woocommerce' ),
 			'both'      => __( 'Both automatic & shortcode', 'smart-gift-cards-for-woocommerce' ),
+		], $settings_slug );
+
+		add_settings_field( 'wcgc_shortcodes_info', __( 'Shortcodes', 'smart-gift-cards-for-woocommerce' ), function () {
+			echo '<p><code style="cursor:pointer;user-select:all;">[wcgc_apply_field]</code> &mdash; '
+				. esc_html__( 'Apply Gift Card field (cart, checkout, or any page)', 'smart-gift-cards-for-woocommerce' ) . '</p>';
+			echo '<p><code style="cursor:pointer;user-select:all;">[wcgc_product_form]</code> &mdash; '
+				. esc_html__( 'Gift card product form for page builders (Bricks, Elementor)', 'smart-gift-cards-for-woocommerce' ) . '</p>';
+		}, $settings_slug, 'wcgc_field' );
+
+		// ── Product Page Section ──
+		add_settings_section( 'wcgc_product_page', __( 'Product Page', 'smart-gift-cards-for-woocommerce' ), function () {
+			echo '<p>' . esc_html__( 'Controls how the gift card amount selector and recipient fields appear on the product page.', 'smart-gift-cards-for-woocommerce' ) . '</p>';
+		}, $settings_slug );
+		self::add_select( 'product_form_placement', __( 'Product Form Placement', 'smart-gift-cards-for-woocommerce' ), 'wcgc_product_page', [
+			'auto'      => __( 'Automatic (WooCommerce hook)', 'smart-gift-cards-for-woocommerce' ),
+			'shortcode' => __( 'Shortcode only — [wcgc_product_form]', 'smart-gift-cards-for-woocommerce' ),
 		], $settings_slug );
 
 		// ── Advanced Section ──

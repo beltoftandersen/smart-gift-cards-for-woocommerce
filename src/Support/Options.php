@@ -24,6 +24,7 @@ class Options {
 			'default_expiry_days'      => '365',
 			'show_dedicated_field'     => '0',
 			'dedicated_field_placement' => 'auto',
+			'product_form_placement'   => 'auto',
 			'cleanup_on_uninstall'     => '0',
 		];
 	}
@@ -70,11 +71,13 @@ class Options {
 			'default_expiry_days'      => 'int',
 			'show_dedicated_field'     => 'bool',
 			'dedicated_field_placement' => 'select',
+			'product_form_placement'   => 'select',
 			'cleanup_on_uninstall'     => 'bool',
 		];
 
 		$selects = [
 			'dedicated_field_placement' => [ 'auto', 'shortcode', 'both' ],
+			'product_form_placement'   => [ 'auto', 'shortcode' ],
 		];
 
 		foreach ( $fields as $field => $type ) {

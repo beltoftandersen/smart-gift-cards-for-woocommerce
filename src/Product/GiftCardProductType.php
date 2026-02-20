@@ -62,6 +62,10 @@ class GiftCardProductType {
 	 * This is the template action that WooCommerce fires for each product type.
 	 * It loads the simple product add-to-cart template which contains the
 	 * woocommerce_before_add_to_cart_button hook where our fields render.
+	 *
+	 * When product form placement is set to "shortcode", we still load the
+	 * simple template so the add-to-cart button works — the fields themselves
+	 * are controlled by ProductPage::init().
 	 */
 	public static function add_to_cart_template() {
 		wc_get_template( 'single-product/add-to-cart/simple.php' );
