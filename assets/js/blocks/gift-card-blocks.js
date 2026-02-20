@@ -14,6 +14,7 @@
 
 	var el             = wp.element.createElement;
 	var useSelect      = wp.data.useSelect;
+	var useEffect      = wp.element.useEffect;
 	var registerPlugin = wp.plugins.registerPlugin;
 
 	var ExperimentalOrderMeta = wc.blocksCheckout.ExperimentalOrderMeta;
@@ -29,7 +30,17 @@
 			return ( cart.extensions || {} )[ NS ] || {};
 		} );
 
-		if ( ! gcData.points_blocked ) {
+		var blocked = !! gcData.points_blocked;
+
+		// Hide the loyalty rewards panel when points are blocked.
+		useEffect( function () {
+			var panels = document.querySelectorAll( '.wclr-blocks-panel' );
+			panels.forEach( function ( panel ) {
+				panel.style.display = blocked ? 'none' : '';
+			} );
+		}, [ blocked ] );
+
+		if ( ! blocked ) {
 			return null;
 		}
 
@@ -40,7 +51,7 @@
 				className: 'wcgc-blocks-points-notice',
 				style: {
 					padding: '12px 16px',
-					margin: '0 0 4px',
+					margin: '0 0 12px',
 					border: '1px solid #d63638',
 					borderRadius: '4px',
 					color: '#b32d2e',
