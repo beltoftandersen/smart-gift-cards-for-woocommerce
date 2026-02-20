@@ -142,6 +142,15 @@ class OrderProcessor {
 				Repository::update_status( $gc->id, 'redeemed' );
 			}
 
+			/**
+			 * Fires after a gift card balance is deducted for an order.
+			 *
+			 * @param int   $gc_id    Gift card ID.
+			 * @param float $amount   Amount deducted.
+			 * @param int   $order_id Order ID.
+			 */
+			do_action( 'wcgc_after_deduct_balance', $gc->id, $amount, $order_id );
+
 			$processed[ $code ] = $amount;
 		}
 
@@ -213,6 +222,18 @@ class OrderProcessor {
 				continue;
 			}
 
+			/**
+			 * Filter whether this refund should create store credit instead.
+			 *
+			 * @param bool   $as_credit Whether to handle as store credit.
+			 * @param int    $order_id  Order ID.
+			 * @param int    $gc_id     Gift card ID.
+			 * @param float  $amount    Amount to restore.
+			 */
+			if ( apply_filters( 'wcgc_refund_as_store_credit', false, $order_id, $gc->id, $amount ) ) {
+				continue; // Pro plugin handles this via the filter.
+			}
+
 			$old_balance = (float) $gc->balance;
 
 			// Cap restored balance at initial_amount.
@@ -241,6 +262,15 @@ class OrderProcessor {
 					$order->get_order_number()
 				),
 			] );
+
+			/**
+			 * Fires after a gift card balance is restored from a refund.
+			 *
+			 * @param int   $gc_id    Gift card ID.
+			 * @param float $restored Amount restored.
+			 * @param int   $order_id Order ID.
+			 */
+			do_action( 'wcgc_after_restore_balance', $gc->id, $restored, $order_id );
 		}
 
 		$order->update_meta_data( '_wcgc_restored', '1' );

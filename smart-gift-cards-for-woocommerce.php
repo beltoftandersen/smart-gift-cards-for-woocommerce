@@ -3,7 +3,7 @@
  * Plugin Name:       Smart Gift Cards for WooCommerce
  * Plugin URI:        https://developer.wordpress.org/plugins/smart-gift-cards-for-woocommerce/
  * Description:       Sell digital gift cards, deliver them by email, and let customers redeem them at checkout.
- * Version:           1.0.0
+ * Version:           1.2.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
  * Author:            Chimkins IT
@@ -40,7 +40,7 @@ spl_autoload_register(
 );
 
 /* ── Constants ─────────────────────────────────────────────────── */
-define( 'WCGC_VERSION', '1.0.0' );
+define( 'WCGC_VERSION', '1.2.0' );
 define( 'WCGC_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WCGC_URL', plugin_dir_url( __FILE__ ) );
 define( 'WCGC_BASENAME', plugin_basename( __FILE__ ) );

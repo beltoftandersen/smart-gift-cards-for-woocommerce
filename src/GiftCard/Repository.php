@@ -402,12 +402,19 @@ class Repository {
 			FROM {$wpdb->prefix}wcgc_gift_cards"
 		);
 
-		return [
+		$stats = [
 			'total_issued'        => (int) ( $row->total_issued ?? 0 ),
 			'outstanding_balance' => (float) ( $row->outstanding_balance ?? 0 ),
 			'total_redeemed'      => (int) ( $row->total_redeemed ?? 0 ),
 			'total_expired'       => (int) ( $row->total_expired ?? 0 ),
 		];
+
+		/**
+		 * Filter summary stats for the dashboard.
+		 *
+		 * @param array $stats Summary statistics.
+		 */
+		return apply_filters( 'wcgc_summary_stats', $stats );
 	}
 
 	/**

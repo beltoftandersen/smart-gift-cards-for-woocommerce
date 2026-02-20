@@ -150,6 +150,15 @@ class ProductPage {
 					<textarea name="wcgc_message" id="wcgc_message" rows="3" class="input-text"></textarea>
 				</p>
 			</div>
+
+			<?php
+			/**
+			 * Fires after recipient fields, before add-to-cart button.
+			 *
+			 * @param \WC_Product $product Current product.
+			 */
+			do_action( 'wcgc_product_form_after_recipient_fields', $product );
+			?>
 		</div>
 		<?php
 	}
@@ -227,6 +236,16 @@ class ProductPage {
 			return false;
 		}
 
+		/**
+		 * Filter add-to-cart validation for gift card products.
+		 *
+		 * @param bool  $passed     Current validation result.
+		 * @param int   $product_id Product ID.
+		 * @param array $post_data  Raw POST data (unsanitized).
+		 */
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$passed = apply_filters( 'wcgc_add_to_cart_validation', $passed, $product_id, $_POST );
+
 		return $passed;
 	}
 
@@ -254,6 +273,14 @@ class ProductPage {
 		$cart_data['wcgc_recipient_email'] = isset( $_POST['wcgc_recipient_email'] ) ? sanitize_email( wp_unslash( $_POST['wcgc_recipient_email'] ) ) : '';
 		$cart_data['wcgc_message']         = isset( $_POST['wcgc_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wcgc_message'] ) ) : '';
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+		/**
+		 * Filter cart item data for gift card products.
+		 *
+		 * @param array $cart_data  Cart item data.
+		 * @param int   $product_id Product ID.
+		 */
+		$cart_data = apply_filters( 'wcgc_add_to_cart_data', $cart_data, $product_id );
 
 		return $cart_data;
 	}

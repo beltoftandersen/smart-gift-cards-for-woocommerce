@@ -2,7 +2,7 @@
 
 Sell digital gift cards, deliver them by email, and let customers redeem them at checkout.
 
-- Stable version: 1.0.0
+- Stable version: 1.2.0
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+
 - Author: Chimkins IT
 - Text domain: smart-gift-cards-for-woocommerce

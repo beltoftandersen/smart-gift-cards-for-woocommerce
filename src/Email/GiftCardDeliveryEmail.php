@@ -81,6 +81,20 @@ class GiftCardDeliveryEmail extends \WC_Email {
 			return false;
 		}
 
+		/**
+		 * Filter whether the gift card email should be sent immediately.
+		 *
+		 * Returning false allows Pro to defer delivery (e.g. scheduled delivery).
+		 *
+		 * @param bool            $should_send  Whether to send now.
+		 * @param int             $gift_card_id Gift card ID.
+		 * @param \WC_Order|null  $order        Order object.
+		 */
+		if ( ! apply_filters( 'wcgc_should_send_email_now', true, $gift_card_id, $order ) ) {
+			$this->restore_locale();
+			return false;
+		}
+
 		$this->gift_card = $gc;
 		$this->order     = $order;
 		$this->recipient = $gc->recipient_email;
@@ -112,7 +126,15 @@ class GiftCardDeliveryEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_content_html() {
-		return $this->render_template( $this->template_html, false );
+		/**
+		 * Filter the HTML email template path.
+		 *
+		 * @param string      $template  Template relative path.
+		 * @param object|null $gift_card Gift card data object.
+		 */
+		$template = apply_filters( 'wcgc_email_template_html', $this->template_html, $this->gift_card );
+
+		return $this->render_template( $template, false );
 	}
 
 	/**

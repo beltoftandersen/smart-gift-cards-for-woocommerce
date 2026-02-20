@@ -35,6 +35,16 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 	</p>
 <?php endif; ?>
 
+<?php
+/**
+ * Fires before the gift card design section in the email.
+ *
+ * @param object         $gift_card Gift card data.
+ * @param WC_Order|null  $order     Order object.
+ */
+do_action( 'wcgc_email_before_card_design', $gift_card, $order );
+?>
+
 <div style="text-align: center; margin: 30px 0;">
 	<p style="font-size: 32px; font-weight: bold; margin: 0 0 10px;">
 		<?php echo wp_kses_post( wc_price( $gift_card->initial_amount, [ 'currency' => $gift_card->currency ] ) ); ?>
@@ -56,6 +66,16 @@ do_action( 'woocommerce_email_header', $email_heading, $email );
 		</p>
 	<?php endif; ?>
 </div>
+
+<?php
+/**
+ * Fires after the gift card design section in the email.
+ *
+ * @param object         $gift_card Gift card data.
+ * @param WC_Order|null  $order     Order object.
+ */
+do_action( 'wcgc_email_after_card_design', $gift_card, $order );
+?>
 
 <?php
 // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template variable, short-lived scope.

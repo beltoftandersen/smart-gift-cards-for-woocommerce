@@ -101,7 +101,7 @@ class GiftCardCreator {
 		$code       = CodeGenerator::generate();
 		$expires_at = self::calculate_expiry();
 
-		$gc_id = Repository::insert( [
+		$gc_data = [
 			'code'            => $code,
 			'initial_amount'  => $amount,
 			'balance'         => $amount,
@@ -115,7 +115,18 @@ class GiftCardCreator {
 			'customer_id'     => $order->get_customer_id(),
 			'status'          => 'active',
 			'expires_at'      => $expires_at,
-		] );
+		];
+
+		/**
+		 * Filter gift card data before insertion.
+		 *
+		 * @param array           $gc_data Gift card data array.
+		 * @param \WC_Order       $order   Order object.
+		 * @param \WC_Order_Item  $item    Line item.
+		 */
+		$gc_data = apply_filters( 'wcgc_gift_card_creation_args', $gc_data, $order, $item );
+
+		$gc_id = Repository::insert( $gc_data );
 
 		if ( ! $gc_id ) {
 			return false;

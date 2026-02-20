@@ -138,6 +138,13 @@ class SettingsPage {
 			'gift-cards' => __( 'Gift Cards', 'smart-gift-cards-for-woocommerce' ),
 			'settings'   => __( 'Settings', 'smart-gift-cards-for-woocommerce' ),
 		];
+
+		/**
+		 * Filter the admin page tabs.
+		 *
+		 * @param array $tabs Associative array of tab slug => label.
+		 */
+		$tabs = apply_filters( 'wcgc_admin_tabs', $tabs );
 		?>
 		<div class="wrap wcgc-settings-wrap">
 			<h1><?php esc_html_e( 'Gift Cards', 'smart-gift-cards-for-woocommerce' ); ?></h1>
@@ -159,8 +166,16 @@ class SettingsPage {
 				case 'settings':
 					self::render_settings_tab();
 					break;
-				default:
+				case 'dashboard':
 					self::render_dashboard_tab();
+					break;
+				default:
+					/**
+					 * Fires to render a custom admin tab's content.
+					 *
+					 * @param string $current_tab The active tab slug.
+					 */
+					do_action( 'wcgc_admin_tab_' . $current_tab );
 			}
 			?>
 		</div>
@@ -190,6 +205,13 @@ class SettingsPage {
 					</div>
 				<?php endforeach; ?>
 			</div>
+
+			<?php
+			/**
+			 * Fires after the stats cards on the dashboard tab.
+			 */
+			do_action( 'wcgc_dashboard_after_stats' );
+			?>
 		</div>
 		<?php
 	}
@@ -240,6 +262,13 @@ class SettingsPage {
 				$list_table->display();
 				?>
 			</form>
+
+			<?php
+			/**
+			 * Fires after the gift cards list table.
+			 */
+			do_action( 'wcgc_admin_after_gift_cards_list' );
+			?>
 		</div>
 		<?php
 	}
