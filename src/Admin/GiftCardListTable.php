@@ -148,7 +148,7 @@ class GiftCardListTable extends \WP_List_Table {
 	 * @return string
 	 */
 	public function column_created_at( $item ) {
-		return esc_html( date_i18n( get_option( 'date_format' ), strtotime( $item->created_at ) ) );
+		return esc_html( wp_date( get_option( 'date_format' ), strtotime( $item->created_at ) ) );
 	}
 
 	/**
@@ -162,7 +162,7 @@ class GiftCardListTable extends \WP_List_Table {
 			return __( 'Never', 'smart-gift-cards-for-woocommerce' );
 		}
 		$expired = strtotime( $item->expires_at ) < time();
-		$date    = date_i18n( get_option( 'date_format' ), strtotime( $item->expires_at ) );
+		$date    = wp_date( get_option( 'date_format' ), strtotime( $item->expires_at ) );
 		return $expired ? '<span style="color:#d63638;">' . esc_html( $date ) . '</span>' : esc_html( $date );
 	}
 

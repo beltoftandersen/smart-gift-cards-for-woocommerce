@@ -10,7 +10,6 @@ use GiftCards\Product\GiftCardProductType;
 use GiftCards\Frontend\ProductPage;
 use GiftCards\Frontend\MyAccount;
 use GiftCards\GiftCard\GiftCardCreator;
-use GiftCards\Cart\CouponInterceptor;
 use GiftCards\Cart\CartHandler;
 use GiftCards\Cart\GiftCardField;
 use GiftCards\Cart\AjaxHandler;
@@ -36,10 +35,9 @@ class Plugin {
 		// Invalidate Options cache when changed externally (e.g., via wp option update).
 		add_action( 'update_option_' . Options::OPTION, [ Options::class, 'invalidate_cache' ] );
 
-		// Always load: product type, gift card creation, coupon interception, cart handling, order processing.
+		// Always load: product type, gift card creation, cart handling, order processing.
 		GiftCardProductType::init();
 		GiftCardCreator::init();
-		CouponInterceptor::init();
 		CartHandler::init();
 		OrderProcessor::init();
 

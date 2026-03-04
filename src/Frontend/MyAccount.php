@@ -68,6 +68,8 @@ class MyAccount {
 		return $title;
 	}
 
+	const PER_PAGE = 20;
+
 	/**
 	 * Render the Gift Cards page in My Account.
 	 */
@@ -90,6 +92,14 @@ class MyAccount {
 		usort( $all_cards, function ( $a, $b ) {
 			return strtotime( $b->created_at ) - strtotime( $a->created_at );
 		} );
+
+		// Paginate.
+		$total_cards = count( $all_cards );
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only pagination parameter.
+		$current_page = max( 1, isset( $_GET['gc_page'] ) ? absint( $_GET['gc_page'] ) : 1 );
+		$total_pages  = max( 1, (int) ceil( $total_cards / self::PER_PAGE ) );
+		$current_page = min( $current_page, $total_pages );
+		$all_cards    = array_slice( $all_cards, ( $current_page - 1 ) * self::PER_PAGE, self::PER_PAGE );
 
 		// Batch-load all transactions in a single query.
 		$card_ids    = array_map( function ( $gc ) { return $gc->id; }, $all_cards );
@@ -127,7 +137,7 @@ class MyAccount {
 									if ( empty( $gc->expires_at ) ) {
 										esc_html_e( 'Never', 'smart-gift-cards-for-woocommerce' );
 									} else {
-										echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $gc->expires_at ) ) );
+										echo esc_html( wp_date( get_option( 'date_format' ), strtotime( $gc->expires_at ) ) );
 									}
 									?>
 								</td>
@@ -151,7 +161,7 @@ class MyAccount {
 											<tbody>
 												<?php foreach ( $transactions as $tx ) : ?>
 													<tr>
-														<td><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $tx->created_at ) ) ); ?></td>
+														<td><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $tx->created_at ) ) ); ?></td>
 														<td><span class="wcgc-tx-type wcgc-tx-type--<?php echo esc_attr( $tx->type ); ?>"><?php echo esc_html( ucfirst( $tx->type ) ); ?></span></td>
 														<td>
 															<?php
@@ -173,6 +183,23 @@ class MyAccount {
 						<?php endforeach; ?>
 					</tbody>
 				</table>
+				<?php if ( $total_pages > 1 ) : ?>
+					<nav class="woocommerce-pagination wcgc-pagination">
+						<?php
+						$base_url = wc_get_endpoint_url( 'gift-cards', '', wc_get_page_permalink( 'myaccount' ) );
+						for ( $i = 1; $i <= $total_pages; $i++ ) :
+							$url = add_query_arg( 'gc_page', $i, $base_url );
+							if ( $i === $current_page ) :
+								?>
+								<span class="page-numbers current"><?php echo esc_html( $i ); ?></span>
+							<?php else : ?>
+								<a class="page-numbers" href="<?php echo esc_url( $url ); ?>"><?php echo esc_html( $i ); ?></a>
+								<?php
+							endif;
+						endfor;
+						?>
+					</nav>
+				<?php endif; ?>
 			<?php else : ?>
 				<p><?php esc_html_e( 'You don\'t have any gift cards yet.', 'smart-gift-cards-for-woocommerce' ); ?></p>
 			<?php endif; ?>

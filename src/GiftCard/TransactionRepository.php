@@ -35,7 +35,18 @@ class TransactionRepository {
 		$data = wp_parse_args( $data, $defaults );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
-		$result = $wpdb->insert( self::table(), $data );
+		$result = $wpdb->insert(
+			self::table(),
+			$data,
+			[
+				'%d', // gift_card_id.
+				'%d', // order_id.
+				'%s', // type.
+				'%f', // amount.
+				'%f', // balance_after.
+				'%s', // note.
+			]
+		);
 
 		return $result ? $wpdb->insert_id : false;
 	}

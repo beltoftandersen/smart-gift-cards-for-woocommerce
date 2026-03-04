@@ -228,6 +228,8 @@ class SettingsPage {
 		$list_table->prepare_items();
 		?>
 		<div class="wcgc-gift-cards-wrap" style="margin-top: 16px;">
+			<?php self::render_manual_create_notice(); ?>
+
 			<button type="button" class="button button-primary wcgc-toggle-add-form">
 				<?php esc_html_e( 'Add Gift Card', 'smart-gift-cards-for-woocommerce' ); ?>
 			</button>
@@ -310,17 +312,75 @@ class SettingsPage {
 		}
 
 		$gc_id = GiftCardCreator::create_manual( [
-			'amount'          => isset( $_POST['wcgc_amount'] ) ? (float) $_POST['wcgc_amount'] : 0,
+			'amount'          => isset( $_POST['wcgc_amount'] ) ? (float) sanitize_text_field( wp_unslash( $_POST['wcgc_amount'] ) ) : 0,
 			'recipient_name'  => isset( $_POST['wcgc_recipient_name'] ) ? sanitize_text_field( wp_unslash( $_POST['wcgc_recipient_name'] ) ) : '',
 			'recipient_email' => isset( $_POST['wcgc_recipient_email'] ) ? sanitize_email( wp_unslash( $_POST['wcgc_recipient_email'] ) ) : '',
 			'message'         => isset( $_POST['wcgc_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['wcgc_message'] ) ) : '',
 		] );
 
 		if ( $gc_id ) {
-			add_settings_error( 'wcgc_messages', 'wcgc_created', __( 'Gift card created successfully!', 'smart-gift-cards-for-woocommerce' ), 'success' );
+			self::set_manual_create_notice( 'success', __( 'Gift card created successfully!', 'smart-gift-cards-for-woocommerce' ) );
 		} else {
-			add_settings_error( 'wcgc_messages', 'wcgc_error', __( 'Failed to create gift card. Please check the amount.', 'smart-gift-cards-for-woocommerce' ), 'error' );
+			self::set_manual_create_notice( 'error', __( 'Failed to create gift card. Please check the amount.', 'smart-gift-cards-for-woocommerce' ) );
 		}
+
+		// Post/Redirect/Get to prevent duplicate gift card creation on refresh.
+		wp_safe_redirect(
+			add_query_arg(
+				[
+					'page' => self::SLUG,
+					'tab'  => 'gift-cards',
+				],
+				admin_url( 'admin.php' )
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Build transient key used for one-time manual-create notices.
+	 *
+	 * @return string
+	 */
+	private static function manual_create_notice_key() {
+		return 'wcgc_manual_create_notice_' . get_current_user_id();
+	}
+
+	/**
+	 * Store one-time notice shown after manual-create redirect.
+	 *
+	 * @param string $type    Notice type: success|error.
+	 * @param string $message Notice message.
+	 */
+	private static function set_manual_create_notice( $type, $message ) {
+		$type = in_array( $type, [ 'success', 'error' ], true ) ? $type : 'info';
+		set_transient(
+			self::manual_create_notice_key(),
+			[
+				'type'    => $type,
+				'message' => (string) $message,
+			],
+			MINUTE_IN_SECONDS
+		);
+	}
+
+	/**
+	 * Render and clear one-time manual-create notice.
+	 */
+	private static function render_manual_create_notice() {
+		$notice = get_transient( self::manual_create_notice_key() );
+		if ( ! is_array( $notice ) || empty( $notice['message'] ) ) {
+			return;
+		}
+
+		delete_transient( self::manual_create_notice_key() );
+
+		$type = in_array( $notice['type'] ?? '', [ 'success', 'error', 'info', 'warning' ], true ) ? $notice['type'] : 'info';
+		printf(
+			'<div class="notice notice-%1$s is-dismissible"><p><strong>%2$s</strong></p></div>',
+			esc_attr( $type ),
+			esc_html( (string) $notice['message'] )
+		);
 	}
 
 	/* ── Field Helpers ─────────────────────────────────────────── */

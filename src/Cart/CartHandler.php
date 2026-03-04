@@ -176,12 +176,6 @@ class CartHandler {
 	}
 
 	/**
-	 * Validate a gift card for redemption (used by AjaxHandler and auto-apply).
-	 *
-	 * @param object $gc Gift card row.
-	 * @return true|\WP_Error
-	 */
-	/**
 	 * Generic invalid-code message to prevent enumeration.
 	 *
 	 * @return string
@@ -190,6 +184,12 @@ class CartHandler {
 		return __( 'This gift card code is invalid or cannot be applied.', 'smart-gift-cards-for-woocommerce' );
 	}
 
+	/**
+	 * Validate a gift card for redemption (used by AjaxHandler and auto-apply).
+	 *
+	 * @param object $gc Gift card row.
+	 * @return true|\WP_Error
+	 */
 	public static function validate_gift_card( $gc ) {
 		if ( ! $gc ) {
 			return new \WP_Error( 'invalid', self::invalid_code_message() );

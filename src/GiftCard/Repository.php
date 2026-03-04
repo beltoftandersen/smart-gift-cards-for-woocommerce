@@ -45,7 +45,25 @@ class Repository {
 		$data = wp_parse_args( $data, $defaults );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table with no WP API.
-		$result = $wpdb->insert( self::table(), $data );
+		$result = $wpdb->insert(
+			self::table(),
+			$data,
+			[
+				'%s', // code.
+				'%f', // initial_amount.
+				'%f', // balance.
+				'%s', // currency.
+				'%s', // sender_name.
+				'%s', // sender_email.
+				'%s', // recipient_name.
+				'%s', // recipient_email.
+				'%s', // message.
+				'%d', // order_id.
+				'%d', // customer_id.
+				'%s', // status.
+				'%s', // expires_at.
+			]
+		);
 
 		if ( $result && ! empty( $data['code'] ) ) {
 			self::invalidate_code_cache( $data['code'] );
@@ -207,7 +225,7 @@ class Repository {
 	public static function deduct_balance( $id, $amount ) {
 		global $wpdb;
 
-		$amount = abs( (float) $amount );
+		$amount = round( abs( (float) $amount ), 2 );
 		if ( $amount <= 0 ) {
 			return false;
 		}
