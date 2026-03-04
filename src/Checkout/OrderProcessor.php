@@ -390,7 +390,8 @@ class OrderProcessor {
 	/**
 	 * Get the deductions that were actually used for this order.
 	 *
-	 * Falls back to pending deductions for backwards compatibility.
+	 * Falls back to pending deductions only when the order was fully deducted
+	 * (legacy orders before _bgcw_deducted_amounts was introduced).
 	 *
 	 * @param \WC_Order $order Order object.
 	 * @return array<string,float>
@@ -398,6 +399,11 @@ class OrderProcessor {
 	private static function get_effective_deductions( $order ) {
 		$deductions = $order->get_meta( '_bgcw_deducted_amounts' );
 		if ( empty( $deductions ) || ! is_array( $deductions ) ) {
+			// Only fall back to pending if the deduction flag confirms balances were taken.
+			// Without this guard, a cancel on a failed-deduction order would restore money never taken.
+			if ( ! $order->get_meta( '_bgcw_deducted' ) ) {
+				return [];
+			}
 			$deductions = $order->get_meta( '_bgcw_pending_deductions' );
 		}
 

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Smart Gift Cards for WooCommerce 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/smart-gift-cards-for-woocommerce\n"
+"Project-Id-Version: Beltoft Gift Cards for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/beltoft-gift-cards-for-woocommerce\n"
 "Last-Translator: Chimkins IT <support@chimkins.com>\n"
 "Language-Team: Portuguese (Portugal)\n"
 "MIME-Version: 1.0\n"
@@ -12,39 +12,39 @@ msgstr ""
 "Language: pt_PT\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: smart-gift-cards-for-woocommerce\n"
+"X-Domain: beltoft-gift-cards-for-woocommerce\n"
 
 #. Plugin Name of the plugin
-#: smart-gift-cards-for-woocommerce.php
-msgid "Smart Gift Cards for WooCommerce"
-msgstr "Smart Gift Cards for WooCommerce"
+#: beltoft-gift-cards-for-woocommerce.php
+msgid "Beltoft Gift Cards for WooCommerce"
+msgstr "Beltoft Gift Cards for WooCommerce"
 
 #. Plugin URI of the plugin
-#: smart-gift-cards-for-woocommerce.php
-msgid "https://developer.wordpress.org/plugins/smart-gift-cards-for-woocommerce/"
-msgstr "https://developer.wordpress.org/plugins/smart-gift-cards-for-woocommerce/"
+#: beltoft-gift-cards-for-woocommerce.php
+msgid "https://developer.wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/"
+msgstr "https://developer.wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/"
 
 #. Description of the plugin
-#: smart-gift-cards-for-woocommerce.php
+#: beltoft-gift-cards-for-woocommerce.php
 msgid "Sell digital gift cards, deliver them by email, and let customers redeem them at checkout."
 msgstr "Venda cartões-presente digitais, envie-os por e-mail e permita que os clientes os resgatem no checkout."
 
 #. Author of the plugin
-#: smart-gift-cards-for-woocommerce.php
+#: beltoft-gift-cards-for-woocommerce.php
 msgid "Chimkins IT"
 msgstr "Chimkins IT"
 
 #. Author URI of the plugin
-#: smart-gift-cards-for-woocommerce.php
+#: beltoft-gift-cards-for-woocommerce.php
 msgid "https://chimkins.com/"
 msgstr "https://chimkins.com/"
 
 #. translators: %s: WooCommerce plugin name
-#: smart-gift-cards-for-woocommerce.php:55
-msgid "Smart Gift Cards for WooCommerce requires WooCommerce to be installed and active."
-msgstr "Smart Gift Cards for WooCommerce requer que o WooCommerce esteja instalado e ativo."
+#: beltoft-gift-cards-for-woocommerce.php:55
+msgid "Beltoft Gift Cards for WooCommerce requires WooCommerce to be installed and active."
+msgstr "Beltoft Gift Cards for WooCommerce requer que o WooCommerce esteja instalado e ativo."
 
-#: smart-gift-cards-for-woocommerce.php:85
+#: beltoft-gift-cards-for-woocommerce.php:85
 #: src/Admin/SettingsPage.php:139
 msgid "Settings"
 msgstr "Definições"

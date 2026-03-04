@@ -16,6 +16,9 @@ class GiftCardField {
 	 * Initialize hooks based on settings.
 	 */
 	public static function init() {
+		// Always register the shortcode so [bgcw_apply_field] works regardless of settings.
+		add_shortcode( 'bgcw_apply_field', [ __CLASS__, 'shortcode_output' ] );
+
 		$show = Options::get( 'show_dedicated_field' );
 		if ( $show !== '1' ) {
 			return;
@@ -23,10 +26,8 @@ class GiftCardField {
 
 		$placement = Options::get( 'dedicated_field_placement' );
 
-		// Mutually exclusive: automatic OR shortcode, not both.
-		if ( $placement === 'shortcode' ) {
-			add_shortcode( 'bgcw_apply_field', [ __CLASS__, 'shortcode_output' ] );
-		} else {
+		// Automatic placement hooks (skipped for shortcode-only mode).
+		if ( $placement !== 'shortcode' ) {
 			// Multiple hooks for compatibility with page builders (Bricks, Elementor, etc.)
 			// that replace WooCommerce templates. The $rendered guard prevents duplicates.
 			add_action( 'woocommerce_before_cart', [ __CLASS__, 'render_form' ] );
