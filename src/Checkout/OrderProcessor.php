@@ -68,6 +68,8 @@ class OrderProcessor {
 	 * @param int $order_id Order ID.
 	 */
 	public static function deduct_gift_card_balances( $order_id ) {
+		global $wpdb;
+
 		$order = wc_get_order( $order_id );
 		if ( ! $order ) {
 			return;
@@ -78,124 +80,137 @@ class OrderProcessor {
 			return;
 		}
 
-		// Order-level lock to prevent concurrent hook invocations from processing simultaneously.
-		// add_post_meta with $unique=true fails if the key already exists.
-		if ( ! add_post_meta( $order_id, '_bgcw_deduction_lock', '1', true ) ) {
+		// Atomic advisory lock keyed by order ID. Timeout 0 = non-blocking (fail immediately if held).
+		$lock_name = 'bgcw_deduct_' . (int) $order_id;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Advisory lock, no table involved.
+		$acquired = (int) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock_name ) );
+		if ( 1 !== $acquired ) {
 			return;
 		}
 
-		$deductions = $order->get_meta( '_bgcw_pending_deductions' );
-		if ( empty( $deductions ) || ! is_array( $deductions ) ) {
-			return;
-		}
-
-		$processed = $order->get_meta( '_bgcw_deducted_amounts' );
-		$processed = is_array( $processed ) ? $processed : [];
-		$failures  = [];
-
-		foreach ( $deductions as $code => $amount ) {
-			$amount = round( (float) $amount, 2 );
-			if ( $amount <= 0 ) {
-				continue;
+		try {
+			// Re-check idempotency inside lock (another process may have completed while we waited).
+			$order = wc_get_order( $order_id );
+			if ( ! $order || $order->get_meta( '_bgcw_deducted' ) ) {
+				return;
 			}
 
-			if ( isset( $processed[ $code ] ) && (float) $processed[ $code ] >= $amount ) {
-				continue;
+			$deductions = $order->get_meta( '_bgcw_pending_deductions' );
+			if ( empty( $deductions ) || ! is_array( $deductions ) ) {
+				return;
 			}
 
-			$gc = Repository::find_by_code( $code );
-			if ( ! $gc ) {
-				$failures[] = $code;
-				continue;
+			$processed = $order->get_meta( '_bgcw_deducted_amounts' );
+			$processed = is_array( $processed ) ? $processed : [];
+			$failures  = [];
+
+			foreach ( $deductions as $code => $amount ) {
+				$amount = round( (float) $amount, 2 );
+				if ( $amount <= 0 ) {
+					continue;
+				}
+
+				if ( isset( $processed[ $code ] ) && (float) $processed[ $code ] >= $amount ) {
+					continue;
+				}
+
+				$gc = Repository::find_by_code( $code );
+				if ( ! $gc ) {
+					$failures[] = $code;
+					continue;
+				}
+
+				// Re-validate status and expiry at deduction time.
+				if ( $gc->status !== 'active' ) {
+					$failures[] = $code;
+					continue;
+				}
+				if ( ! empty( $gc->expires_at ) && strtotime( $gc->expires_at ) < time() ) {
+					$failures[] = $code;
+					continue;
+				}
+
+				$old_balance = (float) $gc->balance;
+
+				// Atomic balance deduction to prevent race conditions.
+				if ( ! Repository::deduct_balance( $gc->id, $amount ) ) {
+					$failures[] = $code;
+					continue;
+				}
+
+				// Read back the new balance.
+				$updated     = Repository::find( $gc->id );
+				$new_balance = $updated ? (float) $updated->balance : max( 0, $old_balance - $amount );
+
+				TransactionRepository::insert( [
+					'gift_card_id'  => $gc->id,
+					'order_id'      => $order_id,
+					'type'          => 'debit',
+					'amount'        => $amount,
+					'balance_after' => $new_balance,
+					'note'          => sprintf(
+						/* translators: %s: order number */
+						__( 'Used on order #%s', 'beltoft-gift-cards-for-woocommerce' ),
+						$order->get_order_number()
+					),
+				] );
+
+				// Mark as redeemed if balance is zero.
+				if ( $new_balance <= 0 ) {
+					Repository::update_status( $gc->id, 'redeemed' );
+				}
+
+				/**
+				 * Fires after a gift card balance is deducted for an order.
+				 *
+				 * @param int   $gc_id    Gift card ID.
+				 * @param float $amount   Amount deducted.
+				 * @param int   $order_id Order ID.
+				 */
+				do_action( 'bgcw_after_deduct_balance', $gc->id, $amount, $order_id );
+
+				$processed[ $code ] = $amount;
 			}
 
-			// Re-validate status and expiry at deduction time.
-			if ( $gc->status !== 'active' ) {
-				$failures[] = $code;
-				continue;
-			}
-			if ( ! empty( $gc->expires_at ) && strtotime( $gc->expires_at ) < time() ) {
-				$failures[] = $code;
-				continue;
-			}
+			$order->update_meta_data( '_bgcw_deducted_amounts', $processed );
 
-			$old_balance = (float) $gc->balance;
-
-			// Atomic balance deduction to prevent race conditions.
-			if ( ! Repository::deduct_balance( $gc->id, $amount ) ) {
-				$failures[] = $code;
-				continue;
+			$complete = true;
+			foreach ( $deductions as $code => $amount ) {
+				$amount = round( (float) $amount, 2 );
+				if ( $amount <= 0 ) {
+					continue;
+				}
+				if ( ! isset( $processed[ $code ] ) || (float) $processed[ $code ] < $amount ) {
+					$complete = false;
+					break;
+				}
 			}
 
-			// Read back the new balance.
-			$updated     = Repository::find( $gc->id );
-			$new_balance = $updated ? (float) $updated->balance : max( 0, $old_balance - $amount );
-
-			TransactionRepository::insert( [
-				'gift_card_id'  => $gc->id,
-				'order_id'      => $order_id,
-				'type'          => 'debit',
-				'amount'        => $amount,
-				'balance_after' => $new_balance,
-				'note'          => sprintf(
-					/* translators: %s: order number */
-					__( 'Used on order #%s', 'beltoft-gift-cards-for-woocommerce' ),
-					$order->get_order_number()
-				),
-			] );
-
-			// Mark as redeemed if balance is zero.
-			if ( $new_balance <= 0 ) {
-				Repository::update_status( $gc->id, 'redeemed' );
-			}
-
-			/**
-			 * Fires after a gift card balance is deducted for an order.
-			 *
-			 * @param int   $gc_id    Gift card ID.
-			 * @param float $amount   Amount deducted.
-			 * @param int   $order_id Order ID.
-			 */
-			do_action( 'bgcw_after_deduct_balance', $gc->id, $amount, $order_id );
-
-			$processed[ $code ] = $amount;
-		}
-
-		$order->update_meta_data( '_bgcw_deducted_amounts', $processed );
-
-		$complete = true;
-		foreach ( $deductions as $code => $amount ) {
-			$amount = round( (float) $amount, 2 );
-			if ( $amount <= 0 ) {
-				continue;
-			}
-			if ( ! isset( $processed[ $code ] ) || (float) $processed[ $code ] < $amount ) {
-				$complete = false;
-				break;
-			}
-		}
-
-		if ( $complete ) {
-			$order->update_meta_data( '_bgcw_deducted', '1' );
-			$order->delete_meta_data( '_bgcw_deduction_failures' );
-		} else {
-			$order->delete_meta_data( '_bgcw_deducted' );
-			if ( ! empty( $failures ) ) {
-				$order->update_meta_data( '_bgcw_deduction_failures', array_values( array_unique( $failures ) ) );
-				$order->add_order_note(
-					sprintf(
-						/* translators: %s: comma-separated list of gift card codes */
-						__( 'Gift card deduction failed for: %s. Manual review required.', 'beltoft-gift-cards-for-woocommerce' ),
-						implode( ', ', array_unique( $failures ) )
-					)
-				);
-			} else {
+			if ( $complete ) {
+				$order->update_meta_data( '_bgcw_deducted', '1' );
 				$order->delete_meta_data( '_bgcw_deduction_failures' );
+			} else {
+				$order->delete_meta_data( '_bgcw_deducted' );
+				if ( ! empty( $failures ) ) {
+					$order->update_meta_data( '_bgcw_deduction_failures', array_values( array_unique( $failures ) ) );
+					$order->add_order_note(
+						sprintf(
+							/* translators: %s: comma-separated list of gift card codes */
+							__( 'Gift card deduction failed for: %s. Manual review required.', 'beltoft-gift-cards-for-woocommerce' ),
+							implode( ', ', array_unique( $failures ) )
+						)
+					);
+				} else {
+					$order->delete_meta_data( '_bgcw_deduction_failures' );
+				}
 			}
-		}
 
-		$order->save();
-		delete_post_meta( $order_id, '_bgcw_deduction_lock' );
+			$order->save();
+		} finally {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Advisory lock release.
+			$wpdb->query( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock_name ) );
+		}
 	}
 
 	/**
