@@ -96,13 +96,13 @@ class ProductPage {
 
 		// Guard: no amounts and no custom amount means nothing to sell.
 		if ( empty( $amounts ) && ! $allow_custom ) {
-			echo '<p class="bgcw-no-amounts">' . esc_html__( 'This gift card is not currently available for purchase.', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+			echo '<p class="bgcw-no-amounts">' . esc_html__( 'This gift card is not currently available for purchase.', 'beltoft-gift-cards' ) . '</p>';
 			return;
 		}
 		?>
 		<div class="bgcw-product-fields" style="<?php echo esc_attr( '--bgcw-amount-focus-color: ' . $focus_color . '; --bgcw-amount-active-bg: ' . $active_bg . ';' ); ?>">
 			<div class="bgcw-amount-selector">
-				<label><?php esc_html_e( 'Amount', 'beltoft-gift-cards-for-woocommerce' ); ?></label>
+				<label><?php esc_html_e( 'Amount', 'beltoft-gift-cards' ); ?></label>
 
 				<?php if ( 'dropdown' === $display_style ) : ?>
 					<select id="bgcw_amount_dropdown" class="input-text bgcw-amount-dropdown">
@@ -112,7 +112,7 @@ class ProductPage {
 							</option>
 						<?php endforeach; ?>
 						<?php if ( $allow_custom ) : ?>
-							<option value="custom"><?php esc_html_e( 'Custom', 'beltoft-gift-cards-for-woocommerce' ); ?></option>
+							<option value="custom"><?php esc_html_e( 'Custom', 'beltoft-gift-cards' ); ?></option>
 						<?php endif; ?>
 					</select>
 				<?php else : ?>
@@ -124,7 +124,7 @@ class ProductPage {
 						<?php endforeach; ?>
 						<?php if ( $allow_custom ) : ?>
 							<button type="button" class="bgcw-amount-btn bgcw-custom-btn">
-								<?php esc_html_e( 'Custom', 'beltoft-gift-cards-for-woocommerce' ); ?>
+								<?php esc_html_e( 'Custom', 'beltoft-gift-cards' ); ?>
 							</button>
 						<?php endif; ?>
 					</div>
@@ -135,12 +135,12 @@ class ProductPage {
 					<div class="bgcw-custom-amount" style="display:none;">
 						<label for="bgcw_custom_amount">
 							<?php
-							printf(
+							echo wp_kses_post( sprintf(
 								/* translators: 1: minimum amount, 2: maximum amount */
-								esc_html__( 'Enter amount (%1$s – %2$s)', 'beltoft-gift-cards-for-woocommerce' ),
-								wp_kses_post( wc_price( $min_custom ) ),
-								wp_kses_post( wc_price( $max_custom ) )
-							);
+								__( 'Enter amount (%1$s – %2$s)', 'beltoft-gift-cards' ),
+								wc_price( $min_custom ),
+								wc_price( $max_custom )
+							) );
 							?>
 						</label>
 						<input type="number" name="bgcw_custom_amount" id="bgcw_custom_amount"
@@ -152,17 +152,17 @@ class ProductPage {
 			</div>
 
 			<div class="bgcw-recipient-fields">
-				<h4><?php esc_html_e( 'Recipient Details', 'beltoft-gift-cards-for-woocommerce' ); ?></h4>
+				<h4><?php esc_html_e( 'Recipient Details', 'beltoft-gift-cards' ); ?></h4>
 				<p class="form-row form-row-first">
-					<label for="bgcw_recipient_name"><?php esc_html_e( 'Recipient Name', 'beltoft-gift-cards-for-woocommerce' ); ?></label>
+					<label for="bgcw_recipient_name"><?php esc_html_e( 'Recipient Name', 'beltoft-gift-cards' ); ?></label>
 					<input type="text" name="bgcw_recipient_name" id="bgcw_recipient_name" class="input-text" />
 				</p>
 				<p class="form-row form-row-last">
-					<label for="bgcw_recipient_email"><?php esc_html_e( 'Recipient Email', 'beltoft-gift-cards-for-woocommerce' ); ?> <abbr class="required" title="<?php esc_attr_e( 'required', 'beltoft-gift-cards-for-woocommerce' ); ?>">*</abbr></label>
+					<label for="bgcw_recipient_email"><?php esc_html_e( 'Recipient Email', 'beltoft-gift-cards' ); ?> <abbr class="required" title="<?php esc_attr_e( 'required', 'beltoft-gift-cards' ); ?>">*</abbr></label>
 					<input type="email" name="bgcw_recipient_email" id="bgcw_recipient_email" class="input-text" required />
 				</p>
 				<p class="form-row form-row-wide">
-					<label for="bgcw_message"><?php esc_html_e( 'Personal Message (optional)', 'beltoft-gift-cards-for-woocommerce' ); ?></label>
+					<label for="bgcw_message"><?php esc_html_e( 'Personal Message (optional)', 'beltoft-gift-cards' ); ?></label>
 					<textarea name="bgcw_message" id="bgcw_message" rows="3" class="input-text"></textarea>
 				</p>
 			</div>
@@ -195,8 +195,8 @@ class ProductPage {
 
 		// Nonce is handled by WooCommerce add to cart form.
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$amount        = isset( $_POST['bgcw_amount'] ) ? (float) $_POST['bgcw_amount'] : 0;
-		$custom_amount = ! empty( $_POST['bgcw_custom_amount'] ) ? (float) $_POST['bgcw_custom_amount'] : 0;
+		$amount        = isset( $_POST['bgcw_amount'] ) ? (float) sanitize_text_field( wp_unslash( $_POST['bgcw_amount'] ) ) : 0;
+		$custom_amount = ! empty( $_POST['bgcw_custom_amount'] ) ? (float) sanitize_text_field( wp_unslash( $_POST['bgcw_custom_amount'] ) ) : 0;
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		$allow_custom = Options::get( 'allow_custom_amount' ) === '1';
@@ -207,7 +207,7 @@ class ProductPage {
 		}
 
 		if ( $amount <= 0 ) {
-			wc_add_notice( __( 'Please select a gift card amount.', 'beltoft-gift-cards-for-woocommerce' ), 'error' );
+			wc_add_notice( __( 'Please select a gift card amount.', 'beltoft-gift-cards' ), 'error' );
 			return false;
 		}
 
@@ -225,7 +225,7 @@ class ProductPage {
 		if ( ! $is_predefined ) {
 			// Must be a valid custom amount.
 			if ( ! $allow_custom ) {
-				wc_add_notice( __( 'Please select a valid gift card amount.', 'beltoft-gift-cards-for-woocommerce' ), 'error' );
+				wc_add_notice( __( 'Please select a valid gift card amount.', 'beltoft-gift-cards' ), 'error' );
 				return false;
 			}
 
@@ -235,7 +235,7 @@ class ProductPage {
 				wc_add_notice(
 					sprintf(
 						/* translators: 1: minimum amount, 2: maximum amount */
-						__( 'Gift card amount must be between %1$s and %2$s.', 'beltoft-gift-cards-for-woocommerce' ),
+						__( 'Gift card amount must be between %1$s and %2$s.', 'beltoft-gift-cards' ),
 						wc_price( $min ),
 						wc_price( $max )
 					),
@@ -248,7 +248,7 @@ class ProductPage {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$email = isset( $_POST['bgcw_recipient_email'] ) ? sanitize_email( wp_unslash( $_POST['bgcw_recipient_email'] ) ) : '';
 		if ( empty( $email ) || ! is_email( $email ) ) {
-			wc_add_notice( __( 'Please enter a valid recipient email address.', 'beltoft-gift-cards-for-woocommerce' ), 'error' );
+			wc_add_notice( __( 'Please enter a valid recipient email address.', 'beltoft-gift-cards' ), 'error' );
 			return false;
 		}
 
@@ -260,7 +260,9 @@ class ProductPage {
 		 * @param array $post_data  Raw POST data (unsanitized).
 		 */
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$passed = apply_filters( 'bgcw_add_to_cart_validation', $passed, $product_id, $_POST );
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WooCommerce handles nonce.
+		$post_data = array_map( 'sanitize_text_field', wp_unslash( $_POST ) );
+		$passed    = apply_filters( 'bgcw_add_to_cart_validation', $passed, $product_id, $post_data );
 
 		return $passed;
 	}
@@ -279,9 +281,9 @@ class ProductPage {
 		}
 
 		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		$amount = isset( $_POST['bgcw_amount'] ) ? (float) $_POST['bgcw_amount'] : 0;
+		$amount = isset( $_POST['bgcw_amount'] ) ? (float) sanitize_text_field( wp_unslash( $_POST['bgcw_amount'] ) ) : 0;
 		if ( ! empty( $_POST['bgcw_custom_amount'] ) && Options::get( 'allow_custom_amount' ) === '1' ) {
-			$amount = round( (float) $_POST['bgcw_custom_amount'] );
+			$amount = round( (float) sanitize_text_field( wp_unslash( $_POST['bgcw_custom_amount'] ) ) );
 		}
 
 		$cart_data['bgcw_amount']          = $amount;
@@ -314,27 +316,27 @@ class ProductPage {
 		}
 
 		$item_data[] = [
-			'key'   => __( 'Gift Card Amount', 'beltoft-gift-cards-for-woocommerce' ),
+			'key'   => __( 'Gift Card Amount', 'beltoft-gift-cards' ),
 			'value' => wc_price( $cart_item['bgcw_amount'] ),
 		];
 
 		if ( ! empty( $cart_item['bgcw_recipient_email'] ) ) {
 			$item_data[] = [
-				'key'   => __( 'Recipient', 'beltoft-gift-cards-for-woocommerce' ),
+				'key'   => __( 'Recipient', 'beltoft-gift-cards' ),
 				'value' => esc_html( $cart_item['bgcw_recipient_email'] ),
 			];
 		}
 
 		if ( ! empty( $cart_item['bgcw_recipient_name'] ) ) {
 			$item_data[] = [
-				'key'   => __( 'Recipient Name', 'beltoft-gift-cards-for-woocommerce' ),
+				'key'   => __( 'Recipient Name', 'beltoft-gift-cards' ),
 				'value' => esc_html( $cart_item['bgcw_recipient_name'] ),
 			];
 		}
 
 		if ( ! empty( $cart_item['bgcw_message'] ) ) {
 			$item_data[] = [
-				'key'   => __( 'Personal Message', 'beltoft-gift-cards-for-woocommerce' ),
+				'key'   => __( 'Personal Message', 'beltoft-gift-cards' ),
 				'value' => esc_html( $cart_item['bgcw_message'] ),
 			];
 		}

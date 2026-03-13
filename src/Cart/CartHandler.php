@@ -91,7 +91,7 @@ class CartHandler {
 		if ( self::is_gift_card_coupon( $coupon->get_code() ) ) {
 			return sprintf(
 				/* translators: %s: masked gift card code */
-				__( 'Gift Card (%s)', 'beltoft-gift-cards-for-woocommerce' ),
+				__( 'Gift Card (%s)', 'beltoft-gift-cards' ),
 				self::mask_code( $coupon->get_code() )
 			);
 		}
@@ -137,7 +137,7 @@ class CartHandler {
 	 */
 	public static function coupon_message( $msg, $msg_code, $coupon ) {
 		if ( \WC_Coupon::WC_COUPON_SUCCESS === $msg_code && self::is_gift_card_coupon( $coupon->get_code() ) ) {
-			return __( 'Gift card applied successfully!', 'beltoft-gift-cards-for-woocommerce' );
+			return __( 'Gift card applied successfully!', 'beltoft-gift-cards' );
 		}
 		return $msg;
 	}
@@ -181,7 +181,7 @@ class CartHandler {
 	 * @return string
 	 */
 	private static function invalid_code_message() {
-		return __( 'This gift card code is invalid or cannot be applied.', 'beltoft-gift-cards-for-woocommerce' );
+		return __( 'This gift card code is invalid or cannot be applied.', 'beltoft-gift-cards' );
 	}
 
 	/**
@@ -214,7 +214,7 @@ class CartHandler {
 
 		// Check if already applied in WC cart.
 		if ( WC()->cart && WC()->cart->has_discount( $gc->code ) ) {
-			return new \WP_Error( 'already_applied', __( 'This gift card is already applied.', 'beltoft-gift-cards-for-woocommerce' ) );
+			return new \WP_Error( 'already_applied', __( 'This gift card is already applied.', 'beltoft-gift-cards' ) );
 		}
 
 		return true;
@@ -297,7 +297,7 @@ class CartHandler {
 		}
 
 		self::remove_gift_card_from_session( $code );
-		wc_add_notice( __( 'Gift card removed.', 'beltoft-gift-cards-for-woocommerce' ) );
+		wc_add_notice( __( 'Gift card removed.', 'beltoft-gift-cards' ) );
 
 		wp_safe_redirect( wc_get_cart_url() );
 		exit;
@@ -331,16 +331,16 @@ class CartHandler {
 		$validation = self::validate_gift_card( $gc );
 		if ( is_wp_error( $validation ) ) {
 			if ( $validation->get_error_code() === 'already_applied' ) {
-				wc_add_notice( __( 'This gift card is already applied to your cart.', 'beltoft-gift-cards-for-woocommerce' ), 'notice' );
+				wc_add_notice( __( 'This gift card is already applied to your cart.', 'beltoft-gift-cards' ), 'notice' );
 			} else {
-				wc_add_notice( __( 'This gift card code is invalid or cannot be applied.', 'beltoft-gift-cards-for-woocommerce' ), 'error' );
+				wc_add_notice( __( 'This gift card code is invalid or cannot be applied.', 'beltoft-gift-cards' ), 'error' );
 			}
 		} else {
 			self::add_gift_card_to_session( $code );
 			wc_add_notice(
 				sprintf(
 					/* translators: %s: formatted gift card balance */
-					__( 'Gift card applied! Balance: %s', 'beltoft-gift-cards-for-woocommerce' ),
+					__( 'Gift card applied! Balance: %s', 'beltoft-gift-cards' ),
 					wp_strip_all_tags( wc_price( $gc->balance, [ 'currency' => $gc->currency ] ) )
 				),
 				'success'

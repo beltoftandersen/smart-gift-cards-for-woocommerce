@@ -1,16 +1,16 @@
 <?php
 /**
  * Plugin Name:       Beltoft Gift Cards for WooCommerce
- * Plugin URI:        https://developer.wordpress.org/plugins/beltoft-gift-cards-for-woocommerce/
+ * Plugin URI:        https://wordpress.org/plugins/beltoft-gift-cards/
  * Description:       Sell digital gift cards, deliver them by email, and let customers redeem them at checkout.
- * Version:           1.3.0
+ * Version:           1.4.0
  * Requires at least: 5.8
  * Requires PHP:      7.4
- * Author:            Chimkins IT
- * Author URI:        https://chimkins.com/
+ * Author:            beltoft.net
+ * Author URI:        https://beltoft.net
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       beltoft-gift-cards-for-woocommerce
+ * Text Domain:       beltoft-gift-cards
  * Domain Path:       /languages/
  * Requires Plugins:  woocommerce
  *
@@ -40,7 +40,7 @@ spl_autoload_register(
 );
 
 /* ── Constants ─────────────────────────────────────────────────── */
-define( 'BGCW_VERSION', '1.3.0' );
+define( 'BGCW_VERSION', '1.4.0' );
 define( 'BGCW_PATH', plugin_dir_path( __FILE__ ) );
 define( 'BGCW_URL', plugin_dir_url( __FILE__ ) );
 define( 'BGCW_BASENAME', plugin_basename( __FILE__ ) );
@@ -52,7 +52,7 @@ register_activation_hook(
 	function () {
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			/* translators: %s: WooCommerce plugin name */
-			wp_die( esc_html__( 'Beltoft Gift Cards for WooCommerce requires WooCommerce to be installed and active.', 'beltoft-gift-cards-for-woocommerce' ) );
+			wp_die( esc_html__( 'Beltoft Gift Cards for WooCommerce requires WooCommerce to be installed and active.', 'beltoft-gift-cards' ) );
 		}
 		Bgcw\Support\Installer::activate();
 	}
@@ -83,7 +83,7 @@ add_filter(
 	function ( $links ) {
 		$url           = admin_url( 'admin.php?page=bgcw-gift-cards' );
 		$settings_link = '<a href="' . esc_url( $url ) . '">'
-			. esc_html__( 'Settings', 'beltoft-gift-cards-for-woocommerce' )
+			. esc_html__( 'Settings', 'beltoft-gift-cards' )
 			. '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;

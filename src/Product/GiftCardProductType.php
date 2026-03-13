@@ -52,7 +52,7 @@ class GiftCardProductType {
 	 * @return array
 	 */
 	public static function add_to_selector( $types ) {
-		$types['gift-card'] = __( 'Gift card', 'beltoft-gift-cards-for-woocommerce' );
+		$types['gift-card'] = __( 'Gift card', 'beltoft-gift-cards' );
 		return $types;
 	}
 
@@ -79,7 +79,7 @@ class GiftCardProductType {
 	 */
 	public static function data_tabs( $tabs ) {
 		$tabs['gift_card'] = [
-			'label'    => __( 'Gift Card', 'beltoft-gift-cards-for-woocommerce' ),
+			'label'    => __( 'Gift Card', 'beltoft-gift-cards' ),
 			'target'   => 'gift_card_product_data',
 			'class'    => [ 'show_if_gift-card' ],
 			'priority' => 11,
@@ -115,15 +115,15 @@ class GiftCardProductType {
 				woocommerce_wp_text_input( [
 					'id'          => '_bgcw_amounts',
 					'value'       => $amounts,
-					'label'       => __( 'Predefined Amounts', 'beltoft-gift-cards-for-woocommerce' ),
-					'description' => __( 'Comma-separated amounts (e.g., 25,50,75,100).', 'beltoft-gift-cards-for-woocommerce' ),
+					'label'       => __( 'Predefined Amounts', 'beltoft-gift-cards' ),
+					'description' => __( 'Comma-separated amounts (e.g., 25,50,75,100).', 'beltoft-gift-cards' ),
 					'desc_tip'    => true,
 				] );
 				?>
 			</div>
 			<div class="options_group">
 				<p class="form-field">
-					<em><?php esc_html_e( 'Gift cards are always virtual and non-taxable. Custom amount and expiry settings are controlled from the Gift Cards settings page.', 'beltoft-gift-cards-for-woocommerce' ); ?></em>
+					<em><?php esc_html_e( 'Gift cards are always virtual and non-taxable. Custom amount and expiry settings are controlled from the Gift Cards settings page.', 'beltoft-gift-cards' ); ?></em>
 				</p>
 			</div>
 		</div>
@@ -149,22 +149,17 @@ class GiftCardProductType {
 		if ( ! $screen || $screen->id !== 'product' ) {
 			return;
 		}
-		?>
-		<script type="text/javascript">
-		jQuery(function($) {
-			var showHide = function() {
-				var isGiftCard = $('select#product-type').val() === 'gift-card';
-				if (isGiftCard) {
-					$('.pricing').hide();
-					$('#gift_card_product_data').show();
-				} else {
-					$('#gift_card_product_data').hide();
-				}
-			};
-			$('select#product-type').on('change', showHide);
-			showHide();
-		});
-		</script>
-		<?php
+
+		$js = "jQuery(function($) {"
+			. "var showHide = function() {"
+			. "var isGiftCard = $('select#product-type').val() === 'gift-card';"
+			. "if (isGiftCard) { $('.pricing').hide(); $('#gift_card_product_data').show(); }"
+			. "else { $('#gift_card_product_data').hide(); }"
+			. "};"
+			. "$('select#product-type').on('change', showHide);"
+			. "showHide();"
+			. "});";
+
+		wp_add_inline_script( 'bgcw-admin', $js );
 	}
 }

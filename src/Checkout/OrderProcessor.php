@@ -151,7 +151,7 @@ class OrderProcessor {
 					'balance_after' => $new_balance,
 					'note'          => sprintf(
 						/* translators: %s: order number */
-						__( 'Used on order #%s', 'beltoft-gift-cards-for-woocommerce' ),
+						__( 'Used on order #%s', 'beltoft-gift-cards' ),
 						$order->get_order_number()
 					),
 				] );
@@ -197,7 +197,7 @@ class OrderProcessor {
 					$order->add_order_note(
 						sprintf(
 							/* translators: %s: comma-separated list of gift card codes */
-							__( 'Gift card deduction failed for: %s. Manual review required.', 'beltoft-gift-cards-for-woocommerce' ),
+							__( 'Gift card deduction failed for: %s. Manual review required.', 'beltoft-gift-cards' ),
 							implode( ', ', array_unique( $failures ) )
 						)
 					);
@@ -281,7 +281,7 @@ class OrderProcessor {
 				'balance_after' => $new_balance,
 				'note'          => sprintf(
 					/* translators: %s: order number */
-					__( 'Refunded from order #%s', 'beltoft-gift-cards-for-woocommerce' ),
+					__( 'Refunded from order #%s', 'beltoft-gift-cards' ),
 					$order->get_order_number()
 				),
 			] );
@@ -385,7 +385,7 @@ class OrderProcessor {
 				'balance_after' => $new_balance,
 				'note'          => sprintf(
 					/* translators: %s: order number */
-					__( 'Partial refund from order #%s', 'beltoft-gift-cards-for-woocommerce' ),
+					__( 'Partial refund from order #%s', 'beltoft-gift-cards' ),
 					$order->get_order_number()
 				),
 			] );

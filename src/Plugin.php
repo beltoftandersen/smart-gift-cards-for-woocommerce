@@ -136,8 +136,8 @@ class Plugin {
 		foreach ( WC()->cart->get_cart() as $item ) {
 			$product = $item['data'] ?? null;
 			if ( $product && $product->get_type() === 'gift-card' ) {
-				echo '<div class="wclr-redeem-notice" style="padding:12px 16px;margin:8px 0 12px;border:1px solid #e0e0e0;border-radius:4px;color:#666;font-size:0.875em;background-color:#fafafa;">'
-					. esc_html__( 'Loyalty points cannot be used to purchase gift cards.', 'beltoft-gift-cards-for-woocommerce' )
+				echo '<div class="wclr-redeem-notice bgcw-loyalty-blocked-notice">'
+					. esc_html__( 'Loyalty points cannot be used to purchase gift cards.', 'beltoft-gift-cards' )
 					. '</div>';
 				return;
 			}
@@ -200,11 +200,11 @@ class Plugin {
 			'ajax_url' => \WC_AJAX::get_endpoint( '%%endpoint%%' ),
 			'nonce'    => wp_create_nonce( 'bgcw-ajax' ),
 			'i18n'     => [
-				'enter_code'    => __( 'Please enter a gift card code.', 'beltoft-gift-cards-for-woocommerce' ),
-				'apply'         => __( 'Apply', 'beltoft-gift-cards-for-woocommerce' ),
-				'applying'      => __( 'Applying...', 'beltoft-gift-cards-for-woocommerce' ),
-				'removing'      => __( 'Removing...', 'beltoft-gift-cards-for-woocommerce' ),
-				'request_error' => __( 'Request failed. Please try again.', 'beltoft-gift-cards-for-woocommerce' ),
+				'enter_code'    => __( 'Please enter a gift card code.', 'beltoft-gift-cards' ),
+				'apply'         => __( 'Apply', 'beltoft-gift-cards' ),
+				'applying'      => __( 'Applying...', 'beltoft-gift-cards' ),
+				'removing'      => __( 'Removing...', 'beltoft-gift-cards' ),
+				'request_error' => __( 'Request failed. Please try again.', 'beltoft-gift-cards' ),
 			],
 		] );
 	}

@@ -76,7 +76,7 @@ class GiftCardField {
 		}
 		?>
 		<div class="bgcw-apply-field">
-			<h3><?php esc_html_e( 'Have a gift card?', 'beltoft-gift-cards-for-woocommerce' ); ?></h3>
+			<h3><?php esc_html_e( 'Have a gift card?', 'beltoft-gift-cards' ); ?></h3>
 
 			<?php if ( ! empty( $applied ) ) : ?>
 				<div class="bgcw-applied-list">
@@ -94,8 +94,8 @@ class GiftCardField {
 			<?php endif; ?>
 
 			<div class="bgcw-apply-form">
-				<input type="text" class="bgcw-code-input" placeholder="<?php esc_attr_e( 'Gift card code', 'beltoft-gift-cards-for-woocommerce' ); ?>" />
-				<button type="button" class="button bgcw-apply-btn"><?php esc_html_e( 'Apply', 'beltoft-gift-cards-for-woocommerce' ); ?></button>
+				<input type="text" class="bgcw-code-input" placeholder="<?php esc_attr_e( 'Gift card code', 'beltoft-gift-cards' ); ?>" />
+				<button type="button" class="button bgcw-apply-btn"><?php esc_html_e( 'Apply', 'beltoft-gift-cards' ); ?></button>
 			</div>
 			<div class="bgcw-field-notice" style="display:none;"></div>
 		</div>

@@ -302,3 +302,14 @@
 	background: #cce5ff;
 	color: #004085;
 }
+
+/* Loyalty points blocked notice */
+.bgcw-loyalty-blocked-notice {
+	padding: 12px 16px;
+	margin: 8px 0 12px;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	color: #666;
+	font-size: 0.875em;
+	background-color: #fafafa;
+}

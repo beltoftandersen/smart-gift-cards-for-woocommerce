@@ -92,3 +92,40 @@
 	width: 120px;
 	font-family: monospace;
 }
+
+/* Shortcode display */
+.bgcw-shortcode-display {
+	cursor: pointer;
+	user-select: all;
+}
+
+/* Add form (hidden by default, toggled by JS) */
+.bgcw-add-form {
+	display: none;
+	margin: 16px 0;
+	padding: 16px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+}
+
+/* Dashboard / Gift Cards tab top margin */
+.bgcw-dashboard,
+.bgcw-gift-cards-wrap {
+	margin-top: 16px;
+}
+
+/* Order meta box */
+.bgcw-order-meta {
+	margin-top: 16px;
+	padding: 12px;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+}
+
+.bgcw-order-meta h3 {
+	margin-top: 0;
+}
+
+.bgcw-order-meta-table {
+	margin-bottom: 12px;
+}

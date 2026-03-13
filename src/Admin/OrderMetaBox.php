@@ -31,28 +31,28 @@ class OrderMetaBox {
 			$deductions = $order->get_meta( '_bgcw_pending_deductions' );
 		}
 		$status_labels = [
-			'active'   => __( 'Active', 'beltoft-gift-cards-for-woocommerce' ),
-			'disabled' => __( 'Disabled', 'beltoft-gift-cards-for-woocommerce' ),
-			'expired'  => __( 'Expired', 'beltoft-gift-cards-for-woocommerce' ),
-			'redeemed' => __( 'Redeemed', 'beltoft-gift-cards-for-woocommerce' ),
+			'active'   => __( 'Active', 'beltoft-gift-cards' ),
+			'disabled' => __( 'Disabled', 'beltoft-gift-cards' ),
+			'expired'  => __( 'Expired', 'beltoft-gift-cards' ),
+			'redeemed' => __( 'Redeemed', 'beltoft-gift-cards' ),
 		];
 
 		if ( empty( $created_cards ) && empty( $deductions ) ) {
 			return;
 		}
 
-		echo '<div class="bgcw-order-meta" style="margin-top: 16px; padding: 12px; background: #f9f9f9; border: 1px solid #ddd;">';
-		echo '<h3 style="margin-top: 0;">' . esc_html__( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' ) . '</h3>';
+		echo '<div class="bgcw-order-meta">';
+		echo '<h3>' . esc_html__( 'Gift Cards', 'beltoft-gift-cards' ) . '</h3>';
 
 		if ( ! empty( $created_cards ) ) {
-			echo '<h4>' . esc_html__( 'Created by this order:', 'beltoft-gift-cards-for-woocommerce' ) . '</h4>';
-			echo '<table class="widefat striped" style="margin-bottom: 12px;">';
+			echo '<h4>' . esc_html__( 'Created by this order:', 'beltoft-gift-cards' ) . '</h4>';
+			echo '<table class="widefat striped bgcw-order-meta-table">';
 			echo '<thead><tr>';
-			echo '<th>' . esc_html__( 'Code', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
-			echo '<th>' . esc_html__( 'Amount', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
-			echo '<th>' . esc_html__( 'Balance', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
-			echo '<th>' . esc_html__( 'Recipient', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
-			echo '<th>' . esc_html__( 'Status', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
+			echo '<th>' . esc_html__( 'Code', 'beltoft-gift-cards' ) . '</th>';
+			echo '<th>' . esc_html__( 'Amount', 'beltoft-gift-cards' ) . '</th>';
+			echo '<th>' . esc_html__( 'Balance', 'beltoft-gift-cards' ) . '</th>';
+			echo '<th>' . esc_html__( 'Recipient', 'beltoft-gift-cards' ) . '</th>';
+			echo '<th>' . esc_html__( 'Status', 'beltoft-gift-cards' ) . '</th>';
 			echo '</tr></thead><tbody>';
 			foreach ( $created_cards as $gc ) {
 				echo '<tr>';
@@ -68,11 +68,11 @@ class OrderMetaBox {
 		}
 
 		if ( ! empty( $deductions ) && is_array( $deductions ) ) {
-			echo '<h4>' . esc_html__( 'Used on this order:', 'beltoft-gift-cards-for-woocommerce' ) . '</h4>';
+			echo '<h4>' . esc_html__( 'Used on this order:', 'beltoft-gift-cards' ) . '</h4>';
 			echo '<table class="widefat striped">';
 			echo '<thead><tr>';
-			echo '<th>' . esc_html__( 'Code', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
-			echo '<th>' . esc_html__( 'Amount Used', 'beltoft-gift-cards-for-woocommerce' ) . '</th>';
+			echo '<th>' . esc_html__( 'Code', 'beltoft-gift-cards' ) . '</th>';
+			echo '<th>' . esc_html__( 'Amount Used', 'beltoft-gift-cards' ) . '</th>';
 			echo '</tr></thead><tbody>';
 			foreach ( $deductions as $code => $amount ) {
 				echo '<tr>';

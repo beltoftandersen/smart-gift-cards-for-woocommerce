@@ -318,7 +318,7 @@ class Repository {
 	public static function update_balance( $id, $balance ) {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table.
 		$result = (bool) $wpdb->update(
 			self::table(),
 			[ 'balance' => $balance ],
@@ -329,6 +329,7 @@ class Repository {
 
 		if ( $result ) {
 			self::$code_cache = [];
+			wp_cache_delete( 'bgcw_gift_card_' . $id, 'bgcw' );
 		}
 
 		return $result;
@@ -352,7 +353,7 @@ class Repository {
 			return false;
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Atomic balance deduction on custom table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Atomic balance deduction on custom table.
 		$rows = $wpdb->query(
 				$wpdb->prepare(
 					"UPDATE {$wpdb->prefix}bgcw_gift_cards SET balance = balance - %f WHERE id = %d AND balance >= %f",
@@ -365,6 +366,7 @@ class Repository {
 		$success = false !== $rows && $rows > 0;
 		if ( $success ) {
 			self::$code_cache = [];
+			wp_cache_delete( 'bgcw_gift_card_' . $id, 'bgcw' );
 		}
 
 		return $success;
@@ -383,7 +385,7 @@ class Repository {
 
 		$now_gmt = gmdate( 'Y-m-d H:i:s' );
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table status sync.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table status sync.
 		$wpdb->query(
 			$wpdb->prepare(
 				"UPDATE {$wpdb->prefix}bgcw_gift_cards
@@ -395,6 +397,7 @@ class Repository {
 				$now_gmt
 			)
 		);
+		wp_cache_delete( 'bgcw_expired_sync', 'bgcw' );
 	}
 
 	/**
@@ -411,7 +414,7 @@ class Repository {
 
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom table.
 		$result = (bool) $wpdb->update(
 			self::table(),
 			[ 'status' => $status ],
@@ -422,6 +425,7 @@ class Repository {
 
 		if ( $result ) {
 			self::$code_cache = [];
+			wp_cache_delete( 'bgcw_gift_card_' . $id, 'bgcw' );
 		}
 
 		return $result;

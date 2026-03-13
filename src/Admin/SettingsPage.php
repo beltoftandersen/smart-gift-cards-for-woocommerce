@@ -25,8 +25,8 @@ class SettingsPage {
 	public static function add_menu() {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' ),
-			__( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' ),
+			__( 'Gift Cards', 'beltoft-gift-cards' ),
+			__( 'Gift Cards', 'beltoft-gift-cards' ),
 			'manage_woocommerce',
 			self::SLUG,
 			[ __CLASS__, 'render_page' ]
@@ -47,77 +47,77 @@ class SettingsPage {
 		$settings_slug = self::SLUG . '-settings';
 
 		// ── Code Section ──
-		add_settings_section( 'bgcw_code', __( 'Gift Card Codes', 'beltoft-gift-cards-for-woocommerce' ), '__return_null', $settings_slug );
-		self::add_text( 'code_prefix', __( 'Code Prefix', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_code', $settings_slug,
-			__( 'Prefix for generated codes (e.g., GIFT → GIFT-XXXX-XXXX-XXXX).', 'beltoft-gift-cards-for-woocommerce' ) );
+		add_settings_section( 'bgcw_code', __( 'Gift Card Codes', 'beltoft-gift-cards' ), '__return_null', $settings_slug );
+		self::add_text( 'code_prefix', __( 'Code Prefix', 'beltoft-gift-cards' ), 'bgcw_code', $settings_slug,
+			__( 'Prefix for generated codes (e.g., GIFT → GIFT-XXXX-XXXX-XXXX).', 'beltoft-gift-cards' ) );
 
 		// ── Amounts Section ──
-		add_settings_section( 'bgcw_amounts', __( 'Amounts', 'beltoft-gift-cards-for-woocommerce' ), '__return_null', $settings_slug );
-		self::add_checkbox( 'allow_custom_amount', __( 'Allow Custom Amount', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_amounts', $settings_slug );
-		self::add_number( 'min_custom_amount', __( 'Minimum Custom Amount', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_amounts', '1', '0', '', $settings_slug );
-		self::add_number( 'max_custom_amount', __( 'Maximum Custom Amount', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_amounts', '1', '0', '', $settings_slug );
+		add_settings_section( 'bgcw_amounts', __( 'Amounts', 'beltoft-gift-cards' ), '__return_null', $settings_slug );
+		self::add_checkbox( 'allow_custom_amount', __( 'Allow Custom Amount', 'beltoft-gift-cards' ), 'bgcw_amounts', $settings_slug );
+		self::add_number( 'min_custom_amount', __( 'Minimum Custom Amount', 'beltoft-gift-cards' ), 'bgcw_amounts', '1', '0', '', $settings_slug );
+		self::add_number( 'max_custom_amount', __( 'Maximum Custom Amount', 'beltoft-gift-cards' ), 'bgcw_amounts', '1', '0', '', $settings_slug );
 
 		// ── Expiry Section ──
-		add_settings_section( 'bgcw_expiry', __( 'Expiry', 'beltoft-gift-cards-for-woocommerce' ), '__return_null', $settings_slug );
-		self::add_number( 'default_expiry_days', __( 'Default Expiry (days)', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_expiry', '1', '0',
-			__( 'Set to 0 for no expiry.', 'beltoft-gift-cards-for-woocommerce' ), $settings_slug );
+		add_settings_section( 'bgcw_expiry', __( 'Expiry', 'beltoft-gift-cards' ), '__return_null', $settings_slug );
+		self::add_number( 'default_expiry_days', __( 'Default Expiry (days)', 'beltoft-gift-cards' ), 'bgcw_expiry', '1', '0',
+			__( 'Set to 0 for no expiry.', 'beltoft-gift-cards' ), $settings_slug );
 
 		// ── Dedicated Field Section ──
-		add_settings_section( 'bgcw_field', __( 'Dedicated Gift Card Field', 'beltoft-gift-cards-for-woocommerce' ), function () {
-			echo '<p>' . esc_html__( 'Gift cards always work in the standard WooCommerce coupon field. Optionally show a separate "Apply Gift Card" field.', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+		add_settings_section( 'bgcw_field', __( 'Dedicated Gift Card Field', 'beltoft-gift-cards' ), function () {
+			echo '<p>' . esc_html__( 'Gift cards always work in the standard WooCommerce coupon field. Optionally show a separate "Apply Gift Card" field.', 'beltoft-gift-cards' ) . '</p>';
 		}, $settings_slug );
-		self::add_checkbox( 'show_dedicated_field', __( 'Show Dedicated Field', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_field', $settings_slug );
-		self::add_select( 'dedicated_field_placement', __( 'Field Placement', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_field', [
-			'auto'      => __( 'Automatic (cart & checkout)', 'beltoft-gift-cards-for-woocommerce' ),
-			'shortcode' => __( 'Shortcode only', 'beltoft-gift-cards-for-woocommerce' ),
+		self::add_checkbox( 'show_dedicated_field', __( 'Show Dedicated Field', 'beltoft-gift-cards' ), 'bgcw_field', $settings_slug );
+		self::add_select( 'dedicated_field_placement', __( 'Field Placement', 'beltoft-gift-cards' ), 'bgcw_field', [
+			'auto'      => __( 'Automatic (cart & checkout)', 'beltoft-gift-cards' ),
+			'shortcode' => __( 'Shortcode only', 'beltoft-gift-cards' ),
 		], $settings_slug );
 
-		add_settings_field( 'bgcw_shortcodes_info', __( 'Shortcode', 'beltoft-gift-cards-for-woocommerce' ), function () {
-			echo '<p><code style="cursor:pointer;user-select:all;">[bgcw_apply_field]</code> &mdash; '
-				. esc_html__( 'Apply Gift Card field (cart & checkout)', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+		add_settings_field( 'bgcw_shortcodes_info', __( 'Shortcode', 'beltoft-gift-cards' ), function () {
+			echo '<p><code class="bgcw-shortcode-display">[bgcw_apply_field]</code> &mdash; '
+				. esc_html__( 'Apply Gift Card field (cart & checkout)', 'beltoft-gift-cards' ) . '</p>';
 		}, $settings_slug, 'bgcw_field' );
 
 		// ── Product Page Section ──
-		add_settings_section( 'bgcw_product_page', __( 'Product Page', 'beltoft-gift-cards-for-woocommerce' ), function () {
-			echo '<p>' . esc_html__( 'Controls how the gift card amount selector and recipient fields appear on the product page.', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+		add_settings_section( 'bgcw_product_page', __( 'Product Page', 'beltoft-gift-cards' ), function () {
+			echo '<p>' . esc_html__( 'Controls how the gift card amount selector and recipient fields appear on the product page.', 'beltoft-gift-cards' ) . '</p>';
 		}, $settings_slug );
-		self::add_select( 'product_form_placement', __( 'Product Form Placement', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_product_page', [
-			'auto'      => __( 'Automatic (WooCommerce hook)', 'beltoft-gift-cards-for-woocommerce' ),
-			'shortcode' => __( 'Shortcode only — [bgcw_product_form]', 'beltoft-gift-cards-for-woocommerce' ),
+		self::add_select( 'product_form_placement', __( 'Product Form Placement', 'beltoft-gift-cards' ), 'bgcw_product_page', [
+			'auto'      => __( 'Automatic (WooCommerce hook)', 'beltoft-gift-cards' ),
+			'shortcode' => __( 'Shortcode only — [bgcw_product_form]', 'beltoft-gift-cards' ),
 		], $settings_slug );
-		self::add_select( 'amount_display_style', __( 'Amount Display Style', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_product_page', [
-			'buttons'  => __( 'Buttons', 'beltoft-gift-cards-for-woocommerce' ),
-			'dropdown' => __( 'Dropdown', 'beltoft-gift-cards-for-woocommerce' ),
+		self::add_select( 'amount_display_style', __( 'Amount Display Style', 'beltoft-gift-cards' ), 'bgcw_product_page', [
+			'buttons'  => __( 'Buttons', 'beltoft-gift-cards' ),
+			'dropdown' => __( 'Dropdown', 'beltoft-gift-cards' ),
 		], $settings_slug );
 		self::add_color(
 			'amount_button_focus_color',
-			__( 'Amount Button Focus Color', 'beltoft-gift-cards-for-woocommerce' ),
+			__( 'Amount Button Focus Color', 'beltoft-gift-cards' ),
 			'bgcw_product_page',
-			__( 'Color used for the amount button focus indicator on the product page.', 'beltoft-gift-cards-for-woocommerce' ),
+			__( 'Color used for the amount button focus indicator on the product page.', 'beltoft-gift-cards' ),
 			$settings_slug
 		);
-		add_settings_field( 'bgcw_product_form_shortcode', __( 'Shortcode', 'beltoft-gift-cards-for-woocommerce' ), function () {
-			echo '<p><code style="cursor:pointer;user-select:all;">[bgcw_product_form]</code> &mdash; '
-				. esc_html__( 'Gift card product form for page builders (Bricks, Elementor)', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+		add_settings_field( 'bgcw_product_form_shortcode', __( 'Shortcode', 'beltoft-gift-cards' ), function () {
+			echo '<p><code class="bgcw-shortcode-display">[bgcw_product_form]</code> &mdash; '
+				. esc_html__( 'Gift card product form for page builders (Bricks, Elementor)', 'beltoft-gift-cards' ) . '</p>';
 		}, $settings_slug, 'bgcw_product_page' );
 
 		// ── Integrations Section (only when Loyalty Rewards is active) ──
 		if ( class_exists( 'LoyaltyRewards\\Plugin' ) ) {
-			add_settings_section( 'bgcw_integrations', __( 'Integrations', 'beltoft-gift-cards-for-woocommerce' ), function () {
-				echo '<p>' . esc_html__( 'Settings for third-party plugin compatibility.', 'beltoft-gift-cards-for-woocommerce' ) . '</p>';
+			add_settings_section( 'bgcw_integrations', __( 'Integrations', 'beltoft-gift-cards' ), function () {
+				echo '<p>' . esc_html__( 'Settings for third-party plugin compatibility.', 'beltoft-gift-cards' ) . '</p>';
 			}, $settings_slug );
 			self::add_checkbox(
 				'allow_points_for_gift_cards',
-				__( 'Allow Loyalty Points for Gift Cards', 'beltoft-gift-cards-for-woocommerce' ),
+				__( 'Allow Loyalty Points for Gift Cards', 'beltoft-gift-cards' ),
 				'bgcw_integrations',
 				$settings_slug,
-				__( 'Allow customers to use loyalty points to pay for gift card purchases.', 'beltoft-gift-cards-for-woocommerce' )
+				__( 'Allow customers to use loyalty points to pay for gift card purchases.', 'beltoft-gift-cards' )
 			);
 		}
 
 		// ── Advanced Section ──
-		add_settings_section( 'bgcw_advanced', __( 'Advanced', 'beltoft-gift-cards-for-woocommerce' ), '__return_null', $settings_slug );
-		self::add_checkbox( 'cleanup_on_uninstall', __( 'Delete All Data on Uninstall', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_advanced', $settings_slug );
+		add_settings_section( 'bgcw_advanced', __( 'Advanced', 'beltoft-gift-cards' ), '__return_null', $settings_slug );
+		self::add_checkbox( 'cleanup_on_uninstall', __( 'Delete All Data on Uninstall', 'beltoft-gift-cards' ), 'bgcw_advanced', $settings_slug );
 	}
 
 	/**
@@ -138,9 +138,9 @@ class SettingsPage {
 
 		$current_tab = self::current_tab();
 		$tabs = [
-			'dashboard'  => __( 'Dashboard', 'beltoft-gift-cards-for-woocommerce' ),
-			'gift-cards' => __( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' ),
-			'settings'   => __( 'Settings', 'beltoft-gift-cards-for-woocommerce' ),
+			'dashboard'  => __( 'Dashboard', 'beltoft-gift-cards' ),
+			'gift-cards' => __( 'Gift Cards', 'beltoft-gift-cards' ),
+			'settings'   => __( 'Settings', 'beltoft-gift-cards' ),
 		];
 
 		/**
@@ -151,7 +151,7 @@ class SettingsPage {
 		$tabs = apply_filters( 'bgcw_admin_tabs', $tabs );
 		?>
 		<div class="wrap bgcw-settings-wrap">
-			<h1><?php esc_html_e( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' ); ?></h1>
+			<h1><?php esc_html_e( 'Gift Cards', 'beltoft-gift-cards' ); ?></h1>
 
 			<nav class="nav-tab-wrapper">
 				<?php foreach ( $tabs as $slug => $label ) : ?>
@@ -192,14 +192,14 @@ class SettingsPage {
 	private static function render_dashboard_tab() {
 		$stats = Repository::get_summary_stats();
 		?>
-		<div class="bgcw-dashboard" style="margin-top: 16px;">
+		<div class="bgcw-dashboard">
 			<div class="bgcw-stats-cards">
 				<?php
 				$cards = [
-					__( 'Total Issued', 'beltoft-gift-cards-for-woocommerce' )        => number_format_i18n( $stats['total_issued'] ),
-					__( 'Total Redeemed', 'beltoft-gift-cards-for-woocommerce' )      => number_format_i18n( $stats['total_redeemed'] ),
-					__( 'Outstanding Balance', 'beltoft-gift-cards-for-woocommerce' ) => wp_strip_all_tags( wc_price( $stats['outstanding_balance'] ) ),
-					__( 'Expired', 'beltoft-gift-cards-for-woocommerce' )             => number_format_i18n( $stats['total_expired'] ),
+					__( 'Total Issued', 'beltoft-gift-cards' )        => number_format_i18n( $stats['total_issued'] ),
+					__( 'Total Redeemed', 'beltoft-gift-cards' )      => number_format_i18n( $stats['total_redeemed'] ),
+					__( 'Outstanding Balance', 'beltoft-gift-cards' ) => wp_strip_all_tags( wc_price( $stats['outstanding_balance'] ) ),
+					__( 'Expired', 'beltoft-gift-cards' )             => number_format_i18n( $stats['total_expired'] ),
 				];
 				foreach ( $cards as $label => $value ) :
 				?>
@@ -227,36 +227,36 @@ class SettingsPage {
 		$list_table = new GiftCardListTable();
 		$list_table->prepare_items();
 		?>
-		<div class="bgcw-gift-cards-wrap" style="margin-top: 16px;">
+		<div class="bgcw-gift-cards-wrap">
 			<?php self::render_manual_create_notice(); ?>
 
 			<button type="button" class="button button-primary bgcw-toggle-add-form">
-				<?php esc_html_e( 'Add Gift Card', 'beltoft-gift-cards-for-woocommerce' ); ?>
+				<?php esc_html_e( 'Add Gift Card', 'beltoft-gift-cards' ); ?>
 			</button>
 
-			<div class="bgcw-add-form" style="display: none; margin: 16px 0; padding: 16px; background: #fff; border: 1px solid #c3c4c7;">
-				<h3><?php esc_html_e( 'Create Gift Card Manually', 'beltoft-gift-cards-for-woocommerce' ); ?></h3>
+			<div class="bgcw-add-form">
+				<h3><?php esc_html_e( 'Create Gift Card Manually', 'beltoft-gift-cards' ); ?></h3>
 				<form method="post" action="">
 					<?php wp_nonce_field( 'bgcw_manual_create', 'bgcw_create_nonce' ); ?>
 					<table class="form-table">
 						<tr>
-							<th><label for="bgcw_amount"><?php esc_html_e( 'Amount', 'beltoft-gift-cards-for-woocommerce' ); ?></label></th>
+							<th><label for="bgcw_amount"><?php esc_html_e( 'Amount', 'beltoft-gift-cards' ); ?></label></th>
 							<td><input type="number" name="bgcw_amount" id="bgcw_amount" step="0.01" min="0.01" class="small-text" required /></td>
 						</tr>
 						<tr>
-							<th><label for="bgcw_recipient_name"><?php esc_html_e( 'Recipient Name', 'beltoft-gift-cards-for-woocommerce' ); ?></label></th>
+							<th><label for="bgcw_recipient_name"><?php esc_html_e( 'Recipient Name', 'beltoft-gift-cards' ); ?></label></th>
 							<td><input type="text" name="bgcw_recipient_name" id="bgcw_recipient_name" class="regular-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="bgcw_recipient_email"><?php esc_html_e( 'Recipient Email', 'beltoft-gift-cards-for-woocommerce' ); ?></label></th>
+							<th><label for="bgcw_recipient_email"><?php esc_html_e( 'Recipient Email', 'beltoft-gift-cards' ); ?></label></th>
 							<td><input type="email" name="bgcw_recipient_email" id="bgcw_recipient_email" class="regular-text" /></td>
 						</tr>
 						<tr>
-							<th><label for="bgcw_message"><?php esc_html_e( 'Message', 'beltoft-gift-cards-for-woocommerce' ); ?></label></th>
+							<th><label for="bgcw_message"><?php esc_html_e( 'Message', 'beltoft-gift-cards' ); ?></label></th>
 							<td><textarea name="bgcw_message" id="bgcw_message" rows="3" class="large-text"></textarea></td>
 						</tr>
 					</table>
-					<?php submit_button( __( 'Create Gift Card', 'beltoft-gift-cards-for-woocommerce' ), 'primary', 'bgcw_create_submit' ); ?>
+					<?php submit_button( __( 'Create Gift Card', 'beltoft-gift-cards' ), 'primary', 'bgcw_create_submit' ); ?>
 				</form>
 			</div>
 
@@ -264,7 +264,7 @@ class SettingsPage {
 				<input type="hidden" name="page" value="<?php echo esc_attr( self::SLUG ); ?>" />
 				<input type="hidden" name="tab" value="gift-cards" />
 				<?php
-				$list_table->search_box( __( 'Search', 'beltoft-gift-cards-for-woocommerce' ), 'bgcw_search' );
+				$list_table->search_box( __( 'Search', 'beltoft-gift-cards' ), 'bgcw_search' );
 				$list_table->display();
 				?>
 			</form>
@@ -319,9 +319,9 @@ class SettingsPage {
 		] );
 
 		if ( $gc_id ) {
-			self::set_manual_create_notice( 'success', __( 'Gift card created successfully!', 'beltoft-gift-cards-for-woocommerce' ) );
+			self::set_manual_create_notice( 'success', __( 'Gift card created successfully!', 'beltoft-gift-cards' ) );
 		} else {
-			self::set_manual_create_notice( 'error', __( 'Failed to create gift card. Please check the amount.', 'beltoft-gift-cards-for-woocommerce' ) );
+			self::set_manual_create_notice( 'error', __( 'Failed to create gift card. Please check the amount.', 'beltoft-gift-cards' ) );
 		}
 
 		// Post/Redirect/Get to prevent duplicate gift card creation on refresh.

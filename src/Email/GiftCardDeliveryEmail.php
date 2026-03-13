@@ -28,8 +28,8 @@ class GiftCardDeliveryEmail extends \WC_Email {
 	public function __construct() {
 		$this->id             = 'bgcw_gift_card_delivery';
 		$this->customer_email = true;
-		$this->title          = __( 'Gift Card Delivery', 'beltoft-gift-cards-for-woocommerce' );
-		$this->description    = __( 'Sent to the recipient when a gift card is purchased and created.', 'beltoft-gift-cards-for-woocommerce' );
+		$this->title          = __( 'Gift Card Delivery', 'beltoft-gift-cards' );
+		$this->description    = __( 'Sent to the recipient when a gift card is purchased and created.', 'beltoft-gift-cards' );
 
 		$this->template_html  = 'emails/gift-card-delivery.php';
 		$this->template_plain = 'emails/plain/gift-card-delivery.php';
@@ -53,7 +53,7 @@ class GiftCardDeliveryEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_default_subject() {
-		return __( 'You received a {amount} gift card from {sender_name}!', 'beltoft-gift-cards-for-woocommerce' );
+		return __( 'You received a {amount} gift card from {sender_name}!', 'beltoft-gift-cards' );
 	}
 
 	/**
@@ -62,7 +62,7 @@ class GiftCardDeliveryEmail extends \WC_Email {
 	 * @return string
 	 */
 	public function get_default_heading() {
-		return __( "You've received a gift card!", 'beltoft-gift-cards-for-woocommerce' );
+		return __( "You've received a gift card!", 'beltoft-gift-cards' );
 	}
 
 	/**
@@ -99,7 +99,7 @@ class GiftCardDeliveryEmail extends \WC_Email {
 		$this->order     = $order;
 		$this->recipient = $gc->recipient_email;
 
-		$this->placeholders['{sender_name}'] = $gc->sender_name ?: __( 'Someone special', 'beltoft-gift-cards-for-woocommerce' );
+		$this->placeholders['{sender_name}'] = $gc->sender_name ?: __( 'Someone special', 'beltoft-gift-cards' );
 		$this->placeholders['{amount}']      = html_entity_decode( wp_strip_all_tags( wc_price( $gc->initial_amount, [ 'currency' => $gc->currency ] ) ), ENT_QUOTES, 'UTF-8' );
 
 		if ( ! $this->is_enabled() || ! $this->get_recipient() ) {
@@ -188,11 +188,11 @@ class GiftCardDeliveryEmail extends \WC_Email {
 			'initial_amount'  => '50.00',
 			'balance'         => '50.00',
 			'currency'        => get_woocommerce_currency(),
-			'sender_name'     => __( 'John Doe', 'beltoft-gift-cards-for-woocommerce' ),
+			'sender_name'     => __( 'John Doe', 'beltoft-gift-cards' ),
 			'sender_email'    => 'john@example.com',
-			'recipient_name'  => __( 'Jane Doe', 'beltoft-gift-cards-for-woocommerce' ),
+			'recipient_name'  => __( 'Jane Doe', 'beltoft-gift-cards' ),
 			'recipient_email' => 'jane@example.com',
-			'message'         => __( 'Happy Birthday! Enjoy this gift card.', 'beltoft-gift-cards-for-woocommerce' ),
+			'message'         => __( 'Happy Birthday! Enjoy this gift card.', 'beltoft-gift-cards' ),
 			'order_id'        => 0,
 			'status'          => 'active',
 			'expires_at'      => gmdate( 'Y-m-d H:i:s', strtotime( '+1 year' ) ),
@@ -206,19 +206,19 @@ class GiftCardDeliveryEmail extends \WC_Email {
 	public function init_form_fields() {
 		$placeholder_text = sprintf(
 			/* translators: %s: list of available placeholders */
-			__( 'Available placeholders: %s', 'beltoft-gift-cards-for-woocommerce' ),
+			__( 'Available placeholders: %s', 'beltoft-gift-cards' ),
 			'<code>{sender_name}, {amount}, {site_title}</code>'
 		);
 
 		$this->form_fields = [
 			'enabled'    => [
-				'title'   => __( 'Enable/Disable', 'beltoft-gift-cards-for-woocommerce' ),
+				'title'   => __( 'Enable/Disable', 'beltoft-gift-cards' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable this email notification', 'beltoft-gift-cards-for-woocommerce' ),
+				'label'   => __( 'Enable this email notification', 'beltoft-gift-cards' ),
 				'default' => 'yes',
 			],
 			'subject'    => [
-				'title'       => __( 'Subject', 'beltoft-gift-cards-for-woocommerce' ),
+				'title'       => __( 'Subject', 'beltoft-gift-cards' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
 				'description' => $placeholder_text,
@@ -226,7 +226,7 @@ class GiftCardDeliveryEmail extends \WC_Email {
 				'default'     => '',
 			],
 			'heading'    => [
-				'title'       => __( 'Email heading', 'beltoft-gift-cards-for-woocommerce' ),
+				'title'       => __( 'Email heading', 'beltoft-gift-cards' ),
 				'type'        => 'text',
 				'desc_tip'    => true,
 				'description' => $placeholder_text,
@@ -234,9 +234,9 @@ class GiftCardDeliveryEmail extends \WC_Email {
 				'default'     => '',
 			],
 			'email_type' => [
-				'title'       => __( 'Email type', 'beltoft-gift-cards-for-woocommerce' ),
+				'title'       => __( 'Email type', 'beltoft-gift-cards' ),
 				'type'        => 'select',
-				'description' => __( 'Choose which format of email to send.', 'beltoft-gift-cards-for-woocommerce' ),
+				'description' => __( 'Choose which format of email to send.', 'beltoft-gift-cards' ),
 				'default'     => 'html',
 				'class'       => 'email_type wc-enhanced-select',
 				'options'     => $this->get_email_type_options(),

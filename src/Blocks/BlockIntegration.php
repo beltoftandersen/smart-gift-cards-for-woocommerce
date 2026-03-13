@@ -21,7 +21,7 @@ class BlockIntegration implements IntegrationInterface {
 	 * @return string
 	 */
 	public function get_name() {
-		return 'beltoft-gift-cards-for-woocommerce';
+		return 'beltoft-gift-cards';
 	}
 
 	/**

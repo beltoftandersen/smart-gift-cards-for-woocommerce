@@ -5,7 +5,7 @@ Sell digital gift cards, deliver them by email, and let customers redeem them at
 - Stable version: 1.3.0
 - Requires: WordPress 5.8+, PHP 7.4+, WooCommerce 6.0+
 - Author: Chimkins IT
-- Text domain: beltoft-gift-cards-for-woocommerce
+- Text domain: beltoft-gift-cards
 
 ## Overview
 
@@ -90,10 +90,21 @@ Developers can extend the plugin:
 
 ## Translations
 
-- Text domain: `beltoft-gift-cards-for-woocommerce`
-- Translation template: `languages/beltoft-gift-cards-for-woocommerce.pot`
+- Text domain: `beltoft-gift-cards`
+- Translation template: `languages/beltoft-gift-cards.pot`
 
 ## Changelog
+
+### 1.4.0
+
+- Renamed plugin slug and folder to `beltoft-gift-cards`.
+- Renamed text domain to `beltoft-gift-cards`.
+- Replaced inline scripts with `wp_add_inline_script()`.
+- Fixed double-escaping on gift card price display.
+- Improved input sanitization on all add-to-cart POST data.
+- Moved all inline styles to external CSS files.
+- Added `wp_cache_delete()` calls after custom table writes.
+- Updated author to beltoft.net.
 
 ### 1.3.0
 
@@ -129,7 +140,7 @@ Developers can extend the plugin:
 
 ## About the Author
 
-Beltoft Gift Cards for WooCommerce is built and maintained by [Chimkins IT](https://chimkins.com), a team specializing in WooCommerce and Odoo ERP integrations. Check out our [Odoo WooCommerce Connector](https://chimkins.com) for real-time sync between your WooCommerce store and Odoo.
+Beltoft Gift Cards for WooCommerce is built and maintained by [beltoft.net](https://beltoft.net).
 
 ## License
 

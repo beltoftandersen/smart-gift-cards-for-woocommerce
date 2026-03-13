@@ -141,7 +141,7 @@ class GiftCardCreator {
 			'balance_after' => $amount,
 			'note'          => sprintf(
 				/* translators: %s: order number */
-				__( 'Gift card created from order #%s', 'beltoft-gift-cards-for-woocommerce' ),
+				__( 'Gift card created from order #%s', 'beltoft-gift-cards' ),
 				$order->get_order_number()
 			),
 		] );
@@ -196,7 +196,7 @@ class GiftCardCreator {
 			'type'          => 'credit',
 			'amount'        => $amount,
 			'balance_after' => $amount,
-			'note'          => __( 'Manually created by admin', 'beltoft-gift-cards-for-woocommerce' ),
+			'note'          => __( 'Manually created by admin', 'beltoft-gift-cards' ),
 		] );
 
 		if ( ! empty( $data['recipient_email'] ) ) {

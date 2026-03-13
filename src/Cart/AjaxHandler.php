@@ -18,7 +18,7 @@ class AjaxHandler {
 
 		wp_send_json_error(
 			[
-				'message' => __( 'Security check failed. Please refresh and try again.', 'beltoft-gift-cards-for-woocommerce' ),
+				'message' => __( 'Security check failed. Please refresh and try again.', 'beltoft-gift-cards' ),
 			],
 			403
 		);
@@ -39,20 +39,20 @@ class AjaxHandler {
 		self::verify_nonce();
 
 		if ( ! WC()->session ) {
-			wp_send_json_error( [ 'message' => __( 'Session not available. Please refresh.', 'beltoft-gift-cards-for-woocommerce' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Session not available. Please refresh.', 'beltoft-gift-cards' ) ] );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified in self::verify_nonce().
 		$code = isset( $_POST['code'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_POST['code'] ) ) ) : '';
 		if ( empty( $code ) ) {
-			wp_send_json_error( [ 'message' => __( 'Please enter a gift card code.', 'beltoft-gift-cards-for-woocommerce' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Please enter a gift card code.', 'beltoft-gift-cards' ) ] );
 		}
 
 		// Rate limiting: max 5 lookups per minute per session.
 		$transient_key = 'bgcw_rate_' . md5( WC()->session->get_customer_id() );
 		$attempts      = (int) get_transient( $transient_key );
 		if ( $attempts >= 5 ) {
-			wp_send_json_error( [ 'message' => __( 'Too many attempts. Please wait a moment.', 'beltoft-gift-cards-for-woocommerce' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Too many attempts. Please wait a moment.', 'beltoft-gift-cards' ) ] );
 		}
 		set_transient( $transient_key, $attempts + 1, MINUTE_IN_SECONDS );
 
@@ -67,7 +67,7 @@ class AjaxHandler {
 		CartHandler::add_gift_card_to_session( $code );
 
 		wp_send_json_success( [
-			'message' => __( 'Gift card applied successfully!', 'beltoft-gift-cards-for-woocommerce' ),
+			'message' => __( 'Gift card applied successfully!', 'beltoft-gift-cards' ),
 		] );
 	}
 
@@ -78,7 +78,7 @@ class AjaxHandler {
 		self::verify_nonce();
 
 		if ( ! WC()->session ) {
-			wp_send_json_error( [ 'message' => __( 'Session not available. Please refresh.', 'beltoft-gift-cards-for-woocommerce' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Session not available. Please refresh.', 'beltoft-gift-cards' ) ] );
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- Verified in self::verify_nonce().
@@ -86,14 +86,14 @@ class AjaxHandler {
 		$applied = CartHandler::get_applied_codes();
 
 		if ( ! isset( $applied[ $index ] ) ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid gift card.', 'beltoft-gift-cards-for-woocommerce' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid gift card.', 'beltoft-gift-cards' ) ] );
 		}
 
 		// Remove via WC coupon system.
 		CartHandler::remove_gift_card_from_session( $applied[ $index ] );
 
 		wp_send_json_success( [
-			'message' => __( 'Gift card removed.', 'beltoft-gift-cards-for-woocommerce' ),
+			'message' => __( 'Gift card removed.', 'beltoft-gift-cards' ),
 		] );
 	}
 }

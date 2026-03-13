@@ -19,7 +19,7 @@
 	var ExperimentalOrderMeta = wc.blocksCheckout.ExperimentalOrderMeta;
 	var TotalsWrapper         = wc.blocksCheckout.TotalsWrapper;
 
-	var NS = 'beltoft-gift-cards-for-woocommerce';
+	var NS = 'beltoft-gift-cards';
 
 	/* ── Points blocked notice ───────────────────────────────── */
 

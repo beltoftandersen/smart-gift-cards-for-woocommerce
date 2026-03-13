@@ -40,7 +40,7 @@ class MyAccount {
 			$new_items[ $key ] = $label;
 
 			if ( $key === 'orders' ) {
-				$new_items['gift-cards'] = __( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' );
+				$new_items['gift-cards'] = __( 'Gift Cards', 'beltoft-gift-cards' );
 			}
 		}
 
@@ -63,7 +63,7 @@ class MyAccount {
 			&& in_the_loop()
 			&& is_account_page()
 		) {
-			return __( 'Gift Cards', 'beltoft-gift-cards-for-woocommerce' );
+			return __( 'Gift Cards', 'beltoft-gift-cards' );
 		}
 		return $title;
 	}
@@ -97,11 +97,11 @@ class MyAccount {
 				<table class="woocommerce-orders-table bgcw-cards-table">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Code', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Initial Amount', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Balance', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Status', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-							<th><?php esc_html_e( 'Expires', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
+							<th><?php esc_html_e( 'Code', 'beltoft-gift-cards' ); ?></th>
+							<th><?php esc_html_e( 'Initial Amount', 'beltoft-gift-cards' ); ?></th>
+							<th><?php esc_html_e( 'Balance', 'beltoft-gift-cards' ); ?></th>
+							<th><?php esc_html_e( 'Status', 'beltoft-gift-cards' ); ?></th>
+							<th><?php esc_html_e( 'Expires', 'beltoft-gift-cards' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -109,17 +109,17 @@ class MyAccount {
 							<tr class="bgcw-card-row" data-card-id="<?php echo esc_attr( $gc->id ); ?>">
 								<td>
 									<code><?php echo esc_html( CartHandler::mask_code( $gc->code ) ); ?></code>
-									<button type="button" class="bgcw-toggle-transactions" title="<?php esc_attr_e( 'Show transactions', 'beltoft-gift-cards-for-woocommerce' ); ?>">&#9660;</button>
+									<button type="button" class="bgcw-toggle-transactions" title="<?php esc_attr_e( 'Show transactions', 'beltoft-gift-cards' ); ?>">&#9660;</button>
 								</td>
 								<td><?php echo wp_kses_post( wc_price( $gc->initial_amount, [ 'currency' => $gc->currency ] ) ); ?></td>
 								<td><strong><?php echo wp_kses_post( wc_price( $gc->balance, [ 'currency' => $gc->currency ] ) ); ?></strong></td>
 								<td>
 									<?php
 									$status_labels = [
-										'active'   => __( 'Active', 'beltoft-gift-cards-for-woocommerce' ),
-										'disabled' => __( 'Disabled', 'beltoft-gift-cards-for-woocommerce' ),
-										'expired'  => __( 'Expired', 'beltoft-gift-cards-for-woocommerce' ),
-										'redeemed' => __( 'Redeemed', 'beltoft-gift-cards-for-woocommerce' ),
+										'active'   => __( 'Active', 'beltoft-gift-cards' ),
+										'disabled' => __( 'Disabled', 'beltoft-gift-cards' ),
+										'expired'  => __( 'Expired', 'beltoft-gift-cards' ),
+										'redeemed' => __( 'Redeemed', 'beltoft-gift-cards' ),
 									];
 									$status_label = $status_labels[ $gc->status ] ?? ucfirst( $gc->status );
 									?>
@@ -130,7 +130,7 @@ class MyAccount {
 								<td>
 									<?php
 									if ( empty( $gc->expires_at ) ) {
-										esc_html_e( 'Never', 'beltoft-gift-cards-for-woocommerce' );
+										esc_html_e( 'Never', 'beltoft-gift-cards' );
 									} else {
 										echo esc_html( wp_date( get_option( 'date_format' ), strtotime( $gc->expires_at ) ) );
 									}
@@ -146,11 +146,11 @@ class MyAccount {
 										<table class="bgcw-transactions-table">
 											<thead>
 												<tr>
-													<th><?php esc_html_e( 'Date', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-													<th><?php esc_html_e( 'Type', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-													<th><?php esc_html_e( 'Amount', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-													<th><?php esc_html_e( 'Balance', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
-													<th><?php esc_html_e( 'Note', 'beltoft-gift-cards-for-woocommerce' ); ?></th>
+													<th><?php esc_html_e( 'Date', 'beltoft-gift-cards' ); ?></th>
+													<th><?php esc_html_e( 'Type', 'beltoft-gift-cards' ); ?></th>
+													<th><?php esc_html_e( 'Amount', 'beltoft-gift-cards' ); ?></th>
+													<th><?php esc_html_e( 'Balance', 'beltoft-gift-cards' ); ?></th>
+													<th><?php esc_html_e( 'Note', 'beltoft-gift-cards' ); ?></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -159,9 +159,9 @@ class MyAccount {
 														<td><?php echo esc_html( wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $tx->created_at ) ) ); ?></td>
 														<?php
 $tx_labels = [
-	'debit'  => __( 'Debit', 'beltoft-gift-cards-for-woocommerce' ),
-	'credit' => __( 'Credit', 'beltoft-gift-cards-for-woocommerce' ),
-	'refund' => __( 'Refund', 'beltoft-gift-cards-for-woocommerce' ),
+	'debit'  => __( 'Debit', 'beltoft-gift-cards' ),
+	'credit' => __( 'Credit', 'beltoft-gift-cards' ),
+	'refund' => __( 'Refund', 'beltoft-gift-cards' ),
 ];
 $tx_label = $tx_labels[ $tx->type ] ?? ucfirst( $tx->type );
 ?>
@@ -179,7 +179,7 @@ $tx_label = $tx_labels[ $tx->type ] ?? ucfirst( $tx->type );
 											</tbody>
 										</table>
 									<?php else : ?>
-										<p><?php esc_html_e( 'No transactions yet.', 'beltoft-gift-cards-for-woocommerce' ); ?></p>
+										<p><?php esc_html_e( 'No transactions yet.', 'beltoft-gift-cards' ); ?></p>
 									<?php endif; ?>
 								</td>
 							</tr>
@@ -204,7 +204,7 @@ $tx_label = $tx_labels[ $tx->type ] ?? ucfirst( $tx->type );
 					</nav>
 				<?php endif; ?>
 			<?php else : ?>
-				<p><?php esc_html_e( 'You don\'t have any gift cards yet.', 'beltoft-gift-cards-for-woocommerce' ); ?></p>
+				<p><?php esc_html_e( 'You don\'t have any gift cards yet.', 'beltoft-gift-cards' ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php

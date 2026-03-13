@@ -1,10 +1,10 @@
 === Beltoft Gift Cards for WooCommerce ===
-Contributors: christian198521, Chimkins IT
+Contributors: christian198521
 Tags: woocommerce, gift cards, gift certificate, store credit, voucher
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,7 +42,7 @@ Beltoft Gift Cards for WooCommerce adds a gift card product type to your store. 
 5. Partial use is tracked. The remaining balance stays on the gift card for future orders.
 
 == Installation ==
-1. Upload the `beltoft-gift-cards-for-woocommerce` folder to `/wp-content/plugins/` or install via the Plugins screen.
+1. Upload the `beltoft-gift-cards` folder to `/wp-content/plugins/` or install via the Plugins screen.
 2. Activate the plugin.
 3. Go to **WooCommerce > Gift Cards > Settings** to configure.
 4. Create a new product and select **"Gift card"** as the product type.
@@ -117,6 +117,16 @@ By default, no. If you have the Loyalty Rewards for WooCommerce plugin active, a
 8. Settings page.
 
 == Changelog ==
+
+= 1.4.0 =
+* Renamed plugin slug and folder to `beltoft-gift-cards`.
+* Renamed text domain to `beltoft-gift-cards`.
+* Replaced inline scripts with `wp_add_inline_script()`.
+* Fixed double-escaping on gift card price display.
+* Improved input sanitization on all add-to-cart POST data.
+* Moved all inline styles to external CSS files.
+* Added `wp_cache_delete()` calls after custom table writes.
+* Updated author to beltoft.net.
 
 = 1.3.0 =
 * Improved: MySQL advisory lock for concurrent balance deductions.
